@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Outstanding</string>
+
+    <!-- HINTS -->
+    <string name="username_hint">Enter username…</string>
+    <string name="password_hint">Enter password…</string>
+    <string name="password_again_hint">Enter password again…</string>
+    <string name="email_hint">Enter email…</string>
+    <string name="profile_description_hint">Enter description here…</string>
+
+    <!-- MISC -->
+    <string name="description_length">%d / %d</string>
+
+    <!-- LOGGING -->
+    <string name="generic_error">Error</string>
+    <string name="generic_success">Success</string>
+
+    <string name="user_location_permission_explanation" />
+    <string name="user_location_permission_not_granted">Permission not granted</string>
+    <string name="current_location">Got current location</string>
+    <string name="tracking_already_enabled">Tracking is already enabled</string>
+    <string name="tracking_enabled">Tracking now enabled</string>
+</resources>

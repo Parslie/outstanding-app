@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- User URLs -->
+    <string name="register_url">https://outstanding-server.herokuapp.com/user</string>
+    <string name="login_url">https://outstanding-server.herokuapp.com/user/login</string>
+    <string name="logout_url">https://outstanding-server.herokuapp.com/user/logout</string>
+
+    <string name="get_user_url">https://outstanding-server.herokuapp.com/user/%s</string>
+    <string name="edit_credentials_url">https://outstanding-server.herokuapp.com/user/edit/credentials</string>
+    <string name="edit_profile_url">https://outstanding-server.herokuapp.com/user/edit/profile</string>
+    <string name="edit_coordinates_url">https://outstanding-server.herokuapp.com/user/coordinates</string>
+
+    <string name="follow_url">https://outstanding-server.herokuapp.com/user/follow/%s</string>
+    <string name="accept_follow_url">https://outstanding-server.herokuapp.com/user/follow/%s/accept</string>
+    <string name="get_pending_followers_url">https://outstanding-server.herokuapp.com/user/%s/followers/pending/%d</string>
+    <string name="get_followers_url">https://outstanding-server.herokuapp.com/user/%s/followers/%d</string>
+    <string name="get_pending_followings_url">https://outstanding-server.herokuapp.com/user/%s/followings/pending/%d</string>
+    <string name="get_followings_url">https://outstanding-server.herokuapp.com/user/%s/followings/%d</string>
+
+    <string name="block_url">https://outstanding-server.herokuapp.com/user/block/%s</string>
+    <string name="get_blockings_url">https://outstanding-server.herokuapp.com/user/%s/blockings/%d</string>
+
+    <string name="get_user_posts_url">https://outstanding-server.herokuapp.com/user/%s/posts/%d</string>
+
+    <!-- Post URLs -->
+    <string name="get_posts_url">https://outstanding-server.herokuapp.com/post</string>
+    <string name="get_post_url">https://outstanding-server.herokuapp.com/post/%s</string>
+    <string name="post_post_url">https://outstanding-server.herokuapp.com/post</string>
+
+    <string name="like_post_url">https://outstanding-server.herokuapp.com/post/%s/like</string>
+    <string name="dislike_post_url">https://outstanding-server.herokuapp.com/post/%s/dislike</string>
+
+    <string name="post_comment_url">https://outstanding-server.herokuapp.com/post/%s/comment</string>
+    <string name="get_comments_url">https://outstanding-server.herokuapp.com/post/%s/comments/%d</string>
+</resources>
