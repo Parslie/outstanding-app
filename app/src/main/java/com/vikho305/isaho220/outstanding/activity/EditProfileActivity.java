@@ -173,9 +173,9 @@ public class EditProfileActivity extends AuthorizedActivity {
 
     private void updateProfile() {
         final String description = descriptionInput.getText().toString();
-        final int hue = hueSlider.getProgress();
-        final int saturation = saturationSlider.getProgress();
-        final int lightness = lightnessSlider.getProgress();
+        final float hue = hueSlider.getProgress() / (float) hueSlider.getMax();
+        final float saturation = saturationSlider.getProgress() / (float) saturationSlider.getMax();
+        final float lightness = lightnessSlider.getProgress() / (float) lightnessSlider.getMax();
 
         final JSONObject parameters = new JSONObject();
         try {
