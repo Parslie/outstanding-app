@@ -50,16 +50,32 @@ public class RegisterActivity extends AuthorizedActivity {
             @Override
             public void onClick(View v) {
                 String username = usernameInput.getText().toString();
+                String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
                 String passwordConfirmation = passwordConfirmationInput.getText().toString();
-                String email = emailInput.getText().toString();
 
-                if (!password.equals(passwordConfirmation))
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
-                else if (!email.isEmpty() && !username.isEmpty() && !password.isEmpty())
+                boolean usernameSufficient = username.length() >= getResources().getInteger(R.integer.min_username_length);
+                boolean emailSufficient = email.length() >= getResources().getInteger(R.integer.min_email_length);
+                boolean passwordSufficient = password.length() >= getResources().getInteger(R.integer.min_password_length);
+                boolean passwordsMatching = password.equals(passwordConfirmation);
+
+                if (usernameSufficient && emailSufficient && passwordSufficient && passwordsMatching) {
                     register();
-                else
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (!usernameSufficient) {
+                        usernameInput.setError(getResources().getString(R.string.username_length_error));
+                    }
+                    if (!emailSufficient) {
+                        emailInput.setError(getResources().getString(R.string.email_length_error));
+                    }
+                    if (!passwordSufficient) {
+                        passwordInput.setError(getResources().getString(R.string.password_length_error));
+                    }
+                    else if (!passwordsMatching) {
+                        passwordConfirmationInput.setError(getResources().getString(R.string.password_match_error));
+                    }
+                }
             }
         });
     }

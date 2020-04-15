@@ -8,6 +8,12 @@
     <string name="email_hint">Enter email…</string>
     <string name="profile_description_hint">Enter description here…</string>
 
+    <!-- INPUT ERRORS -->
+    <string name="username_length_error">The username is too short…</string>
+    <string name="email_length_error">The email is too short…</string>
+    <string name="password_length_error">The password is too short…</string>
+    <string name="password_match_error">The passwords do not match…</string>
+
     <!-- MISC -->
     <string name="description_length">%d / %d</string>
 

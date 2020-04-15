@@ -2,6 +2,8 @@ package com.vikho305.isaho220.outstanding.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,10 +42,20 @@ public class LoginActivity extends AuthorizedActivity {
                 String username = usernameInput.getText().toString();
                 String password = passwordInput.getText().toString();
 
-                if (!username.isEmpty() && !password.isEmpty())
+                boolean usernameSufficient = username.length() >= getResources().getInteger(R.integer.min_username_length);
+                boolean passwordSufficient = password.length() >= getResources().getInteger(R.integer.min_password_length);
+
+                if (usernameSufficient && passwordSufficient) {
                     logIn();
-                else
-                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (!usernameSufficient) {
+                        usernameInput.setError(getResources().getString(R.string.username_length_error));
+                    }
+                    if (!passwordSufficient) {
+                        passwordInput.setError(getResources().getString(R.string.password_length_error));
+                    }
+                }
             }
         });
 
