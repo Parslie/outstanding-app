@@ -7,6 +7,17 @@
     tools:context="activity.RegisterActivity">
 
     <Button
+        android:id="@+id/backButton"
+        style="@style/RoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:drawableStart="@drawable/ic_close_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/editUserButton"
         style="@style/RoundButton"
         android:layout_width="wrap_content"

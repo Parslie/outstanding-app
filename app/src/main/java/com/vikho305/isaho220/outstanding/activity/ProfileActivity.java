@@ -74,11 +74,21 @@ public class ProfileActivity extends AuthorizedActivity{
             }
         });
 
-        Button temporaryButton = findViewById(R.id.editUserButton);
-        temporaryButton.setOnClickListener(new View.OnClickListener() {
+        Button editUserButton = findViewById(R.id.editUserButton); // TODO: disable if !selfUserId.equals(userId)
+        editUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToActivity(new Intent(ProfileActivity.this, MapActivity.class));
+                Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                intent.putExtra("user", user);
+                goToActivity(intent);
+            }
+        });
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -119,7 +129,7 @@ public class ProfileActivity extends AuthorizedActivity{
             profilePicture.setImageBitmap(bitmap);
         }
 
-        // TODO: set follower and followee count
+        // TODO: set follower and following count
         // TODO: set posts
     }
 
