@@ -10,7 +10,7 @@
 
     <!-- INPUT ERRORS -->
     <string name="username_length_error">The username is too short…</string>
-    <string name="email_length_error">The email is too short…</string>
+    <string name="email_format_error">The email is formatted incorrectly…</string>
     <string name="password_length_error">The password is too short…</string>
     <string name="password_match_error">The passwords do not match…</string>
 

@@ -2,9 +2,12 @@ package com.vikho305.isaho220.outstanding.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,6 +25,8 @@ public class RegisterActivity extends AuthorizedActivity {
     private EditText usernameInput;
     private EditText passwordInput, passwordConfirmationInput;
     private EditText emailInput;
+    private Button registerButton;
+    private ProgressBar registerProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +37,135 @@ public class RegisterActivity extends AuthorizedActivity {
         passwordInput = findViewById(R.id.passwordInput);
         passwordConfirmationInput = findViewById(R.id.passwordConfirmationInput);
         emailInput = findViewById(R.id.emailInput);
+        registerButton = findViewById(R.id.registerButton);
+        registerProgressBar = findViewById(R.id.registerProgressBar);
 
+        registerProgressBar.setVisibility(View.GONE);
+        setInputListeners();
         setButtonListeners();
+    }
+
+    private void setInputListeners() {
+        TextWatcher canRegisterListener = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String username = usernameInput.getText().toString();
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+                String confirmationPassword = passwordConfirmationInput.getText().toString();
+
+                if (!isValidUsername(username) || !isValidEmail(email) || !isValidPassword(password) || !isValidConfirmation(password, confirmationPassword)) {
+                    registerButton.setEnabled(false);
+                }
+                else {
+                    registerButton.setEnabled(true);
+                }
+            }
+        };
+        usernameInput.addTextChangedListener(canRegisterListener);
+        emailInput.addTextChangedListener(canRegisterListener);
+        passwordInput.addTextChangedListener(canRegisterListener);
+        passwordConfirmationInput.addTextChangedListener(canRegisterListener);
+
+        usernameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String username = usernameInput.getText().toString();
+
+                if (!isValidUsername(username)) {
+                    usernameInput.setError(getResources().getString(R.string.username_length_error));
+                }
+                else {
+                    usernameInput.setError(null);
+                }
+            }
+        });
+
+        emailInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String email = emailInput.getText().toString();
+
+                if (!isValidEmail(email)) {
+                    emailInput.setError(getResources().getString(R.string.email_format_error));
+                }
+                else {
+                    emailInput.setError(null);
+                }
+            }
+        });
+
+        passwordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password = passwordInput.getText().toString();
+                String confirmationPassword = passwordConfirmationInput.getText().toString();
+
+                if (!isValidPassword(password)) {
+                    passwordInput.setError(getResources().getString(R.string.password_length_error));
+                }
+                else {
+                    passwordInput.setError(null);
+                }
+
+                if (!isValidConfirmation(password, confirmationPassword)) {
+                    passwordConfirmationInput.setError(getResources().getString(R.string.password_match_error));
+                }
+                else {
+                    passwordConfirmationInput.setError(null);
+                }
+            }
+        });
+
+        passwordConfirmationInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String password = passwordInput.getText().toString();
+                String confirmationPassword = passwordConfirmationInput.getText().toString();
+
+                if (!isValidConfirmation(password, confirmationPassword)) {
+                    passwordConfirmationInput.setError(getResources().getString(R.string.password_match_error));
+                }
+                else {
+                    passwordConfirmationInput.setError(null);
+                }
+            }
+        });
     }
 
     private void setButtonListeners() {
@@ -45,37 +177,10 @@ public class RegisterActivity extends AuthorizedActivity {
             }
         });
 
-        Button registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameInput.getText().toString();
-                String email = emailInput.getText().toString();
-                String password = passwordInput.getText().toString();
-                String passwordConfirmation = passwordConfirmationInput.getText().toString();
-
-                boolean usernameSufficient = username.length() >= getResources().getInteger(R.integer.min_username_length);
-                boolean emailSufficient = email.length() >= getResources().getInteger(R.integer.min_email_length);
-                boolean passwordSufficient = password.length() >= getResources().getInteger(R.integer.min_password_length);
-                boolean passwordsMatching = password.equals(passwordConfirmation);
-
-                if (usernameSufficient && emailSufficient && passwordSufficient && passwordsMatching) {
-                    register();
-                }
-                else {
-                    if (!usernameSufficient) {
-                        usernameInput.setError(getResources().getString(R.string.username_length_error));
-                    }
-                    if (!emailSufficient) {
-                        emailInput.setError(getResources().getString(R.string.email_length_error));
-                    }
-                    if (!passwordSufficient) {
-                        passwordInput.setError(getResources().getString(R.string.password_length_error));
-                    }
-                    else if (!passwordsMatching) {
-                        passwordConfirmationInput.setError(getResources().getString(R.string.password_match_error));
-                    }
-                }
+                register();
             }
         });
     }
@@ -94,6 +199,8 @@ public class RegisterActivity extends AuthorizedActivity {
             e.printStackTrace();
         }
 
+        registerButton.setEnabled(false);
+        registerProgressBar.setVisibility(View.VISIBLE);
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
                 getResources().getString(R.string.register_url),
@@ -112,18 +219,38 @@ public class RegisterActivity extends AuthorizedActivity {
                             e.printStackTrace();
                         }
 
-                        Toast.makeText(RegisterActivity.this, getResources().getString(R.string.generic_success), Toast.LENGTH_SHORT).show();
+                        registerButton.setEnabled(true);
+                        registerProgressBar.setVisibility(View.GONE);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Toast.makeText(RegisterActivity.this, getResources().getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
+
+                        registerButton.setEnabled(true);
+                        registerProgressBar.setVisibility(View.GONE);
                     }
                 }
         );
 
         Volley.newRequestQueue(this).add(request);
+    }
+
+    private boolean isValidUsername(String username) {
+        return username.length() >= getResources().getInteger(R.integer.min_username_length);
+    }
+
+    private boolean isValidEmail(String email) {
+        boolean correctFormat = email.contains("@") && email.contains(".") && !email.endsWith("."); // TODO: should be improved
+        return email.length() >= getResources().getInteger(R.integer.min_email_length) && correctFormat;
+    }
+
+    private boolean isValidPassword(String password) {
+        return password.length() >= getResources().getInteger(R.integer.min_password_length);
+    }
+
+    private boolean isValidConfirmation(String password, String confirmationPassword) {
+        return confirmationPassword.equals(password);
     }
 }

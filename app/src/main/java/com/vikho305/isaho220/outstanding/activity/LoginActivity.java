@@ -7,7 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -22,6 +22,8 @@ import org.json.JSONObject;
 public class LoginActivity extends AuthorizedActivity {
 
     private EditText usernameInput, passwordInput;
+    private Button loginButton;
+    private ProgressBar loginProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,39 @@ public class LoginActivity extends AuthorizedActivity {
 
         usernameInput = findViewById(R.id.usernameInput);
         passwordInput = findViewById(R.id.passwordInput);
+        loginButton = findViewById(R.id.loginButton);
+        loginProgressBar = findViewById(R.id.loginProgressBar);
 
+        loginProgressBar.setVisibility(View.GONE);
+        setInputListeners();
         setButtonListeners();
+    }
+
+    private void setInputListeners() {
+        TextWatcher inputWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String username = usernameInput.getText().toString();
+                String password = passwordInput.getText().toString();
+
+                if (username.length() == 0 || password.length() == 0)
+                    loginButton.setEnabled(false);
+                else
+                    loginButton.setEnabled(true);
+            }
+        };
+
+        usernameInput.addTextChangedListener(inputWatcher);
+        passwordInput.addTextChangedListener(inputWatcher);
     }
 
     private void setButtonListeners() {
@@ -39,23 +72,7 @@ public class LoginActivity extends AuthorizedActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameInput.getText().toString();
-                String password = passwordInput.getText().toString();
-
-                boolean usernameSufficient = username.length() >= getResources().getInteger(R.integer.min_username_length);
-                boolean passwordSufficient = password.length() >= getResources().getInteger(R.integer.min_password_length);
-
-                if (usernameSufficient && passwordSufficient) {
-                    logIn();
-                }
-                else {
-                    if (!usernameSufficient) {
-                        usernameInput.setError(getResources().getString(R.string.username_length_error));
-                    }
-                    if (!passwordSufficient) {
-                        passwordInput.setError(getResources().getString(R.string.password_length_error));
-                    }
-                }
+                logIn();
             }
         });
 
@@ -70,13 +87,6 @@ public class LoginActivity extends AuthorizedActivity {
         });
     }
 
-    private void goToRegistration(String username, String password) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        intent.putExtra("username", username);
-        intent.putExtra("password", password);
-        goToActivity(intent);
-    }
-
     private void logIn() {
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
@@ -89,6 +99,8 @@ public class LoginActivity extends AuthorizedActivity {
             e.printStackTrace();
         }
 
+        loginButton.setEnabled(false);
+        loginProgressBar.setVisibility(View.VISIBLE);
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
                 getResources().getString(R.string.login_url),
@@ -101,24 +113,35 @@ public class LoginActivity extends AuthorizedActivity {
                         try {
                             String authToken = response.getString("auth_token");
                             String authUserId = response.getString("auth_user_id");
+
                             setCredentials(authToken, authUserId);
                             goToActivity(new Intent(LoginActivity.this, MapActivity.class));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        Toast.makeText(LoginActivity.this, getResources().getString(R.string.generic_success), Toast.LENGTH_SHORT).show();
+                        loginButton.setEnabled(true);
+                        loginProgressBar.setVisibility(View.GONE);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Toast.makeText(LoginActivity.this, getResources().getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
+
+                        loginButton.setEnabled(true);
+                        loginProgressBar.setVisibility(View.GONE);
                     }
                 }
         );
 
         Volley.newRequestQueue(this).add(request);
+    }
+
+    private void goToRegistration(String username, String password) {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        intent.putExtra("username", username);
+        intent.putExtra("password", password);
+        goToActivity(intent);
     }
 }
