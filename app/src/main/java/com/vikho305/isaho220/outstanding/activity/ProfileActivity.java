@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -124,9 +127,11 @@ public class ProfileActivity extends AuthorizedActivity{
         descriptionText.setText(user.getDescription());
 
         if(user.getPicture() != null){
-            byte[] byteData = Base64.decode(user.getPicture().getBytes(),Base64.DEFAULT);
+            byte[] byteData = Base64.decode(user.getPicture().getBytes(), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(byteData, 0, byteData.length);
-            profilePicture.setImageBitmap(bitmap);
+            RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(null, bitmap);
+            roundedBitmap.setCircular(true);
+            profilePicture.setImageDrawable(roundedBitmap);
         }
 
         // TODO: set follower and following count

@@ -11,12 +11,14 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,12 +37,13 @@ import java.util.Map;
 
 public class EditProfileActivity extends AuthorizedActivity {
 
+    private static final int IMAGE_REQUEST = 0;
     private static final int MAX_DESCRIPTION_LENGTH = 200;
 
     private User user;
 
     private View rootView;
-    private ImageButton profilePictureButton;
+    private ImageView profilePicture;
     private EditText descriptionInput;
     private TextView descriptionLengthText;
     private SeekBar hueSlider, saturationSlider, lightnessSlider;
@@ -52,13 +55,13 @@ public class EditProfileActivity extends AuthorizedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        profilePictureButton = findViewById(R.id.editProfilePicture);
+        rootView = findViewById(R.id.root);
+        profilePicture = findViewById(R.id.editProfilePicture);
         descriptionInput = findViewById(R.id.editDescription);
         descriptionLengthText = findViewById(R.id.descriptionLength);
         hueSlider = findViewById(R.id.hueSlider);
         saturationSlider = findViewById(R.id.saturationSlider);
         lightnessSlider = findViewById(R.id.lightnessSlider);
-        rootView = profilePictureButton.getRootView();
 
         Intent intent = getIntent();
         user = intent.getParcelableExtra("user");
@@ -115,7 +118,7 @@ public class EditProfileActivity extends AuthorizedActivity {
             }
         });
 
-        profilePictureButton.setOnClickListener(new View.OnClickListener() {
+        profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /* Why would you need location access to run the camera?
@@ -126,7 +129,7 @@ public class EditProfileActivity extends AuthorizedActivity {
 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (intent.resolveActivity(getPackageManager()) != null) // Make sure an activity can handle the event
-                    startActivityForResult(intent, 0);
+                    startActivityForResult(intent, IMAGE_REQUEST);
             }
         });
 
@@ -230,22 +233,26 @@ public class EditProfileActivity extends AuthorizedActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap)data.getExtras().get("data");
 
-        int currentBitmapWidth = bitmap.getWidth();
-        int currentBitmapHeight = bitmap.getHeight();
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
 
-        int width = profilePictureButton.getWidth();
-        int height = (int) Math.floor((double) currentBitmapHeight * ((double) width / currentBitmapWidth));
+            int bitmapWidth = bitmap.getWidth();
+            int bitmapHeight = bitmap.getHeight();
+            int minBitmapSize = Math.min(bitmapWidth, bitmapHeight);
 
-        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+            int croppedOffsetX = (bitmapWidth - minBitmapSize) / 2;
+            int croppedOffsetY = (bitmapHeight - minBitmapSize) / 2;
+            Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, croppedOffsetX, croppedOffsetY, minBitmapSize, minBitmapSize);
+            RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(getResources(), croppedBitmap);
+            roundedBitmap.setCircular(true);
+            profilePicture.setImageDrawable(roundedBitmap);
 
-        profilePictureButton.setImageBitmap(newBitmap);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        newBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] imageByteArray = stream.toByteArray();
-        encodedPicture = Base64.encodeToString(imageByteArray, Base64.DEFAULT);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] imageByteArray = stream.toByteArray();
+            encodedPicture = Base64.encodeToString(imageByteArray, Base64.DEFAULT);
+        }
     }
 
     /*
