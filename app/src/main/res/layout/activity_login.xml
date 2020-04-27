@@ -8,20 +8,20 @@
     tools:context="activity.LoginActivity">
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/login_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:enabled="false"
         android:text="Log in"
-        app:layout_constraintEnd_toEndOf="@+id/passwordInput"
+        app:layout_constraintEnd_toEndOf="@+id/login_password"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
+        app:layout_constraintStart_toStartOf="@+id/login_middleGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
     <ProgressBar
-        android:id="@+id/loginProgressBar"
+        android:id="@+id/login_progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -30,25 +30,25 @@
         android:progressTint="@color/colorAccent"
         android:scaleX=".75"
         android:scaleY=".75"
-        app:layout_constraintBottom_toBottomOf="@+id/loginButton"
-        app:layout_constraintEnd_toEndOf="@+id/loginButton"
-        app:layout_constraintStart_toStartOf="@+id/loginButton"
-        app:layout_constraintTop_toTopOf="@+id/loginButton" />
+        app:layout_constraintBottom_toBottomOf="@+id/login_login"
+        app:layout_constraintEnd_toEndOf="@+id/login_login"
+        app:layout_constraintStart_toStartOf="@+id/login_login"
+        app:layout_constraintTop_toTopOf="@+id/login_login" />
 
     <Button
-        android:id="@+id/registerButton"
+        android:id="@+id/login_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Register"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/login_middleGuideline"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/passwordInput"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
+        app:layout_constraintStart_toStartOf="@+id/login_password"
+        app:layout_constraintTop_toBottomOf="@+id/login_password" />
 
     <EditText
-        android:id="@+id/usernameInput"
+        android:id="@+id/login_username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -59,10 +59,10 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/login_logoSeperator" />
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/login_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -70,29 +70,29 @@
         android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="@+id/usernameInput"
-        app:layout_constraintStart_toStartOf="@+id/usernameInput"
-        app:layout_constraintTop_toBottomOf="@+id/usernameInput" />
+        app:layout_constraintEnd_toEndOf="@+id/login_username"
+        app:layout_constraintStart_toStartOf="@+id/login_username"
+        app:layout_constraintTop_toBottomOf="@+id/login_username" />
 
     <ImageView
-        android:id="@+id/registerLogo"
+        android:id="@+id/login_logo"
         android:layout_width="0dp"
-        android:layout_height="400px"
+        android:layout_height="150dp"
         android:src="@drawable/ic_outstanding_logo"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/login_logoSeperator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/login_logoSeperator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.35" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/login_middleGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"

@@ -30,10 +30,10 @@ public class LoginActivity extends AuthorizedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        usernameInput = findViewById(R.id.usernameInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        loginButton = findViewById(R.id.loginButton);
-        loginProgressBar = findViewById(R.id.loginProgressBar);
+        usernameInput = findViewById(R.id.login_username);
+        passwordInput = findViewById(R.id.login_password);
+        loginButton = findViewById(R.id.login_login);
+        loginProgressBar = findViewById(R.id.login_progressBar);
 
         loginProgressBar.setVisibility(View.GONE);
         setInputListeners();
@@ -68,7 +68,7 @@ public class LoginActivity extends AuthorizedActivity {
     }
 
     private void setButtonListeners() {
-        Button loginButton = findViewById(R.id.loginButton);
+        Button loginButton = findViewById(R.id.login_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
