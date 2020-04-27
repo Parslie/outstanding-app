@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -26,15 +28,18 @@ import com.vikho305.isaho220.outstanding.database.tables.User;
 
 import org.json.JSONException;
 
-public class EditProfileActivity extends AuthorizedActivity {
+public class EditProfileActivity extends AuthorizedActivity
+        implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, TextWatcher {
 
     private static final int IMAGE_REQUEST = 0;
+    private static final int MAX_DESCRIPTION_LENGTH = 200;
 
     private View root;
     private EditText descriptionView;
     private TextView descriptionLengthView;
     private SeekBar hueSlider, saturationSlider, lightnessSlider;
     private ImageView profilePictureView;
+    private Button backButton, saveButton;
 
     private UserViewModel viewModel;
 
@@ -51,15 +56,15 @@ public class EditProfileActivity extends AuthorizedActivity {
         saturationSlider = findViewById(R.id.editProfile_saturationSlider);
         lightnessSlider = findViewById(R.id.editProfile_lightnessSlider);
         profilePictureView = findViewById(R.id.editProfile_picture);
-        Button backButton = findViewById(R.id.editProfile_back);
-        Button saveButton = findViewById(R.id.editProfile_save);
+        backButton = findViewById(R.id.editProfile_back);
+        saveButton = findViewById(R.id.editProfile_save);
 
-        // Init view model // TODO: create EditProfileViewModel
+        // Init view model
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         viewModel.getUserColor().observe(this, new Observer<float[]>() {
             @Override
             public void onChanged(float[] hsl) {
-                root.setBackgroundColor(Color.HSVToColor(hsl));
+                root.setBackgroundColor(Color.HSVToColor(hsl)); // TODO: test including setProgress
             }
         });
         viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {
@@ -68,48 +73,44 @@ public class EditProfileActivity extends AuthorizedActivity {
                 profilePictureView.setImageDrawable(roundedBitmapDrawable);
             }
         });
+        viewModel.getUserDescription().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                String descriptionLengthText = getResources().getString(
+                        R.string.description_length,
+                        s.length(),
+                        MAX_DESCRIPTION_LENGTH
+                );
+                descriptionLengthView.setText(descriptionLengthText);
+            }
+        });
 
+        // Init listeners
+        backButton.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+        profilePictureView.setOnClickListener(this);
+
+        hueSlider.setOnSeekBarChangeListener(this);
+        saturationSlider.setOnSeekBarChangeListener(this);
+        lightnessSlider.setOnSeekBarChangeListener(this);
+
+        descriptionView.addTextChangedListener(this);
+
+        // Init activity
         Intent intent = getIntent();
         User user = intent.getParcelableExtra("user");
 
-        if (user != null)
+        if (user != null) {
             viewModel.setUser(user);
-        else
+
+            descriptionView.setText(user.getDescription());
+            hueSlider.setProgress((int) (user.getHue() * hueSlider.getMax()));
+            saturationSlider.setProgress((int) (user.getSaturation() * saturationSlider.getMax()));
+            lightnessSlider.setProgress((int) (user.getLightness() * lightnessSlider.getMax()));
+        }
+        else {
             finish(); // TODO: add more extensive error-handling for no user
-
-        // Init buttons
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
-        });
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    viewModel.saveUserProfile(getApplicationContext(), getAuthToken());
-
-                    Intent data = new Intent();
-                    data.putExtra("user", viewModel.getUser().getValue());
-                    setResult(RESULT_OK, data);
-                    finish(); // TODO (?): wait for server callback
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        profilePictureView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getPackageManager()) != null) // Make sure an activity can handle the event
-                    startActivityForResult(intent, IMAGE_REQUEST);
-            }
-        });
-
-        // Init seek bars
+        }
     }
 
     @Override
@@ -122,4 +123,52 @@ public class EditProfileActivity extends AuthorizedActivity {
             viewModel.setUserPicture(bitmap);
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == backButton) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+        else if (v == saveButton) {
+            try {
+                viewModel.saveUserProfile(getApplicationContext(), getAuthToken());
+
+                Intent data = new Intent();
+                data.putExtra("user", viewModel.getUser().getValue());
+                setResult(RESULT_OK, data);
+                finish(); // TODO (?): wait for server callback
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (v == profilePictureView) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getPackageManager()) != null) // Make sure an activity can handle the event
+                startActivityForResult(intent, IMAGE_REQUEST);
+        }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        float hueProgress = (float) hueSlider.getProgress() / hueSlider.getMax();
+        float saturationProgress = (float) saturationSlider.getProgress() / saturationSlider.getMax();
+        float lightnessProgress = (float) lightnessSlider.getProgress() / lightnessSlider.getMax();
+        viewModel.setUserColor(hueProgress, saturationProgress, lightnessProgress);
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {}
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        viewModel.setUserDescription(s.toString());
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {}
 }

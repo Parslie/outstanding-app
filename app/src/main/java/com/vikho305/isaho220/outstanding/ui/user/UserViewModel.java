@@ -36,11 +36,13 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<User> user;
     private MutableLiveData<float[]> userColor;
     private MutableLiveData<RoundedBitmapDrawable> userPicture;
+    private MutableLiveData<String> userDescription;
 
     public UserViewModel() {
         user = new MutableLiveData<>();
         userColor = new MutableLiveData<>();
         userPicture = new MutableLiveData<>();
+        userDescription = new MutableLiveData<>();
     }
 
     public void setUser(User user) {
@@ -57,6 +59,8 @@ public class UserViewModel extends ViewModel {
                 (float) user.getSaturation(),
                 (float) user.getLightness()
         });
+
+        userDescription.setValue(user.getDescription());
     }
 
     public LiveData<User> getUser() {
@@ -106,8 +110,14 @@ public class UserViewModel extends ViewModel {
     }
 
     public void setUserDescription(String description) {
+        userDescription.setValue(description);
+
         User user = this.user.getValue();
         user.setDescription(description);
+    }
+
+    public LiveData<String> getUserDescription() {
+        return userDescription;
     }
 
     // Server actions
