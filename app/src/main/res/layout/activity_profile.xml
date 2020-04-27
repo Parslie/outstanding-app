@@ -2,12 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="activity.RegisterActivity">
 
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/profile_back"
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/editUserButton"
+        android:id="@+id/profile_editUser"
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,18 +30,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/editProfileButton"
+        android:id="@+id/profile_editProfile"
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:drawableStart="@drawable/ic_edit_24dp"
-        app:layout_constraintEnd_toStartOf="@+id/editUserButton"
+        app:layout_constraintEnd_toStartOf="@+id/profile_editUser"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/profilePicture"
+        android:id="@+id/profile_picture"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginStart="32dp"
@@ -50,22 +51,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileButton" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_editProfile" />
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/profile_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@username"
+        android:text="Username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/profile_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -75,23 +76,23 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_username" />
 
     <Button
-        android:id="@+id/followersButton"
+        android:id="@+id/profile_followers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="8dp"
         android:text="Followers"
-        app:layout_constraintEnd_toStartOf="@+id/middleGuideline"
+        app:layout_constraintEnd_toStartOf="@+id/profile_middleGuideline"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_description" />
 
     <Button
-        android:id="@+id/followingButton"
+        android:id="@+id/profile_followings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -100,34 +101,34 @@
         android:text="Following"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/middleGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintStart_toStartOf="@+id/profile_middleGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/profile_description" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/middleGuideline"
+        android:id="@+id/profile_middleGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent=".5" />
 
     <TextView
-        android:id="@+id/followersCount"
+        android:id="@+id/profile_followerCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="0"
-        app:layout_constraintEnd_toEndOf="@+id/followersButton"
-        app:layout_constraintStart_toStartOf="@+id/followersButton"
-        app:layout_constraintTop_toBottomOf="@+id/followersButton" />
+        app:layout_constraintEnd_toEndOf="@+id/profile_followers"
+        app:layout_constraintStart_toStartOf="@+id/profile_followers"
+        app:layout_constraintTop_toBottomOf="@+id/profile_followers" />
 
     <TextView
-        android:id="@+id/followeeCount"
+        android:id="@+id/profile_followingCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="0"
-        app:layout_constraintEnd_toEndOf="@+id/followingButton"
-        app:layout_constraintStart_toStartOf="@+id/followingButton"
-        app:layout_constraintTop_toBottomOf="@+id/followingButton" />
+        app:layout_constraintEnd_toEndOf="@+id/profile_followings"
+        app:layout_constraintStart_toStartOf="@+id/profile_followings"
+        app:layout_constraintTop_toBottomOf="@+id/profile_followings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

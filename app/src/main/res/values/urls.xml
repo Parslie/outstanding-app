@@ -6,8 +6,7 @@
     <string name="logout_url">https://outstanding-server.herokuapp.com/user/logout</string>
 
     <string name="get_user_url">https://outstanding-server.herokuapp.com/user/%s</string>
-    <string name="edit_credentials_url">https://outstanding-server.herokuapp.com/user/edit/credentials</string>
-    <string name="edit_profile_url">https://outstanding-server.herokuapp.com/user/edit/profile</string>
+    <string name="edit_user_url">https://outstanding-server.herokuapp.com/user/edit</string>
     <string name="edit_coordinates_url">https://outstanding-server.herokuapp.com/user/coordinates</string>
 
     <string name="follow_url">https://outstanding-server.herokuapp.com/user/follow/%s</string>

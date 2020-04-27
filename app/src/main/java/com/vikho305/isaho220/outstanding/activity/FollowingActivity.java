@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolloweeActivity extends AuthorizedActivity implements FolloweeListFragment.InteractionListener {
+public class FollowingActivity extends AuthorizedActivity implements FolloweeListFragment.InteractionListener {
 
     private FolloweeListFragment followeeListFragment;
 

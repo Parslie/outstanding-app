@@ -38,4 +38,10 @@ public abstract class AuthorizedActivity extends AppCompatActivity {
         intent.putExtra("authUserId", authUserId);
         startActivity(intent);
     }
+
+    protected void goToActivityForResult(Intent intent, int requestCode) {
+        intent.putExtra("authToken", authToken);
+        intent.putExtra("authUserId", authUserId);
+        startActivityForResult(intent, requestCode);
+    }
 }

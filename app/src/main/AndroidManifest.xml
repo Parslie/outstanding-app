@@ -13,12 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.EditProfileActivity"/>
-        <activity android:name=".activity.FolloweeActivity"/>
+        <activity android:name=".activity.FollowingActivity"/>
         <activity android:name=".activity.FollowerActivity"/>
         <activity android:name=".activity.LockedProfileActivity"/>
         <activity android:name=".activity.MapActivity"/>
-        <activity android:name=".activity.ProfileActivity"/>
+        <activity android:name=".ui.user.EditProfileActivity"/>
+        <activity android:name=".ui.user.ProfileActivity"/>
         <activity android:name=".activity.RegisterActivity"/>
         <activity android:name=".activity.LoginActivity">
             <intent-filter>

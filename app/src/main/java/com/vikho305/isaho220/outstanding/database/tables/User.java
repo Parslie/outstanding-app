@@ -1,4 +1,4 @@
-package com.vikho305.isaho220.outstanding;
+package com.vikho305.isaho220.outstanding.database.tables;
 
 import android.os.Parcel;
 import android.os.Parcelable;

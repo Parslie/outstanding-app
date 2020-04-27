@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
+    android:id="@+id/editProfile_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/editProfile_back"
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/editProfile_save"
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/editProfilePicture"
+        android:id="@+id/editProfile_picture"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginStart="8dp"
@@ -38,11 +38,11 @@
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/saveButton"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_save"
         app:srcCompat="@drawable/profilepic" />
 
     <EditText
-        android:id="@+id/editDescription"
+        android:id="@+id/editProfile_description"
         android:layout_width="0dp"
         android:layout_height="360px"
         android:layout_marginStart="16dp"
@@ -54,23 +54,33 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfilePicture" />
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_picture" />
 
     <TextView
-        android:id="@+id/hueLabel"
+        android:id="@+id/editProfile_descriptionLength"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="0 / 200"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="@+id/editProfile_description"
+        app:layout_constraintStart_toStartOf="@+id/editProfile_description"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_description" />
+
+    <TextView
+        android:id="@+id/editProfile_hueLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:text="HUE"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/hueSlider"
-        app:layout_constraintEnd_toStartOf="@+id/sliderGuideline"
+        app:layout_constraintBottom_toBottomOf="@+id/editProfile_hueSlider"
+        app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/hueSlider" />
+        app:layout_constraintTop_toTopOf="@+id/editProfile_hueSlider" />
 
     <SeekBar
-        android:id="@+id/hueSlider"
+        android:id="@+id/editProfile_hueSlider"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
@@ -79,24 +89,24 @@
         android:max="255"
         android:progress="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/sliderGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionLength" />
+        app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_descriptionLength" />
 
     <TextView
-        android:id="@+id/saturationLabel"
+        android:id="@+id/editProfile_saturationLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:text="SATURATION"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/saturationSlider"
-        app:layout_constraintEnd_toStartOf="@+id/sliderGuideline"
+        app:layout_constraintBottom_toBottomOf="@+id/editProfile_saturationSlider"
+        app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/saturationSlider" />
+        app:layout_constraintTop_toTopOf="@+id/editProfile_saturationSlider" />
 
     <SeekBar
-        android:id="@+id/saturationSlider"
+        android:id="@+id/editProfile_saturationSlider"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
@@ -105,24 +115,24 @@
         android:max="255"
         android:progress="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/sliderGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/hueSlider" />
+        app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_hueSlider" />
 
     <TextView
-        android:id="@+id/lightnessLabel"
+        android:id="@+id/editProfile_editProfile_lightnessLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:text="LIGHTNESS"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/lightnessSlider"
-        app:layout_constraintEnd_toStartOf="@+id/sliderGuideline"
+        app:layout_constraintBottom_toBottomOf="@+id/editProfile_lightnessSlider"
+        app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lightnessSlider" />
+        app:layout_constraintTop_toTopOf="@+id/editProfile_lightnessSlider" />
 
     <SeekBar
-        android:id="@+id/lightnessSlider"
+        android:id="@+id/editProfile_lightnessSlider"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
@@ -131,24 +141,14 @@
         android:max="255"
         android:progress="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/sliderGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/saturationSlider" />
+        app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/editProfile_saturationSlider" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/sliderGuideline"
+        android:id="@+id/editProfile_sliderGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="115dp" />
-
-    <TextView
-        android:id="@+id/descriptionLength"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="0 / 200"
-        android:textAlignment="textEnd"
-        app:layout_constraintEnd_toEndOf="@+id/editDescription"
-        app:layout_constraintStart_toStartOf="@+id/editDescription"
-        app:layout_constraintTop_toBottomOf="@+id/editDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

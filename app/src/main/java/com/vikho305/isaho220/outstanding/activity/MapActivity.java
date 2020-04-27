@@ -24,6 +24,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.ui.user.ProfileActivity;
 
 import java.util.List;
 
