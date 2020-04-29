@@ -1,19 +1,16 @@
-package com.vikho305.isaho220.outstanding.ui.user;
+package com.vikho305.isaho220.outstanding.viewmodel;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import androidx.annotation.AttrRes;
-import androidx.annotation.Size;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,7 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.vikho305.isaho220.outstanding.JsonParameterRequest;
 import com.vikho305.isaho220.outstanding.R;
-import com.vikho305.isaho220.outstanding.database.tables.User;
+import com.vikho305.isaho220.outstanding.database.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;

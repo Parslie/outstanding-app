@@ -1,11 +1,8 @@
-package com.vikho305.isaho220.outstanding.ui.user;
+package com.vikho305.isaho220.outstanding.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,15 +10,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.vikho305.isaho220.outstanding.R;
-import com.vikho305.isaho220.outstanding.activity.AuthorizedActivity;
-import com.vikho305.isaho220.outstanding.activity.FollowingActivity;
-import com.vikho305.isaho220.outstanding.activity.FollowerActivity;
-import com.vikho305.isaho220.outstanding.database.tables.User;
+import com.vikho305.isaho220.outstanding.database.User;
+import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
 public class ProfileActivity extends AuthorizedActivity {
 
