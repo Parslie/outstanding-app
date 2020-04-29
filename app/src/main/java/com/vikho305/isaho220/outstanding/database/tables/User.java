@@ -5,7 +5,8 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
-    private String id, username;
+    private String id;
+    private String username, email;
     private String description;
     private String picture;
     private double hue, saturation, lightness;
@@ -15,6 +16,7 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         id = in.readString();
         username = in.readString();
+        email = in.readString();
         description = in.readString();
         picture = in.readString();
         hue = in.readDouble();
@@ -29,6 +31,7 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(username);
+        dest.writeString(email);
         dest.writeString(description);
         dest.writeString(picture);
         dest.writeDouble(hue);
@@ -68,6 +71,13 @@ public class User implements Parcelable {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDescription() {

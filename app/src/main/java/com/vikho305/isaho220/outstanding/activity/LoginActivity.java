@@ -76,7 +76,7 @@ public class LoginActivity extends AuthorizedActivity {
             }
         });
 
-        Button registerButton = findViewById(R.id.registerButton);
+        Button registerButton = findViewById(R.id.login_register);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
