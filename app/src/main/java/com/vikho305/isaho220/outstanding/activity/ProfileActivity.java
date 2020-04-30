@@ -66,6 +66,15 @@ public class ProfileActivity extends AuthorizedActivity {
             }
         });
 
+        // Init activity
+        Intent intent = getIntent();
+        User user = intent.getParcelableExtra("user");
+
+        if (user != null) // Prevents unnecessary server calls
+            viewModel.setUser(user);
+        else if (viewModel.getUser().getValue() == null) // Prevents unnecessary server calls
+            viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
+
         // Init listeners
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,15 +106,6 @@ public class ProfileActivity extends AuthorizedActivity {
                 editUser();
             }
         });
-
-        // Init activity
-        Intent intent = getIntent();
-        User user = intent.getParcelableExtra("user");
-
-        if (user != null) // Prevents unnecessary server calls
-            viewModel.setUser(user);
-        else if (viewModel.getUser().getValue() == null) // Prevents unnecessary server calls
-            viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
     }
 
     private void goToFollowers() {

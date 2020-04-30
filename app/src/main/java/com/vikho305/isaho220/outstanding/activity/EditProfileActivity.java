@@ -82,17 +82,6 @@ public class EditProfileActivity extends AuthorizedActivity
             }
         });
 
-        // Init listeners
-        backButton.setOnClickListener(this);
-        saveButton.setOnClickListener(this);
-        profilePictureView.setOnClickListener(this);
-
-        hueSlider.setOnSeekBarChangeListener(this);
-        saturationSlider.setOnSeekBarChangeListener(this);
-        lightnessSlider.setOnSeekBarChangeListener(this);
-
-        descriptionView.addTextChangedListener(this);
-
         // Init activity
         Intent intent = getIntent();
         User user = intent.getParcelableExtra("user");
@@ -108,6 +97,17 @@ public class EditProfileActivity extends AuthorizedActivity
         else {
             finish(); // TODO: add more extensive error-handling for no user
         }
+
+        // Init listeners
+        backButton.setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+        profilePictureView.setOnClickListener(this);
+
+        hueSlider.setOnSeekBarChangeListener(this);
+        saturationSlider.setOnSeekBarChangeListener(this);
+        lightnessSlider.setOnSeekBarChangeListener(this);
+
+        descriptionView.addTextChangedListener(this);
     }
 
     @Override
