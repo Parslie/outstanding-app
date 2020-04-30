@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/profile_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/activity_horizontal_padding"
+    android:paddingVertical="@dimen/activity_vertical_padding"
     tools:context="activity.RegisterActivity">
 
     <Button
@@ -12,8 +15,6 @@
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         android:drawableStart="@drawable/ic_close_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,8 +24,6 @@
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
         android:drawableStart="@drawable/ic_settings_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +33,6 @@
         style="@style/RoundButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:drawableStart="@drawable/ic_edit_24dp"
         app:layout_constraintEnd_toStartOf="@+id/profile_editUser"
@@ -44,9 +42,7 @@
         android:id="@+id/profile_picture"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/profilepic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -61,6 +57,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Username"
+        android:textAppearance="@style/EmphaticText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
@@ -69,9 +66,7 @@
         android:id="@+id/profile_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:text="This is a simple description"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"

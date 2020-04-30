@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/activity_horizontal_padding"
+    android:paddingVertical="@dimen/activity_vertical_padding"
     tools:context="activity.RegisterActivity">
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Back"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/passwordConfirmationInput"
-        app:layout_constraintTop_toBottomOf="@+id/passwordConfirmationInput" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
 
     <Button
         android:id="@+id/registerButton"
@@ -26,8 +27,7 @@
         android:layout_marginTop="16dp"
         android:enabled="false"
         android:text="Register"
-        app:layout_constraintEnd_toEndOf="@+id/passwordConfirmationInput"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/passwordConfirmationInput" />
 
@@ -50,8 +50,6 @@
         android:id="@+id/usernameInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
         android:ems="10"
         android:hint="@string/username_hint"
         android:inputType="textPersonName"
@@ -63,9 +61,7 @@
         android:id="@+id/emailInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="64dp"
         android:ems="10"
         android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
@@ -77,13 +73,12 @@
         android:id="@+id/passwordInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/password_hint"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailInput" />
@@ -92,16 +87,14 @@
         android:id="@+id/passwordConfirmationInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="64dp"
         android:ems="10"
         android:hint="@string/password_again_hint"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordInput" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/emailInput" />
 
     <ImageView
         android:id="@+id/registerLogo"

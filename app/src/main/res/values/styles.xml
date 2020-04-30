@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -7,7 +8,25 @@
 
         <item name="buttonStyle">@style/Button</item>
         <item name="editTextStyle">@style/EditText</item>
+        <item name="android:textAppearance">@style/BodyText</item>
     </style>
+
+    <!-- Text Appearances -->
+
+    <style name="BodyText" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">@dimen/small_text</item>
+    </style>
+
+    <style name="EmphaticText" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">@dimen/medium_text</item>
+    </style>
+
+    <style name="TitleText" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">@dimen/large_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Button Styles -->
 
     <style name="RoundButton" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
@@ -28,6 +47,8 @@
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
     </style>
+
+    <!-- Input Field Styles -->
 
     <style name="EditText" parent="@android:style/Widget.EditText">
         <item name="android:gravity">center_vertical|left</item>
