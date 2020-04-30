@@ -3,6 +3,8 @@ package com.vikho305.isaho220.outstanding.database;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User implements Parcelable {
 
     private String id;
@@ -11,7 +13,8 @@ public class User implements Parcelable {
     private String picture;
     private double hue, saturation, lightness;
     private double latitude, longitude;
-    private String date_created; // TODO: test if "dateCreated" is possible
+    @SerializedName(value = "date_created")
+    private String dateCreated;
 
     protected User(Parcel in) {
         id = in.readString();
@@ -24,7 +27,7 @@ public class User implements Parcelable {
         lightness = in.readDouble();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        date_created = in.readString();
+        dateCreated = in.readString();
     }
 
     @Override
@@ -39,7 +42,7 @@ public class User implements Parcelable {
         dest.writeDouble(lightness);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
-        dest.writeString(date_created);
+        dest.writeString(dateCreated);
     }
 
     @Override
@@ -129,10 +132,10 @@ public class User implements Parcelable {
         this.longitude = longitude;
     }
 
-    public String getDate_created() {
-        return date_created;
+    public String getDateCreated() {
+        return dateCreated;
     }
-    public void setDate_created(String date_created) {
-        this.date_created = date_created;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }
