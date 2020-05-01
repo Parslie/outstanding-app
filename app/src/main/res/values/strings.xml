@@ -6,7 +6,10 @@
     <string name="password_hint">Enter password…</string>
     <string name="password_again_hint">Enter password again…</string>
     <string name="email_hint">Enter email…</string>
-    <string name="profile_description_hint">Enter description here…</string>
+    <string name="profile_description_hint">Enter description…</string>
+
+    <string name="title_hint">Enter title…</string>
+    <string name="text_hint">Enter text…</string>
 
     <!-- INPUT ERRORS -->
     <string name="username_length_error">The username is too short…</string>

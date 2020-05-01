@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/postCreation_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/activity_horizontal_padding"
+    android:paddingVertical="@dimen/activity_vertical_padding"
+    tools:context=".activity.PostCreationActivity">
+
+    <Button
+        android:id="@+id/postCreation_back"
+        style="@style/RoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_close_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/postCreation_save"
+        style="@style/RoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_check_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/postCreation_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/title_hint"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_back" />
+
+    <EditText
+        android:id="@+id/postCreation_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="@string/text_hint"
+        android:inputType="textPersonName"
+        android:singleLine="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_title" />
+
+    <Button
+        android:id="@+id/postCreation_imageContent"
+        style="@style/RoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_image_24dp"
+        app:layout_constraintStart_toEndOf="@+id/postCreation_textContent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
+
+    <Button
+        android:id="@+id/postCreation_audioContent"
+        style="@style/RoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_audio_24dp"
+        app:layout_constraintStart_toEndOf="@+id/postCreation_videoContent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
+
+    <Button
+        android:id="@+id/postCreation_videoContent"
+        style="@style/RoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_video_24dp"
+        app:layout_constraintStart_toEndOf="@+id/postCreation_imageContent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
+
+    <Button
+        android:id="@+id/postCreation_textContent"
+        style="@style/RoundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_text_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
+</androidx.constraintlayout.widget.ConstraintLayout>
