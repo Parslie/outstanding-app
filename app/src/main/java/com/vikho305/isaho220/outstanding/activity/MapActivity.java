@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
 import java.util.List;
 
@@ -35,6 +37,14 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private LocationComponent locationComponent;
     private boolean isInTrackingMode;
 
+    private Button makePostButton;
+    private UserViewModel viewModel;
+
+    private void goToPostCreation() {
+        Intent intent = new Intent(this, PostCreationActivity.class);
+        goToActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +52,14 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         Mapbox.getInstance(this, "pk.eyJ1IjoiaXNha2hvcnZhdGgiLCJhIjoiY2s4dnZ3NWoxMDN1azNncXBuNWl0YWttdSJ9.ksNJFJjaQsqnIFzKy3ZCkg");
 
         setContentView(R.layout.activity_map);
+
+        makePostButton = findViewById(R.id.postButton);
+        makePostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPostCreation();
+            }
+        });
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);

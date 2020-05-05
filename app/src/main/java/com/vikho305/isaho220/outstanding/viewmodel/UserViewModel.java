@@ -45,11 +45,13 @@ public class UserViewModel extends ViewModel {
     public void setUser(User user) {
         this.user.setValue(user);
 
-        byte[] decodedPicture = Base64.decode(user.getPicture(), Base64.DEFAULT);
-        Bitmap pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
-        RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(null, pictureBitmap);
-        roundedPicture.setCircular(true);
-        userPicture.setValue(roundedPicture);
+        if(user.getPicture() != null){
+            byte[] decodedPicture = Base64.decode(user.getPicture(), Base64.DEFAULT);
+            Bitmap pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
+            RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(null, pictureBitmap);
+            roundedPicture.setCircular(true);
+            userPicture.setValue(roundedPicture);
+        }
 
         userColor.setValue(new float[] {
                 360 * (float) user.getHue(),
