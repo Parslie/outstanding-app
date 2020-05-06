@@ -71,7 +71,7 @@ public class ProfileActivity extends AuthorizedActivity {
         User user = intent.getParcelableExtra("user");
 
         if (user != null) // Prevents unnecessary server calls
-            viewModel.setUser(user);
+            viewModel.setUser(getApplicationContext(), user);
         else if (viewModel.getUser().getValue() == null) // Prevents unnecessary server calls
             viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
 
@@ -139,7 +139,7 @@ public class ProfileActivity extends AuthorizedActivity {
         if (resultCode == RESULT_OK && requestCode == EDIT_REQUEST) {
             assert data != null;
             User user = data.getParcelableExtra("user");
-            viewModel.setUser(user);
+            viewModel.setUser(getApplicationContext(), user);
         }
     }
 }

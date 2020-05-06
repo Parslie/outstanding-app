@@ -1,6 +1,7 @@
 package com.vikho305.isaho220.outstanding.viewmodel;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -42,16 +43,21 @@ public class UserViewModel extends ViewModel {
         userDescription = new MutableLiveData<>();
     }
 
-    public void setUser(User user) {
+    public void setUser(Context context, User user) {
         this.user.setValue(user);
 
-        if(user.getPicture() != null){
-            byte[] decodedPicture = Base64.decode(user.getPicture(), Base64.DEFAULT);
-            Bitmap pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
-            RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(null, pictureBitmap);
-            roundedPicture.setCircular(true);
-            userPicture.setValue(roundedPicture);
+        Bitmap pictureBitmap;
+        if (user.getPicture() == null) {
+            pictureBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_pfp);
         }
+        else {
+            byte[] decodedPicture = Base64.decode(user.getPicture(), Base64.DEFAULT);
+            pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
+        }
+
+        RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(context.getResources(), pictureBitmap);
+        roundedPicture.setCircular(true);
+        userPicture.setValue(roundedPicture);
 
         userColor.setValue(new float[] {
                 360 * (float) user.getHue(),
@@ -122,7 +128,7 @@ public class UserViewModel extends ViewModel {
     // Server actions
 
     // TODO: check if moving authToken to constructor causes problems
-    public void fetchUser(Context context, String userId, final String authToken) {
+    public void fetchUser(final Context context, String userId, final String authToken) {
         String url = context.getResources().getString(R.string.get_user_url, userId);
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -134,7 +140,7 @@ public class UserViewModel extends ViewModel {
                     public void onResponse(JSONObject response) {
                         Gson gson = new Gson();
                         User newUser = gson.fromJson(response.toString(), User.class);
-                        setUser(newUser);
+                        setUser(context, newUser);
                     }
                 },
                 new Response.ErrorListener() {

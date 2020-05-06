@@ -87,7 +87,7 @@ public class EditProfileActivity extends AuthorizedActivity
         User user = intent.getParcelableExtra("user");
 
         if (user != null) {
-            viewModel.setUser(user);
+            viewModel.setUser(getApplicationContext(), user);
 
             descriptionView.setText(user.getDescription());
             hueSlider.setProgress((int) (user.getHue() * hueSlider.getMax()));
