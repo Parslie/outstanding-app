@@ -2,6 +2,7 @@ package com.vikho305.isaho220.outstanding.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +10,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
@@ -24,24 +30,51 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener;
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.User;
+import com.vikho305.isaho220.outstanding.viewmodel.MapViewModel;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MapActivity extends AuthorizedActivity implements OnMapReadyCallback, OnLocationClickListener, PermissionsListener, OnCameraTrackingChangedListener {
 
     private PermissionsManager permissionsManager;
     private MapView mapView;
     private MapboxMap mapboxMap;
+
     private LocationComponent locationComponent;
+
     private boolean isInTrackingMode;
 
     private Button makePostButton;
     private UserViewModel viewModel;
+    private MapViewModel mapModel;
+
+    private static final String ICON = "icon";
+
+    private List<Feature> symbolLayerIconFeatureList;
+
+    private SymbolManager symbolManager;
+    private Symbol symbol;
 
     private void goToPostCreation() {
         Intent intent = new Intent(this, PostCreationActivity.class);
+        goToActivity(intent);
+    }
+
+    private void goToLockedProfile() {
+        Intent intent = new Intent(this, LockedProfileActivity.class);
         goToActivity(intent);
     }
 
@@ -66,12 +99,40 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         mapView.getMapAsync(this);
     }
 
+    private void placeOnlineUsers(){
+        //This represents a user
+        symbol = symbolManager.create(new SymbolOptions()
+                .withLatLng(new LatLng(58.5211969, 13.894031))
+                .withIconImage(ICON)
+                .withIconSize(1.0f));
+    }
+
     @Override
-    public void onMapReady(@NonNull MapboxMap mapboxMap) {
+    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
+
         this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
+
+                style.addImage(ICON,
+                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.icon))),
+                        true);
+
+                symbolManager = new SymbolManager(mapView, mapboxMap, style);
+                symbolManager.setIconAllowOverlap(true);
+                symbolManager.setTextAllowOverlap(true);
+
+                placeOnlineUsers();
+
+                symbolManager.addClickListener(new OnSymbolClickListener() {
+                    @Override
+                    public void onAnnotationClick(Symbol symbol) {
+                        goToLockedProfile();
+                    }
+                });
+
                 enableLocationComponent(style);
             }
         });
