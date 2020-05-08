@@ -238,7 +238,7 @@ public class RegisterActivity extends AuthorizedActivity {
     }
 
     private boolean isValidUsername(String username) {
-        return username.length() >= getResources().getInteger(R.integer.min_username_length);
+        return username.length() >= getResources().getInteger(R.integer.min_username_length) && !username.contains(" ");
     }
 
     private boolean isValidEmail(String email) {

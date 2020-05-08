@@ -9,12 +9,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.User;
+import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,6 +91,11 @@ public class LoginActivity extends AuthorizedActivity {
         });
     }
 
+    private void goToMap() {
+        Intent intent = new Intent(LoginActivity.this, MapActivity.class);
+        goToActivity(intent);
+    }
+
     private void logIn() {
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
@@ -115,7 +124,9 @@ public class LoginActivity extends AuthorizedActivity {
                             String authUserId = response.getString("auth_user_id");
 
                             setCredentials(authToken, authUserId);
-                            goToActivity(new Intent(LoginActivity.this, MapActivity.class));
+
+                            goToMap();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

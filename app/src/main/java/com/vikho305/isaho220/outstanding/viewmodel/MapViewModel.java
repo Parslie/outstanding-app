@@ -15,7 +15,6 @@ public class MapViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<User>> onlineUsers;
     private MutableLiveData<ArrayList<Post>> posts;
-    //private MutableLiveData<HashMap<Post, ArrayList<Comment>>> postComments;
 
     public MapViewModel() {
         onlineUsers = new MutableLiveData<>();

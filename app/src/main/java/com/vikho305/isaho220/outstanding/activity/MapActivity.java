@@ -10,7 +10,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -58,6 +61,9 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private boolean isInTrackingMode;
 
     private Button makePostButton;
+
+    private User clickedUser;
+
     private UserViewModel viewModel;
     private MapViewModel mapModel;
 
@@ -68,6 +74,38 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private SymbolManager symbolManager;
     private Symbol symbol;
 
+    private void initViewModel(){
+        // Init view model
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                clickedUser = user;
+            }
+        });
+        viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {
+            @Override
+            public void onChanged(RoundedBitmapDrawable roundedBitmapDrawable) {
+
+            }
+        });
+        viewModel.getUserColor().observe(this, new Observer<float[]>() {
+            @Override
+            public void onChanged(float[] hsl) {
+
+            }
+        });
+
+        // Init activity
+        Intent intent = getIntent();
+        User user = intent.getParcelableExtra("user");
+
+        if (user != null) // Prevents unnecessary server calls
+            viewModel.setUser(getApplicationContext(), user);
+        else if (viewModel.getUser().getValue() == null) // Prevents unnecessary server calls
+            viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
+    }
+
     private void goToPostCreation() {
         Intent intent = new Intent(this, PostCreationActivity.class);
         goToActivity(intent);
@@ -75,6 +113,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
 
     private void goToLockedProfile() {
         Intent intent = new Intent(this, LockedProfileActivity.class);
+        intent.putExtra("user", clickedUser);
         goToActivity(intent);
     }
 
@@ -85,6 +124,8 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         Mapbox.getInstance(this, "pk.eyJ1IjoiaXNha2hvcnZhdGgiLCJhIjoiY2s4dnZ3NWoxMDN1azNncXBuNWl0YWttdSJ9.ksNJFJjaQsqnIFzKy3ZCkg");
 
         setContentView(R.layout.activity_map);
+
+        initViewModel();
 
         makePostButton = findViewById(R.id.postButton);
         makePostButton.setOnClickListener(new View.OnClickListener() {
