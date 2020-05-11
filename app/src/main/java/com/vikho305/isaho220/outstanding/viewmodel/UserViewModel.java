@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.vikho305.isaho220.outstanding.JsonParameterRequest;
+import com.vikho305.isaho220.outstanding.OnRequestResponse;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.User;
 
@@ -30,6 +31,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserViewModel extends ViewModel {
+
+    public static final String SAVING_RESPONSE = "save";
 
     private MutableLiveData<User> user;
     private MutableLiveData<float[]> userColor;
@@ -129,11 +132,9 @@ public class UserViewModel extends ViewModel {
 
     // TODO: check if moving authToken to constructor causes problems
     public void fetchUser(final Context context, String userId, final String authToken) {
-        String url = context.getResources().getString(R.string.get_user_url, userId);
-
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
-                url,
+                context.getResources().getString(R.string.get_user_url, userId),
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -161,9 +162,9 @@ public class UserViewModel extends ViewModel {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public void saveUserProfile(Context context, final String authToken) throws JSONException {
-        String url = context.getResources().getString(R.string.edit_user_url);
+    public void saveUserProfile(Context context, final String authToken, final OnRequestResponse onResponse) throws JSONException {
         User user = this.user.getValue();
+        assert user != null;
 
         JSONObject parameters = new JSONObject();
         parameters.put("description", user.getDescription());
@@ -174,18 +175,19 @@ public class UserViewModel extends ViewModel {
 
         JsonParameterRequest request = new JsonParameterRequest(
                 Request.Method.POST,
-                url,
+                context.getResources().getString(R.string.edit_user_url),
                 parameters,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        onResponse.onRequestResponse(SAVING_RESPONSE, true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
+                        onResponse.onRequestResponse(SAVING_RESPONSE, false);
                     }
                 }
         ) {
