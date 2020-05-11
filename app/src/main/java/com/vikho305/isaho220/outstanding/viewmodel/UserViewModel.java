@@ -1,7 +1,6 @@
 package com.vikho305.isaho220.outstanding.viewmodel;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -19,7 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.vikho305.isaho220.outstanding.JsonParameterRequest;
-import com.vikho305.isaho220.outstanding.OnRequestResponse;
+import com.vikho305.isaho220.outstanding.OnResponseListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.User;
 
@@ -162,7 +161,7 @@ public class UserViewModel extends ViewModel {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public void saveUserProfile(Context context, final String authToken, final OnRequestResponse onResponse) throws JSONException {
+    public void saveUserProfile(Context context, final String authToken, final OnResponseListener onResponseListener) throws JSONException {
         User user = this.user.getValue();
         assert user != null;
 
@@ -180,14 +179,14 @@ public class UserViewModel extends ViewModel {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        onResponse.onRequestResponse(SAVING_RESPONSE, true);
+                        onResponseListener.onRequestResponse(SAVING_RESPONSE, true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        onResponse.onRequestResponse(SAVING_RESPONSE, false);
+                        onResponseListener.onRequestResponse(SAVING_RESPONSE, false);
                     }
                 }
         ) {

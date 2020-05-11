@@ -19,6 +19,7 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.vikho305.isaho220.outstanding.OnResponseListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
@@ -26,7 +27,7 @@ import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 import org.json.JSONException;
 
 public class EditProfileActivity extends AuthorizedActivity
-        implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, TextWatcher {
+        implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, TextWatcher, OnResponseListener {
 
     private static final int IMAGE_REQUEST = 0;
     private static final int MAX_DESCRIPTION_LENGTH = 200;
@@ -129,7 +130,7 @@ public class EditProfileActivity extends AuthorizedActivity
         }
         else if (v == saveButton) {
             try {
-                viewModel.saveUserProfile(getApplicationContext(), getAuthToken());
+                viewModel.saveUserProfile(getApplicationContext(), getAuthToken(), this);
 
                 Intent data = new Intent();
                 data.putExtra("user", viewModel.getUser().getValue());
@@ -168,4 +169,9 @@ public class EditProfileActivity extends AuthorizedActivity
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+    @Override
+    public void onRequestResponse(String responseType, boolean successful) {
+        // TODO: add actions for save profile response
+    }
 }

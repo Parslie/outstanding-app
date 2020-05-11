@@ -11,7 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.vikho305.isaho220.outstanding.JsonParameterRequest;
-import com.vikho305.isaho220.outstanding.OnRequestResponse;
+import com.vikho305.isaho220.outstanding.OnResponseListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Post;
 
@@ -39,7 +39,7 @@ public class PostViewModel extends ViewModel {
         return post;
     }
 
-    public void postPost(final Context context, final String authToken, final OnRequestResponse onResponse) throws JSONException {
+    public void postPost(final Context context, final String authToken, final OnResponseListener onResponseListener) throws JSONException {
         Post post = this.post.getValue();
         assert post != null;
 
@@ -58,14 +58,14 @@ public class PostViewModel extends ViewModel {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        onResponse.onRequestResponse(POSTING_RESPONSE, true);
+                        onResponseListener.onRequestResponse(POSTING_RESPONSE, true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        onResponse.onRequestResponse(POSTING_RESPONSE, false);
+                        onResponseListener.onRequestResponse(POSTING_RESPONSE, false);
                     }
                 }
         ) {
