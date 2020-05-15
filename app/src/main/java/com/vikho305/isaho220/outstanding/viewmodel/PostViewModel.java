@@ -35,10 +35,35 @@ public class PostViewModel extends ViewModel {
         this.post.setValue(post);
     }
 
-    public LiveData<Post> getPost() {
-        return post;
+    public void setPostTitle(String title) {
+        Post post = this.post.getValue();
+        assert post != null;
+
+        post.setTitle(title);
     }
 
+    public void setPostText(String text) {
+        Post post = this.post.getValue();
+        assert post != null;
+
+        post.setText(text);
+    }
+
+    public void setPostMedia(String media) {
+        Post post = this.post.getValue();
+        assert post != null;
+
+        post.setMedia(media);
+    }
+
+    public void setPostContentType(String contentType) {
+        Post post = this.post.getValue();
+        assert post != null;
+
+        post.setContentType(contentType);
+    }
+
+    // Server actions
     public void postPost(final Context context, final String authToken, final OnResponseListener onResponseListener) throws JSONException {
         Post post = this.post.getValue();
         assert post != null;

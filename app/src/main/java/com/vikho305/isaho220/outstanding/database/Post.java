@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Post implements Parcelable {
 
+    public static final String TEXT_TYPE = "text", IMAGE_TYPE = "image";
+    public static final String VIDEO_TYPE = "video", AUDIO_TYPE = "audio";
+
     private String id;
     private String title;
     private String text;
@@ -18,8 +21,10 @@ public class Post implements Parcelable {
     private String dateCreated;
     private User author;
 
-    public Post() {
-
+    public Post(String contentType, double latitude, double longitude) {
+        this.contentType = contentType;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     protected Post(Parcel in) {
