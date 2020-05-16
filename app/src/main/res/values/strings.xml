@@ -1,16 +1,6 @@
 <resources>
     <string name="app_name">Outstanding</string>
 
-    <!-- HINTS -->
-    <string name="username_hint">Enter username…</string>
-    <string name="password_hint">Enter password…</string>
-    <string name="password_again_hint">Enter password again…</string>
-    <string name="email_hint">Enter email…</string>
-    <string name="profile_description_hint">Enter description…</string>
-
-    <string name="title_hint">Enter title…</string>
-    <string name="text_hint">Enter text…</string>
-
     <!-- INPUT ERRORS -->
     <string name="username_length_error">The username is too short…</string>
     <string name="email_format_error">The email is formatted incorrectly…</string>

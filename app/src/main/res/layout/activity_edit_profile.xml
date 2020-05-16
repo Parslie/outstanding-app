@@ -1,140 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/editProfile_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/activity_horizontal_padding"
-    android:paddingVertical="@dimen/activity_vertical_padding">
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/editProfile_back"
-        style="@style/RoundButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_close_24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/activity_horizontal_padding"
+        android:paddingVertical="@dimen/activity_vertical_padding">
 
-    <Button
-        android:id="@+id/editProfile_save"
-        style="@style/RoundButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_check_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:id="@+id/editProfile_back"
+            style="@style/RoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_close_24dp" />
 
-    <ImageView
-        android:id="@+id/editProfile_picture"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_save" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
-    <EditText
-        android:id="@+id/editProfile_description"
-        android:layout_width="0dp"
-        android:layout_height="360px"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/profile_description_hint"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_picture" />
+        <Button
+            android:id="@+id/editProfile_save"
+            style="@style/RoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_check_24dp" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/editProfile_descriptionLength"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="0 / 200"
-        android:textAlignment="textEnd"
-        app:layout_constraintEnd_toEndOf="@+id/editProfile_description"
-        app:layout_constraintStart_toStartOf="@+id/editProfile_description"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_description" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
-    <TextView
-        android:id="@+id/editProfile_hueLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="HUE"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/editProfile_hueSlider"
-        app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editProfile_hueSlider" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <SeekBar
-        android:id="@+id/editProfile_hueSlider"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:max="255"
-        android:progress="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_descriptionLength" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/activity_horizontal_padding"
+            android:paddingVertical="@dimen/activity_vertical_padding">
 
-    <TextView
-        android:id="@+id/editProfile_saturationLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="SATURATION"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/editProfile_saturationSlider"
-        app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editProfile_saturationSlider" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/editProfile_sliderGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="115dp" />
 
-    <SeekBar
-        android:id="@+id/editProfile_saturationSlider"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:max="255"
-        android:progress="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_hueSlider" />
+            <ImageView
+                android:id="@+id/editProfile_picture"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/editProfile_editProfile_lightnessLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="LIGHTNESS"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/editProfile_lightnessSlider"
-        app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editProfile_lightnessSlider" />
+            <EditText
+                android:id="@+id/editProfile_description"
+                android:layout_width="0dp"
+                android:layout_height="128dp"
+                android:layout_marginTop="@dimen/big_spacing"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/profile_description_hint"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editProfile_picture" />
 
-    <SeekBar
-        android:id="@+id/editProfile_lightnessSlider"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:max="255"
-        android:progress="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile_saturationSlider" />
+            <TextView
+                android:id="@+id/editProfile_descriptionLength"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/description_length"
+                android:textAlignment="textEnd"
+                app:layout_constraintEnd_toEndOf="@+id/editProfile_description"
+                app:layout_constraintTop_toBottomOf="@+id/editProfile_description" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/editProfile_sliderGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="115dp" />
+            <TextView
+                android:id="@+id/editProfile_hueLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_spacing"
+                android:layout_marginEnd="@dimen/small_spacing"
+                android:text="@string/hue_label"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editProfile_descriptionLength" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <SeekBar
+                android:id="@+id/editProfile_hueSlider"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/small_spacing"
+                android:max="255"
+                android:progress="0"
+                app:layout_constraintBottom_toBottomOf="@+id/editProfile_hueLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
+                app:layout_constraintTop_toTopOf="@+id/editProfile_hueLabel" />
+
+            <TextView
+                android:id="@+id/editProfile_saturationLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_spacing"
+                android:layout_marginEnd="@dimen/small_spacing"
+                android:text="@string/saturation_label"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editProfile_hueLabel" />
+
+            <SeekBar
+                android:id="@+id/editProfile_saturationSlider"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/small_spacing"
+                android:max="255"
+                android:progress="0"
+                app:layout_constraintBottom_toBottomOf="@+id/editProfile_saturationLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
+                app:layout_constraintTop_toTopOf="@+id/editProfile_saturationLabel" />
+
+            <TextView
+                android:id="@+id/editProfile_lightnessLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/big_spacing"
+                android:layout_marginEnd="@dimen/small_spacing"
+                android:text="@string/lightness_label"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toStartOf="@+id/editProfile_sliderGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editProfile_saturationLabel" />
+
+            <SeekBar
+                android:id="@+id/editProfile_lightnessSlider"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/small_spacing"
+                android:max="255"
+                android:progress="0"
+                app:layout_constraintBottom_toBottomOf="@+id/editProfile_lightnessLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/editProfile_sliderGuideline"
+                app:layout_constraintTop_toTopOf="@+id/editProfile_lightnessLabel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>

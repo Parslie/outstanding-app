@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.User;
-import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
-
-import java.util.Objects;
 
 public class LockedProfileActivity extends AuthorizedActivity {
 
@@ -40,9 +37,9 @@ public class LockedProfileActivity extends AuthorizedActivity {
 
         if(user != null){
             View root = findViewById(R.id.lockedProfile_root);
-            TextView username = findViewById(R.id.lockedProfileUsername);
-            TextView description = findViewById(R.id.lockedProfileDescription);
-            ImageView profilePictureView = findViewById(R.id.lockedProfileProfilePicture);
+            TextView username = findViewById(R.id.lockedProfile_username);
+            TextView description = findViewById(R.id.lockedProfile_description);
+            ImageView profilePictureView = findViewById(R.id.lockedProfile_picture);
 
             String u = user.getUsername();
             String d = user.getDescription();
