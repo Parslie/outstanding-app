@@ -17,14 +17,18 @@ import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
-public class ProfileActivity extends AuthorizedActivity {
+public class ProfileActivity extends AuthorizedActivity implements View.OnClickListener {
 
     private static final int EDIT_REQUEST = 0;
 
     private View root;
-    private TextView usernameView;
     private ImageView profilePictureView;
-    private TextView descriptionView;
+    private TextView usernameView, descriptionView;
+
+    private Button editProfileButton, editUserButton;
+    private Button followersButton, followingsButton;
+    private Button backButton;
+
     private UserViewModel viewModel;
 
     @Override
@@ -34,14 +38,14 @@ public class ProfileActivity extends AuthorizedActivity {
 
         // Get layout views
         root = findViewById(R.id.profile_root);
-        usernameView = findViewById(R.id.profile_username);
         profilePictureView = findViewById(R.id.profile_picture);
+        usernameView = findViewById(R.id.profile_username);
         descriptionView = findViewById(R.id.profile_description);
-        Button editProfileButton = findViewById(R.id.profile_editProfile);
-        Button editUserButton = findViewById(R.id.profile_editUser);
-        Button followersButton = findViewById(R.id.profile_followers);
-        Button followingsButton = findViewById(R.id.profile_followings);
-        Button backButton = findViewById(R.id.profile_back);
+        editProfileButton = findViewById(R.id.profile_editProfile);
+        editUserButton = findViewById(R.id.profile_editUser);
+        followersButton = findViewById(R.id.profile_followers);
+        followingsButton = findViewById(R.id.profile_followings);
+        backButton = findViewById(R.id.profile_back);
 
         // Init view model
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
@@ -55,8 +59,8 @@ public class ProfileActivity extends AuthorizedActivity {
         });
         viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {
             @Override
-            public void onChanged(RoundedBitmapDrawable roundedBitmapDrawable) {
-                profilePictureView.setImageDrawable(roundedBitmapDrawable);
+            public void onChanged(RoundedBitmapDrawable profilePicture) {
+                profilePictureView.setImageDrawable(profilePicture);
             }
         });
         viewModel.getUserColor().observe(this, new Observer<float[]>() {
@@ -76,36 +80,11 @@ public class ProfileActivity extends AuthorizedActivity {
             viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
 
         // Init listeners
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        followersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToFollowers();
-            }
-        });
-        followingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToFollowings();
-            }
-        });
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editProfile();
-            }
-        });
-        editUserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editUser();
-            }
-        });
+        backButton.setOnClickListener(this);
+        followersButton.setOnClickListener(this);
+        followingsButton.setOnClickListener(this);
+        editProfileButton.setOnClickListener(this);
+        editUserButton.setOnClickListener(this);
     }
 
     private void goToFollowers() {
@@ -132,6 +111,7 @@ public class ProfileActivity extends AuthorizedActivity {
         goToActivityForResult(intent, EDIT_REQUEST);
     }
 
+    // Listeners
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -140,6 +120,25 @@ public class ProfileActivity extends AuthorizedActivity {
             assert data != null;
             User user = data.getParcelableExtra("user");
             viewModel.setUser(getApplicationContext(), user);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == backButton) {
+            finish();
+        }
+        else if (v == editProfileButton) {
+            editProfile();
+        }
+        else if (v == editUserButton) {
+            editUser();
+        }
+        else if (v == followersButton) {
+            goToFollowers();
+        }
+        else if (v == followingsButton) {
+            goToFollowings();
         }
     }
 }

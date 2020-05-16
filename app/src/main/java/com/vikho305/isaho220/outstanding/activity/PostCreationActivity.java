@@ -7,7 +7,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.vikho305.isaho220.outstanding.OnResponseListener;
+import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.viewmodel.PostViewModel;
@@ -25,7 +24,7 @@ import com.vikho305.isaho220.outstanding.viewmodel.PostViewModel;
 import org.json.JSONException;
 
 public class PostCreationActivity extends AuthorizedActivity
-        implements View.OnClickListener, OnResponseListener, TextWatcher {
+        implements View.OnClickListener, ResponseListener, TextWatcher {
 
     private View rootView;
     private EditText titleView, textView;

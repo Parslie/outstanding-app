@@ -18,7 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.vikho305.isaho220.outstanding.JsonParameterRequest;
-import com.vikho305.isaho220.outstanding.OnResponseListener;
+import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.User;
 
@@ -161,7 +161,7 @@ public class UserViewModel extends ViewModel {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public void saveUserProfile(Context context, final String authToken, final OnResponseListener onResponseListener) throws JSONException {
+    public void saveUserProfile(Context context, final String authToken, final ResponseListener responseListener) throws JSONException {
         User user = this.user.getValue();
         assert user != null;
 
@@ -179,14 +179,14 @@ public class UserViewModel extends ViewModel {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        onResponseListener.onRequestResponse(SAVING_RESPONSE, true);
+                        responseListener.onRequestResponse(SAVING_RESPONSE, true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        onResponseListener.onRequestResponse(SAVING_RESPONSE, false);
+                        responseListener.onRequestResponse(SAVING_RESPONSE, false);
                     }
                 }
         ) {
