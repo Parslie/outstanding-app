@@ -174,7 +174,7 @@ public class UserViewModel extends ViewModel {
 
         JsonParameterRequest request = new JsonParameterRequest(
                 Request.Method.POST,
-                context.getResources().getString(R.string.edit_user_url),
+                context.getResources().getString(R.string.set_profile_url),
                 parameters,
                 new Response.Listener<String>() {
                     @Override

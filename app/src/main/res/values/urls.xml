@@ -6,23 +6,25 @@
     <string name="logout_url">https://outstanding-server.herokuapp.com/user/logout</string>
 
     <string name="get_user_url">https://outstanding-server.herokuapp.com/user/%s</string>
-    <string name="edit_user_url">https://outstanding-server.herokuapp.com/user/edit</string>
-    <string name="edit_coordinates_url">https://outstanding-server.herokuapp.com/user/coordinates</string>
+    <string name="set_account_url">https://outstanding-server.herokuapp.com/user/account</string>
+    <string name="set_profile_url">https://outstanding-server.herokuapp.com/user/profile</string>
+    <string name="set_coordinates_url">https://outstanding-server.herokuapp.com/user/coordinates</string>
+    <string name="set_online_url">https://outstanding-server.herokuapp.com/user/online</string>
+
+    <string name="get_followers_url">https://outstanding-server.herokuapp.com/user/%s/followers/%d</string>
+    <string name="get_followings_url">https://outstanding-server.herokuapp.com/user/%s/followings/%d</string>
+    <string name="get_pending_followers_url">https://outstanding-server.herokuapp.com/user/followers/pending/%d</string>
+    <string name="get_pending_followings_url">https://outstanding-server.herokuapp.com/user/followings/pending/%d</string>
+    <string name="get_user_posts_url">https://outstanding-server.herokuapp.com/user/%s/posts/%d</string>
+    <string name="get_blockings_url">https://outstanding-server.herokuapp.com/user/blockings/%d</string>
 
     <string name="follow_url">https://outstanding-server.herokuapp.com/user/follow/%s</string>
-    <string name="accept_follow_url">https://outstanding-server.herokuapp.com/user/follow/%s/accept</string>
-    <string name="get_pending_followers_url">https://outstanding-server.herokuapp.com/user/%s/followers/pending/%d</string>
-    <string name="get_followers_url">https://outstanding-server.herokuapp.com/user/%s/followers/%d</string>
-    <string name="get_pending_followings_url">https://outstanding-server.herokuapp.com/user/%s/followings/pending/%d</string>
-    <string name="get_followings_url">https://outstanding-server.herokuapp.com/user/%s/followings/%d</string>
-
+    <string name="accept_follow_url">https://outstanding-server.herokuapp.com/user/followers/pending/%s/accept</string>
+    <string name="reject_follow_url">https://outstanding-server.herokuapp.com/user/followers/pending/%s/reject</string>
     <string name="block_url">https://outstanding-server.herokuapp.com/user/block/%s</string>
-    <string name="get_blockings_url">https://outstanding-server.herokuapp.com/user/%s/blockings/%d</string>
-
-    <string name="get_user_posts_url">https://outstanding-server.herokuapp.com/user/%s/posts/%d</string>
 
     <!-- Post URLs -->
-    <string name="get_posts_url">https://outstanding-server.herokuapp.com/post</string>
+    <string name="get_posts_url">https://outstanding-server.herokuapp.com/post/all/%d</string>
     <string name="get_post_url">https://outstanding-server.herokuapp.com/post/%s</string>
     <string name="post_post_url">https://outstanding-server.herokuapp.com/post</string>
 

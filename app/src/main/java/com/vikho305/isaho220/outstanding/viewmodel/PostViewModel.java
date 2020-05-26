@@ -71,7 +71,7 @@ public class PostViewModel extends ViewModel {
         parameters.put("title", post.getTitle());
         parameters.put("text", post.getText());
         parameters.put("media", post.getMedia());
-        parameters.put("content_type", post.getContentType());
+        parameters.put("media_type", post.getContentType());
         parameters.put("latitude", post.getLatitude());
         parameters.put("longitude", post.getLongitude());
 
