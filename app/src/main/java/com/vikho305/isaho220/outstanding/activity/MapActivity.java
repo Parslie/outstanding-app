@@ -15,6 +15,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
@@ -42,12 +52,21 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
+import com.vikho305.isaho220.outstanding.fragment.FolloweeListFragment;
 import com.vikho305.isaho220.outstanding.viewmodel.MapViewModel;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class MapActivity extends AuthorizedActivity implements OnMapReadyCallback, OnLocationClickListener, PermissionsListener, OnCameraTrackingChangedListener {
@@ -70,9 +89,9 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private static final String ICON = "icon";
 
     private List<Feature> symbolLayerIconFeatureList;
+    private List<Post> posts;
 
     private SymbolManager symbolManager;
-    private Symbol symbol;
 
     private void initViewModel(){
         // Init view model
@@ -140,17 +159,49 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         mapView.getMapAsync(this);
     }
 
-    private void placeOnlineUsers(){
-        //This represents a user
-        symbol = symbolManager.create(new SymbolOptions()
-                .withLatLng(new LatLng(58.5211969, 13.894031))
-                .withIconImage(ICON)
-                .withIconSize(1.0f));
+
+    public void getPosts() {
+        Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                posts = new Gson().fromJson(response.toString(), new TypeToken<List<Post>>(){}.getType());
+                System.out.println(response);
+                placePosts();
+            }
+        };
+
+        Response.ErrorListener errorResponse = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+            }
+        };
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, getResources().getString(R.string.get_posts_url, 1000), null, response, errorResponse){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getAuthToken());
+                return headers;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(request);
+    }
+
+    private void placePosts(){
+        //For each post create a new symbol
+        for(Post post : posts){
+            symbolManager.create(new SymbolOptions()
+                    .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
+                    .withIconImage(ICON)
+                    .withIconSize(1.0f));
+        }
     }
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-
 
         this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
@@ -165,7 +216,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                 symbolManager.setIconAllowOverlap(true);
                 symbolManager.setTextAllowOverlap(true);
 
-                placeOnlineUsers();
+                getPosts();
 
                 symbolManager.addClickListener(new OnSymbolClickListener() {
                     @Override
