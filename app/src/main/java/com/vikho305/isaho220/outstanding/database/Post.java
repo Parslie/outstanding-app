@@ -11,32 +11,36 @@ public class Post implements Parcelable {
     public static final String VIDEO_TYPE = "video", AUDIO_TYPE = "audio";
 
     private String id;
-    private String title;
-    private String text;
-    private String media;
-    @SerializedName(value = "content_type")
-    private String contentType;
+    private User author;
+    private String title, text, media;
+    @SerializedName(value = "media_type")
+    private String mediaType;
     private double latitude, longitude;
     @SerializedName(value = "date_created")
     private String dateCreated;
-    private User author;
+    @SerializedName(value = "like_count")
+    private int likeCount;
+    @SerializedName(value = "dislike_count")
+    private int dislikeCount;
 
-    public Post(String contentType, double latitude, double longitude) {
-        this.contentType = contentType;
+    public Post(String mediaType, double latitude, double longitude) {
+        this.mediaType = mediaType;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     protected Post(Parcel in) {
         id = in.readString();
+        author = in.readParcelable(User.class.getClassLoader());
         title = in.readString();
         text = in.readString();
         media = in.readString();
-        contentType = in.readString();
+        mediaType = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
         dateCreated = in.readString();
-        author = in.readParcelable(User.class.getClassLoader());
+        likeCount = in.readInt();
+        dislikeCount = in.readInt();
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {
@@ -54,47 +58,48 @@ public class Post implements Parcelable {
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public User getAuthor() {
+        return author;
     }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getText() {
+        return text;
+    }
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getMedia() {
         return media;
     }
-
     public void setMedia(String media) {
         this.media = media;
     }
 
-    public String getContentType() {
-        return contentType;
+    public String getMediaType() {
+        return mediaType;
     }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
     }
 
     public double getLatitude() {
         return latitude;
     }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
@@ -102,7 +107,6 @@ public class Post implements Parcelable {
     public double getLongitude() {
         return longitude;
     }
-
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
@@ -110,17 +114,22 @@ public class Post implements Parcelable {
     public String getDateCreated() {
         return dateCreated;
     }
-
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public User getAuthor() {
-        return author;
+    public int getLikeCount() {
+        return likeCount;
+    }
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public int getDislikeCount() {
+        return dislikeCount;
+    }
+    public void setDislikeCount(int dislikeCount) {
+        this.dislikeCount = dislikeCount;
     }
 
     @Override
@@ -131,13 +140,15 @@ public class Post implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
+        dest.writeParcelable(author, flags);
         dest.writeString(title);
         dest.writeString(text);
         dest.writeString(media);
-        dest.writeString(contentType);
+        dest.writeString(mediaType);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
         dest.writeString(dateCreated);
-        dest.writeParcelable(author, flags);
+        dest.writeInt(likeCount);
+        dest.writeInt(dislikeCount);
     }
 }

@@ -119,13 +119,13 @@ public class PostCreationActivity extends AuthorizedActivity
         else if (v == saveButton)
             saveCreation();
         else if (v == textButton)
-            viewModel.setPostContentType(Post.TEXT_TYPE);
+            viewModel.setPostMediaType(Post.TEXT_TYPE);
         else if (v == imageButton)
-            viewModel.setPostContentType(Post.IMAGE_TYPE);
+            viewModel.setPostMediaType(Post.IMAGE_TYPE);
         else if (v == videoButton)
-            viewModel.setPostContentType(Post.VIDEO_TYPE);
+            viewModel.setPostMediaType(Post.VIDEO_TYPE);
         else if (v == audioButton)
-            viewModel.setPostContentType(Post.AUDIO_TYPE);
+            viewModel.setPostMediaType(Post.AUDIO_TYPE);
     }
 
     @Override

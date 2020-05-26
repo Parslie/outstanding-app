@@ -48,7 +48,7 @@ public class LockedProfileActivity extends AuthorizedActivity implements View.On
             @Override
             public void onChanged(User user) {
                 usernameView.setText(user.getUsername());
-                descriptionView.setText(user.getDescription());
+                descriptionView.setText(user.getProfile().getDescription());
             }
         });
         viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {

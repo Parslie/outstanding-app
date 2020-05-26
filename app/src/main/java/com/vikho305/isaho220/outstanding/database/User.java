@@ -9,45 +9,34 @@ public class User implements Parcelable {
 
     private String id;
     private String username, email;
-    private String description;
-    private String picture;
-    private double hue, saturation, lightness;
-    private double latitude, longitude;
+    private Profile profile;
     @SerializedName(value = "date_created")
     private String dateCreated;
+    private double latitude, longitude;
+    @SerializedName(value = "is_online")
+    private boolean isOnline;
+    @SerializedName(value = "follower_count")
+    private int followerCount;
+    @SerializedName(value = "following_count")
+    private int followingCount;
+    @SerializedName(value = "pending_follower_count")
+    private int pendingFollowerCount;
+    @SerializedName(value = "pending_following_count")
+    private int pendingFollowingCount;
 
     protected User(Parcel in) {
         id = in.readString();
         username = in.readString();
         email = in.readString();
-        description = in.readString();
-        picture = in.readString();
-        hue = in.readDouble();
-        saturation = in.readDouble();
-        lightness = in.readDouble();
+        profile = in.readParcelable(Profile.class.getClassLoader());
+        dateCreated = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        dateCreated = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(username);
-        dest.writeString(email);
-        dest.writeString(description);
-        dest.writeString(picture);
-        dest.writeDouble(hue);
-        dest.writeDouble(saturation);
-        dest.writeDouble(lightness);
-        dest.writeDouble(latitude);
-        dest.writeDouble(longitude);
-        dest.writeString(dateCreated);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        isOnline = in.readByte() != 0;
+        followerCount = in.readInt();
+        followingCount = in.readInt();
+        pendingFollowerCount = in.readInt();
+        pendingFollowingCount = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -83,39 +72,18 @@ public class User implements Parcelable {
         this.email = email;
     }
 
-    public String getDescription() {
-        return description;
+    public Profile getProfile() {
+        return profile;
     }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
-    public double getHue() {
-        return hue;
+    public String getDateCreated() {
+        return dateCreated;
     }
-    public void setHue(double hue) {
-        this.hue = hue;
-    }
-
-    public double getSaturation() {
-        return saturation;
-    }
-    public void setSaturation(double saturation) {
-        this.saturation = saturation;
-    }
-
-    public double getLightness() {
-        return lightness;
-    }
-    public void setLightness(double lightness) {
-        this.lightness = lightness;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public double getLatitude() {
@@ -132,10 +100,59 @@ public class User implements Parcelable {
         this.longitude = longitude;
     }
 
-    public String getDateCreated() {
-        return dateCreated;
+    public boolean isOnline() {
+        return isOnline;
     }
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public int getFollowingCount() {
+        return followingCount;
+    }
+    public void setFollowingCount(int followingCount) {
+        this.followingCount = followingCount;
+    }
+
+    public int getPendingFollowerCount() {
+        return pendingFollowerCount;
+    }
+    public void setPendingFollowerCount(int pendingFollowerCount) {
+        this.pendingFollowerCount = pendingFollowerCount;
+    }
+
+    public int getPendingFollowingCount() {
+        return pendingFollowingCount;
+    }
+    public void setPendingFollowingCount(int pendingFollowingCount) {
+        this.pendingFollowingCount = pendingFollowingCount;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(username);
+        dest.writeString(email);
+        dest.writeParcelable(profile, flags);
+        dest.writeString(dateCreated);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeByte((byte) (isOnline ? 1 : 0));
+        dest.writeInt(followerCount);
+        dest.writeInt(followingCount);
+        dest.writeInt(pendingFollowerCount);
+        dest.writeInt(pendingFollowingCount);
     }
 }

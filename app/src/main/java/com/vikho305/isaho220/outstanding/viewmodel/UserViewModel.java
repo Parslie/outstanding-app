@@ -49,11 +49,11 @@ public class UserViewModel extends ViewModel {
         this.user.setValue(user);
 
         Bitmap pictureBitmap;
-        if (user.getPicture() == null) {
+        if (user.getProfile().getPicture() == null) {
             pictureBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_pfp);
         }
         else {
-            byte[] decodedPicture = Base64.decode(user.getPicture(), Base64.DEFAULT);
+            byte[] decodedPicture = Base64.decode(user.getProfile().getPicture(), Base64.DEFAULT);
             pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
         }
 
@@ -62,12 +62,12 @@ public class UserViewModel extends ViewModel {
         userPicture.setValue(roundedPicture);
 
         userColor.setValue(new float[] {
-                360 * (float) user.getHue(),
-                (float) user.getSaturation(),
-                (float) user.getLightness()
+                360 * (float) user.getProfile().getPrimaryHue(),
+                (float) user.getProfile().getPrimarySaturation(),
+                (float) user.getProfile().getPrimarySaturation()
         });
 
-        userDescription.setValue(user.getDescription());
+        userDescription.setValue(user.getProfile().getDescription());
     }
 
     public LiveData<User> getUser() {
@@ -76,9 +76,9 @@ public class UserViewModel extends ViewModel {
 
     public void setUserColor(float hue, float saturation, float lightness) {
         User user = this.user.getValue();
-        user.setHue(hue);
-        user.setSaturation(saturation);
-        user.setLightness(lightness);
+        user.getProfile().setPrimaryHue(hue);
+        user.getProfile().setPrimarySaturation(saturation);
+        user.getProfile().setPrimaryLightness(lightness);
 
         this.userColor.setValue(new float[] {
                 hue * 360,
@@ -109,7 +109,7 @@ public class UserViewModel extends ViewModel {
         byte[] imageByteArray = stream.toByteArray();
 
         User user = this.user.getValue();
-        user.setPicture(Base64.encodeToString(imageByteArray, Base64.DEFAULT));
+        user.getProfile().setPicture(Base64.encodeToString(imageByteArray, Base64.DEFAULT));
     }
 
     public LiveData<RoundedBitmapDrawable> getUserPicture() {
@@ -120,7 +120,7 @@ public class UserViewModel extends ViewModel {
         userDescription.setValue(description);
 
         User user = this.user.getValue();
-        user.setDescription(description);
+        user.getProfile().setDescription(description);
     }
 
     public LiveData<String> getUserDescription() {
@@ -138,6 +138,7 @@ public class UserViewModel extends ViewModel {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
                         Gson gson = new Gson();
                         User newUser = gson.fromJson(response.toString(), User.class);
                         setUser(context, newUser);
@@ -166,11 +167,14 @@ public class UserViewModel extends ViewModel {
         assert user != null;
 
         JSONObject parameters = new JSONObject();
-        parameters.put("description", user.getDescription());
-        parameters.put("picture", user.getPicture());
-        parameters.put("hue", user.getHue());
-        parameters.put("saturation", user.getSaturation());
-        parameters.put("lightness", user.getLightness());
+        parameters.put("description", user.getProfile().getDescription());
+        parameters.put("picture", user.getProfile().getPicture());
+        parameters.put("primary_hue", user.getProfile().getPrimaryHue());
+        parameters.put("primary_saturation", user.getProfile().getPrimarySaturation());
+        parameters.put("primary_lightness", user.getProfile().getPrimaryLightness());
+        parameters.put("secondary_hue", user.getProfile().getSecondaryHue());
+        parameters.put("secondary_saturation", user.getProfile().getSecondarySaturation());
+        parameters.put("secondary_lightness", user.getProfile().getSecondaryLightness());
 
         JsonParameterRequest request = new JsonParameterRequest(
                 Request.Method.POST,

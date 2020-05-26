@@ -53,7 +53,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
             @Override
             public void onChanged(User user) {
                 usernameView.setText(user.getUsername());
-                descriptionView.setText(user.getDescription());
+                descriptionView.setText(user.getProfile().getDescription());
                 // TODO: set follower and following count
             }
         });

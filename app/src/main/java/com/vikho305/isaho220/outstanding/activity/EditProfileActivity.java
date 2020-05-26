@@ -87,13 +87,14 @@ public class EditProfileActivity extends AuthorizedActivity
         Intent intent = getIntent();
         User user = intent.getParcelableExtra("user");
 
+
         if (user != null) {
             viewModel.setUser(getApplicationContext(), user);
 
-            descriptionView.setText(user.getDescription());
-            hueSlider.setProgress((int) (user.getHue() * hueSlider.getMax()));
-            saturationSlider.setProgress((int) (user.getSaturation() * saturationSlider.getMax()));
-            lightnessSlider.setProgress((int) (user.getLightness() * lightnessSlider.getMax()));
+            descriptionView.setText(user.getProfile().getDescription());
+            hueSlider.setProgress((int) (user.getProfile().getPrimaryHue() * hueSlider.getMax()));
+            saturationSlider.setProgress((int) (user.getProfile().getPrimarySaturation() * saturationSlider.getMax()));
+            lightnessSlider.setProgress((int) (user.getProfile().getPrimaryLightness() * lightnessSlider.getMax()));
         }
         else {
             finish(); // TODO: add more extensive error-handling for no user

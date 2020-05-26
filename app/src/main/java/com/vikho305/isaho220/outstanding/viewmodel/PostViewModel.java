@@ -55,11 +55,11 @@ public class PostViewModel extends ViewModel {
         post.setMedia(media);
     }
 
-    public void setPostContentType(String contentType) {
+    public void setPostMediaType(String mediaType) {
         Post post = this.post.getValue();
         assert post != null;
 
-        post.setContentType(contentType);
+        post.setMediaType(mediaType);
     }
 
     // Server actions
@@ -71,7 +71,7 @@ public class PostViewModel extends ViewModel {
         parameters.put("title", post.getTitle());
         parameters.put("text", post.getText());
         parameters.put("media", post.getMedia());
-        parameters.put("media_type", post.getContentType());
+        parameters.put("media_type", post.getMediaType());
         parameters.put("latitude", post.getLatitude());
         parameters.put("longitude", post.getLongitude());
 
