@@ -136,6 +136,12 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         goToActivity(intent);
     }
 
+    private void goToPost(Post post) {
+        Intent intent = new Intent(this, PostActivity.class);
+        intent.putExtra("post", post);
+        goToActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,7 +227,16 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                 symbolManager.addClickListener(new OnSymbolClickListener() {
                     @Override
                     public void onAnnotationClick(Symbol symbol) {
-                        goToLockedProfile();
+                        LatLng latLng = symbol.getLatLng();
+                        double lat = latLng.getLatitude();
+                        double lng = latLng.getLongitude();
+
+                        for(Post post : posts){
+                            if(post.getLatitude() == lat && post.getLongitude() == lng){
+                                goToPost(post);
+                            }
+                        }
+
                     }
                 });
 
