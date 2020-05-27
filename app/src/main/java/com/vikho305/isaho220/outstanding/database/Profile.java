@@ -1,5 +1,6 @@
 package com.vikho305.isaho220.outstanding.database;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -68,6 +69,14 @@ public class Profile implements Parcelable {
         this.picture = picture;
     }
 
+    public int getPrimaryColor() {
+        return Color.HSVToColor(new float[] {
+                360 * (float) primaryHue,
+                (float) primarySaturation,
+                (float) primaryLightness
+        });
+    }
+
     public double getPrimaryHue() {
         return primaryHue;
     }
@@ -87,6 +96,14 @@ public class Profile implements Parcelable {
     }
     public void setPrimaryLightness(double primaryLightness) {
         this.primaryLightness = primaryLightness;
+    }
+
+    public int getSecondaryColor() {
+        return Color.HSVToColor(new float[] {
+                360 * (float) secondaryHue,
+                (float) secondarySaturation,
+                (float) secondaryLightness
+        });
     }
 
     public double getSecondaryHue() {

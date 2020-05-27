@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.vikho305.isaho220.outstanding.CustomJsonObjectRequest;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.Profile;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
@@ -60,19 +62,26 @@ public class LockedProfileActivity extends AuthorizedActivity implements View.On
             @Override
             public void onChanged(User user) {
                 usernameView.setText(user.getUsername());
-                descriptionView.setText(user.getProfile().getDescription());
             }
         });
-        viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {
+        viewModel.getProfile().observe(this, new Observer<Profile>() {
             @Override
-            public void onChanged(RoundedBitmapDrawable profilePicture) {
-                profilePictureView.setImageDrawable(profilePicture);
-            }
-        });
-        viewModel.getUserColor().observe(this, new Observer<float[]>() {
-            @Override
-            public void onChanged(float[] hsl) {
-                root.setBackgroundColor(Color.HSVToColor(hsl));
+            public void onChanged(Profile profile) {
+                descriptionView.setText(profile.getDescription());
+                root.setBackgroundColor(profile.getPrimaryColor());
+
+                Bitmap pictureBitmap;
+                if (profile.getPicture() == null) {
+                    pictureBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
+                }
+                else {
+                    byte[] decodedPicture = Base64.decode(profile.getPicture(), Base64.DEFAULT);
+                    pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
+                }
+
+                RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(getResources(), pictureBitmap);
+                roundedPicture.setCircular(true);
+                profilePictureView.setImageDrawable(roundedPicture);
             }
         });
 
@@ -81,7 +90,7 @@ public class LockedProfileActivity extends AuthorizedActivity implements View.On
         User user = intent.getParcelableExtra("user");
 
         if (user != null)
-            viewModel.setUser(getApplicationContext(), user);
+            viewModel.setUser(user);
         // TODO: create error case for not having user
 
         // Init listeners

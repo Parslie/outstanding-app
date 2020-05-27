@@ -1,7 +1,10 @@
 package com.vikho305.isaho220.outstanding.database;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -23,6 +26,8 @@ public class User implements Parcelable {
     private int pendingFollowerCount;
     @SerializedName(value = "pending_following_count")
     private int pendingFollowingCount;
+    @SerializedName(value = "is_following")
+    private boolean isFollowing;
 
     protected User(Parcel in) {
         id = in.readString();
@@ -37,6 +42,7 @@ public class User implements Parcelable {
         followingCount = in.readInt();
         pendingFollowerCount = in.readInt();
         pendingFollowingCount = in.readInt();
+        isFollowing = in.readInt() == 1;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -135,6 +141,13 @@ public class User implements Parcelable {
         this.pendingFollowingCount = pendingFollowingCount;
     }
 
+    public boolean isFollowing() {
+        return isFollowing;
+    }
+    public void setFollowing(boolean following) {
+        isFollowing = following;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -154,5 +167,6 @@ public class User implements Parcelable {
         dest.writeInt(followingCount);
         dest.writeInt(pendingFollowerCount);
         dest.writeInt(pendingFollowingCount);
+        dest.writeInt(isFollowing ? 1 : 0);
     }
 }

@@ -1,8 +1,11 @@
 package com.vikho305.isaho220.outstanding.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,10 +13,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.Profile;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
@@ -53,29 +58,35 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
             @Override
             public void onChanged(User user) {
                 usernameView.setText(user.getUsername());
-                descriptionView.setText(user.getProfile().getDescription());
-                // TODO: set follower and following count
             }
         });
-        viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {
+        viewModel.getProfile().observe(this, new Observer<Profile>() {
             @Override
-            public void onChanged(RoundedBitmapDrawable profilePicture) {
-                profilePictureView.setImageDrawable(profilePicture);
-            }
-        });
-        viewModel.getUserColor().observe(this, new Observer<float[]>() {
-            @Override
-            public void onChanged(float[] hsl) {
-                root.setBackgroundColor(Color.HSVToColor(hsl));
+            public void onChanged(Profile profile) {
+                descriptionView.setText(profile.getDescription());
+                root.setBackgroundColor(profile.getPrimaryColor());
+
+                Bitmap pictureBitmap;
+                if (profile.getPicture() == null) {
+                    pictureBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
+                }
+                else {
+                    byte[] decodedPicture = Base64.decode(profile.getPicture(), Base64.DEFAULT);
+                    pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
+                }
+
+                RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(getResources(), pictureBitmap);
+                roundedPicture.setCircular(true);
+                profilePictureView.setImageDrawable(roundedPicture);
             }
         });
 
         // Init activity
-        Intent intent = getIntent();
+        Intent intent = getIntent(); // TODO: send a user ID so you can view more profiles than your own
         User user = intent.getParcelableExtra("user");
 
         if (user != null) // Prevents unnecessary server calls
-            viewModel.setUser(getApplicationContext(), user);
+            viewModel.setUser(user);
         else if (viewModel.getUser().getValue() == null) // Prevents unnecessary server calls
             viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
 
@@ -111,6 +122,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         goToActivityForResult(intent, EDIT_REQUEST);
     }
 
+    ////////////
     // Listeners
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -119,7 +131,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         if (resultCode == RESULT_OK && requestCode == EDIT_REQUEST) {
             assert data != null;
             User user = data.getParcelableExtra("user");
-            viewModel.setUser(getApplicationContext(), user);
+            viewModel.setUser(user);
         }
     }
 

@@ -102,25 +102,13 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                 clickedUser = user;
             }
         });
-        viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {
-            @Override
-            public void onChanged(RoundedBitmapDrawable roundedBitmapDrawable) {
-
-            }
-        });
-        viewModel.getUserColor().observe(this, new Observer<float[]>() {
-            @Override
-            public void onChanged(float[] hsl) {
-
-            }
-        });
 
         // Init activity
         Intent intent = getIntent();
         User user = intent.getParcelableExtra("user");
 
         if (user != null) // Prevents unnecessary server calls
-            viewModel.setUser(getApplicationContext(), user);
+            viewModel.setUser(user);
         else if (viewModel.getUser().getValue() == null) // Prevents unnecessary server calls
             viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
     }

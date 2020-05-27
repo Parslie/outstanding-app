@@ -113,23 +113,8 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
         Volley.newRequestQueue(this).add(request);
     }
 
-    private boolean isValidUsername(String username) {
-        return username.length() >= getResources().getInteger(R.integer.min_username_length) && !username.contains(" ");
-    }
-
-    private boolean isValidEmail(String email) {
-        boolean correctFormat = email.contains("@") && email.contains(".") && !email.endsWith("."); // TODO: should be improved
-        return email.length() >= getResources().getInteger(R.integer.min_email_length) && correctFormat;
-    }
-
-    private boolean isValidPassword(String password) {
-        return password.length() >= getResources().getInteger(R.integer.min_password_length);
-    }
-
-    private boolean isValidConfirmation(String password, String confirmationPassword) {
-        return confirmationPassword.equals(password);
-    }
-
+    ////////////
+    // Listeners
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -158,6 +143,8 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
             finish();
         }
         else if (v == registerButton) {
+            // TODO: warn about wrong field formats
+
             try {
                 register();
             } catch (JSONException e) {

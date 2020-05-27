@@ -2,11 +2,13 @@ package com.vikho305.isaho220.outstanding.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,15 +18,19 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.Profile;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
 import org.json.JSONException;
+
+import java.util.Arrays;
 
 public class EditProfileActivity extends AuthorizedActivity
         implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, TextWatcher, ResponseListener {
@@ -59,27 +65,26 @@ public class EditProfileActivity extends AuthorizedActivity
 
         // Init view model
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        viewModel.getUserColor().observe(this, new Observer<float[]>() {
+        viewModel.getProfile().observe(this, new Observer<Profile>() {
             @Override
-            public void onChanged(float[] hsl) {
-                root.setBackgroundColor(Color.HSVToColor(hsl)); // TODO: test including setProgress
-            }
-        });
-        viewModel.getUserPicture().observe(this, new Observer<RoundedBitmapDrawable>() {
-            @Override
-            public void onChanged(RoundedBitmapDrawable roundedBitmapDrawable) {
-                profilePictureView.setImageDrawable(roundedBitmapDrawable);
-            }
-        });
-        viewModel.getUserDescription().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                String descriptionLengthText = getResources().getString(
-                        R.string.description_length,
-                        s.length(),
-                        MAX_DESCRIPTION_LENGTH
+            public void onChanged(Profile profile) {
+                root.setBackgroundColor(profile.getPrimaryColor());
+                descriptionLengthView.setText(
+                        getResources().getString(R.string.description_length, profile.getDescription().length(), MAX_DESCRIPTION_LENGTH)
                 );
-                descriptionLengthView.setText(descriptionLengthText);
+
+                Bitmap pictureBitmap;
+                if (profile.getPicture() == null) {
+                    pictureBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
+                }
+                else {
+                    byte[] decodedPicture = Base64.decode(profile.getPicture(), Base64.DEFAULT);
+                    pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
+                }
+
+                RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(getResources(), pictureBitmap);
+                roundedPicture.setCircular(true);
+                profilePictureView.setImageDrawable(roundedPicture);
             }
         });
 
@@ -87,14 +92,15 @@ public class EditProfileActivity extends AuthorizedActivity
         Intent intent = getIntent();
         User user = intent.getParcelableExtra("user");
 
-
         if (user != null) {
-            viewModel.setUser(getApplicationContext(), user);
+            viewModel.setUser(user);
+            Profile profile = user.getProfile();
+            assert profile != null;
 
-            descriptionView.setText(user.getProfile().getDescription());
-            hueSlider.setProgress((int) (user.getProfile().getPrimaryHue() * hueSlider.getMax()));
-            saturationSlider.setProgress((int) (user.getProfile().getPrimarySaturation() * saturationSlider.getMax()));
-            lightnessSlider.setProgress((int) (user.getProfile().getPrimaryLightness() * lightnessSlider.getMax()));
+            descriptionView.setText(profile.getDescription());
+            hueSlider.setProgress((int) (profile.getPrimaryHue() * hueSlider.getMax()));
+            saturationSlider.setProgress((int) (profile.getPrimarySaturation() * saturationSlider.getMax()));
+            lightnessSlider.setProgress((int) (profile.getPrimaryLightness() * lightnessSlider.getMax()));
         }
         else {
             finish(); // TODO: add more extensive error-handling for no user
@@ -119,7 +125,7 @@ public class EditProfileActivity extends AuthorizedActivity
         if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK) {
             assert data != null && data.getExtras() != null;
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            viewModel.setUserPicture(bitmap);
+            viewModel.setPicture(bitmap);
         }
     }
 
@@ -131,12 +137,7 @@ public class EditProfileActivity extends AuthorizedActivity
         }
         else if (v == saveButton) {
             try {
-                viewModel.saveUserProfile(getApplicationContext(), getAuthToken(), this);
-
-                Intent data = new Intent();
-                data.putExtra("user", viewModel.getUser().getValue());
-                setResult(RESULT_OK, data);
-                finish(); // TODO (?): wait for server callback
+                viewModel.saveProfile(getApplicationContext(), getAuthToken(), this);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -150,10 +151,11 @@ public class EditProfileActivity extends AuthorizedActivity
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        float hueProgress = (float) hueSlider.getProgress() / hueSlider.getMax();
-        float saturationProgress = (float) saturationSlider.getProgress() / saturationSlider.getMax();
-        float lightnessProgress = (float) lightnessSlider.getProgress() / lightnessSlider.getMax();
-        viewModel.setUserColor(hueProgress, saturationProgress, lightnessProgress);
+        double hueProgress = (double) hueSlider.getProgress() / hueSlider.getMax();
+        double saturationProgress = (double) saturationSlider.getProgress() / saturationSlider.getMax();
+        double lightnessProgress = (double) lightnessSlider.getProgress() / lightnessSlider.getMax();
+
+        viewModel.setPrimaryColor(hueProgress, saturationProgress, lightnessProgress);
     }
 
     @Override
@@ -163,7 +165,7 @@ public class EditProfileActivity extends AuthorizedActivity
 
     @Override
     public void afterTextChanged(Editable s) {
-        viewModel.setUserDescription(s.toString());
+        viewModel.setDescription(s.toString());
     }
 
     @Override
@@ -173,6 +175,11 @@ public class EditProfileActivity extends AuthorizedActivity
 
     @Override
     public void onRequestResponse(String responseType, boolean successful) {
-        // TODO: add actions for save profile response
+        if (responseType.equals(UserViewModel.SAVING_RESPONSE) && successful) {
+            Intent data = new Intent();
+            data.putExtra("user", viewModel.getUser().getValue());
+            setResult(RESULT_OK, data);
+            finish();
+        }
     }
 }
