@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.PostCreationActivity" />
         <activity android:name=".activity.PostActivity" />
+        <activity android:name=".activity.FollowRequestActivity" />
         <activity android:name=".activity.FollowingActivity" />
         <activity android:name=".activity.FollowerActivity" />
         <activity android:name=".activity.LockedProfileActivity" />

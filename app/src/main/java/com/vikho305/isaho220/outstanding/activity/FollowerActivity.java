@@ -1,6 +1,9 @@
 package com.vikho305.isaho220.outstanding.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,6 +24,7 @@ import java.util.List;
 public class FollowerActivity extends AuthorizedActivity implements FollowerListFragment.InteractionListener {
 
     private FollowerListFragment followerListFragment;
+    private Button followRequestsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,19 @@ public class FollowerActivity extends AuthorizedActivity implements FollowerList
         else {
 
         }
+
+        followRequestsButton = findViewById(R.id.followRequests_button);
+        followRequestsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToFollowRequests();
+            }
+        });
+    }
+
+    private void goToFollowRequests() {
+        Intent intent = new Intent(this, FollowRequestActivity.class);
+        goToActivity(intent);
     }
 
     @Override
