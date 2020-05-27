@@ -96,4 +96,27 @@
         android:drawableStart="@drawable/ic_text_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
+
+    <ImageView
+        android:id="@+id/imagePost_imageView"
+        android:layout_width="256dp"
+        android:layout_height="384dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_audioContent"
+        app:layout_constraintVertical_bias="0.549"
+        app:srcCompat="@color/buttonFocused" />
+
+    <VideoView
+        android:id="@+id/videoPost_videoView"
+        android:layout_width="256dp"
+        android:layout_height="384dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_audioContent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -86,7 +87,9 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private UserViewModel viewModel;
     private MapViewModel mapModel;
 
-    private static final String ICON = "icon";
+    private static final String TEXT_ICON = "text";
+    private static final String PICTURE_ICON = "picture";
+    private static final String VIDEO_ICON = "video";
 
     private List<Feature> symbolLayerIconFeatureList;
     private List<Post> posts;
@@ -187,10 +190,25 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private void placePosts(){
         //For each post create a new symbol
         for(Post post : posts){
-            symbolManager.create(new SymbolOptions()
-                    .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
-                    .withIconImage(ICON)
-                    .withIconSize(1.0f));
+            if(post.getMediaType().equals(Post.TEXT_TYPE)){
+                symbolManager.create(new SymbolOptions()
+                        .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
+                        .withIconImage(TEXT_ICON)
+                        .withIconSize(1.0f));
+            }
+            else if(post.getMediaType().equals(Post.VIDEO_TYPE)){
+                symbolManager.create(new SymbolOptions()
+                        .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
+                        .withIconImage(VIDEO_ICON)
+                        .withIconSize(1.0f));
+            }
+            else if(post.getMediaType().equals(Post.IMAGE_TYPE)){
+                symbolManager.create(new SymbolOptions()
+                        .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
+                        .withIconImage(PICTURE_ICON)
+                        .withIconSize(1.0f));
+            }
+
         }
     }
 
@@ -202,8 +220,16 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
             @Override
             public void onStyleLoaded(@NonNull Style style) {
 
-                style.addImage(ICON,
-                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.icon))),
+                style.addImage(TEXT_ICON,
+                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(MapActivity.this, R.drawable.ic_text_24dp))),
+                        true);
+
+                style.addImage(VIDEO_ICON,
+                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(MapActivity.this, R.drawable.ic_video_24dp))),
+                        true);
+
+                style.addImage(PICTURE_ICON,
+                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(MapActivity.this, R.drawable.ic_image_24dp))),
                         true);
 
                 symbolManager = new SymbolManager(mapView, mapboxMap, style);
