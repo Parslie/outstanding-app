@@ -15,23 +15,26 @@
 
     <style name="BodyText" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/small_text</item>
+        <item name="android:typeface">sans</item>
     </style>
 
     <style name="EmphaticText" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:typeface">sans</item>
     </style>
 
     <style name="TitleText" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/large_text</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:typeface">sans</item>
     </style>
 
     <!-- Button Styles -->
 
     <style name="RoundButton" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textAppearance">@style/BodyText</item>
         <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/circle_input</item>
         <item name="android:focusable">true</item>
@@ -40,8 +43,8 @@
 
     <style name="Button" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textAppearance">@style/BodyText</item>
         <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/rect_input</item>
         <item name="android:focusable">true</item>
@@ -52,8 +55,8 @@
 
     <style name="EditText" parent="@android:style/Widget.EditText">
         <item name="android:gravity">center_vertical|left</item>
+        <item name="android:textAppearance">@style/BodyText</item>
         <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/rect_input</item>
         <item name="android:focusable">true</item>

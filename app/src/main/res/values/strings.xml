@@ -1,6 +1,38 @@
 <resources>
     <string name="app_name">Outstanding</string>
 
+    <!-- ERRORS -->
+    <string name="login_error">incorrect username or password</string>
+    <string name="register_error">user already exists</string>
+
+    <string name="confirmation_password_error">wrong confirmation password</string>
+    <string name="empty_fields_error">empty fields</string>
+    <string name="server_error">server-side error</string>
+    <string name="timeout_error">request timed out</string>
+
+    <!-- LABELS -->
+    <string name="follow_label">Follow</string>
+    <string name="followers_label">Followers</string>
+    <string name="followings_label">Followings</string>
+    <string name="pending_label">Pending</string>
+
+    <string name="hue_label">Hue</string>
+    <string name="saturation_label">Saturation</string>
+    <string name="lightness_label">Lightness</string>
+
+    <!-- HINTS -->
+    <string name="username_hint">Enter username…</string>
+    <string name="password_hint">Enter password…</string>
+    <string name="password_again_hint">Enter password again…</string>
+    <string name="email_hint">Enter email…</string>
+    <string name="profile_description_hint">Enter description…</string>
+
+    <string name="title_hint">Enter title…</string>
+    <string name="text_hint">Enter text…</string>
+
+
+
+
     <!-- INPUT ERRORS -->
     <string name="username_length_error">The username is too short…</string>
     <string name="email_format_error">The email is formatted incorrectly…</string>

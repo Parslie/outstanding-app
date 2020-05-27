@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,12 +21,14 @@ import com.vikho305.isaho220.outstanding.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RegisterActivity extends AuthorizedActivity {
+public class RegisterActivity extends AuthorizedActivity implements TextWatcher, View.OnClickListener {
 
     private EditText usernameInput;
-    private EditText passwordInput, passwordConfirmationInput;
     private EditText emailInput;
-    private Button registerButton;
+    private EditText passwordInput, passwordConfirmationInput;
+    private TextView errorText;
+
+    private Button registerButton, backButton;
     private ProgressBar registerProgressBar;
 
     @Override
@@ -33,174 +36,37 @@ public class RegisterActivity extends AuthorizedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        usernameInput = findViewById(R.id.usernameInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        passwordConfirmationInput = findViewById(R.id.passwordConfirmationInput);
-        emailInput = findViewById(R.id.emailInput);
-        registerButton = findViewById(R.id.registerButton);
-        registerProgressBar = findViewById(R.id.registerProgressBar);
+        usernameInput = findViewById(R.id.register_username);
+        emailInput = findViewById(R.id.register_email);
+        passwordInput = findViewById(R.id.register_password);
+        passwordConfirmationInput = findViewById(R.id.register_passwordConfirmation);
+        backButton = findViewById(R.id.register_backButton);
+        registerButton = findViewById(R.id.register_registerButton);
+        registerProgressBar = findViewById(R.id.register_progressBar);
+        errorText = findViewById(R.id.register_errorText);
 
+        usernameInput.addTextChangedListener(this);
+        emailInput.addTextChangedListener(this);
+        passwordInput.addTextChangedListener(this);
+        passwordConfirmationInput.addTextChangedListener(this);
+        backButton.setOnClickListener(this);
+        registerButton.setOnClickListener(this);
+
+        errorText.setVisibility(View.GONE);
         registerProgressBar.setVisibility(View.GONE);
-        setInputListeners();
-        setButtonListeners();
     }
 
-    private void setInputListeners() {
-        TextWatcher canRegisterListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String username = usernameInput.getText().toString();
-                String email = emailInput.getText().toString();
-                String password = passwordInput.getText().toString();
-                String confirmationPassword = passwordConfirmationInput.getText().toString();
-
-                if (!isValidUsername(username) || !isValidEmail(email) || !isValidPassword(password) || !isValidConfirmation(password, confirmationPassword)) {
-                    registerButton.setEnabled(false);
-                }
-                else {
-                    registerButton.setEnabled(true);
-                }
-            }
-        };
-        usernameInput.addTextChangedListener(canRegisterListener);
-        emailInput.addTextChangedListener(canRegisterListener);
-        passwordInput.addTextChangedListener(canRegisterListener);
-        passwordConfirmationInput.addTextChangedListener(canRegisterListener);
-
-        usernameInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String username = usernameInput.getText().toString();
-
-                if (!isValidUsername(username)) {
-                    usernameInput.setError(getResources().getString(R.string.username_length_error));
-                }
-                else {
-                    usernameInput.setError(null);
-                }
-            }
-        });
-
-        emailInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String email = emailInput.getText().toString();
-
-                if (!isValidEmail(email)) {
-                    emailInput.setError(getResources().getString(R.string.email_format_error));
-                }
-                else {
-                    emailInput.setError(null);
-                }
-            }
-        });
-
-        passwordInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String password = passwordInput.getText().toString();
-                String confirmationPassword = passwordConfirmationInput.getText().toString();
-
-                if (!isValidPassword(password)) {
-                    passwordInput.setError(getResources().getString(R.string.password_length_error));
-                }
-                else {
-                    passwordInput.setError(null);
-                }
-
-                if (!isValidConfirmation(password, confirmationPassword)) {
-                    passwordConfirmationInput.setError(getResources().getString(R.string.password_match_error));
-                }
-                else {
-                    passwordConfirmationInput.setError(null);
-                }
-            }
-        });
-
-        passwordConfirmationInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                String password = passwordInput.getText().toString();
-                String confirmationPassword = passwordConfirmationInput.getText().toString();
-
-                if (!isValidConfirmation(password, confirmationPassword)) {
-                    passwordConfirmationInput.setError(getResources().getString(R.string.password_match_error));
-                }
-                else {
-                    passwordConfirmationInput.setError(null);
-                }
-            }
-        });
-    }
-
-    private void setButtonListeners() {
-        Button backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                register();
-            }
-        });
-    }
-
-    private void register() {
-        String username = usernameInput.getText().toString();
-        String password = passwordInput.getText().toString();
-        String email = emailInput.getText().toString();
-
+    private void register() throws JSONException {
         JSONObject parameters = new JSONObject();
-        try {
-            parameters.put("username", username);
-            parameters.put("email", email);
-            parameters.put("password", password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        parameters.put("username", usernameInput.getText().toString());
+        parameters.put("email", emailInput.getText().toString());
+        parameters.put("password", passwordInput.getText().toString());
+        parameters.put("password_confirmation", passwordConfirmationInput.getText().toString());
 
+        errorText.setVisibility(View.GONE);
         registerButton.setEnabled(false);
         registerProgressBar.setVisibility(View.VISIBLE);
+
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
                 getResources().getString(R.string.register_url),
@@ -228,6 +94,16 @@ public class RegisterActivity extends AuthorizedActivity {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
 
+                        if (error.networkResponse.statusCode == 409)
+                            errorText.setText(R.string.register_error);
+                        else if (error.networkResponse.statusCode == 403)
+                            errorText.setText(R.string.confirmation_password_error);
+                        else if (error.networkResponse.statusCode == 400)
+                            errorText.setText(R.string.empty_fields_error);
+                        else
+                            errorText.setText(R.string.server_error);
+                        errorText.setVisibility(View.VISIBLE);
+
                         registerButton.setEnabled(true);
                         registerProgressBar.setVisibility(View.GONE);
                     }
@@ -252,5 +128,41 @@ public class RegisterActivity extends AuthorizedActivity {
 
     private boolean isValidConfirmation(String password, String confirmationPassword) {
         return confirmationPassword.equals(password);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String username = usernameInput.getText().toString();
+        String email = emailInput.getText().toString();
+        String password = passwordInput.getText().toString();
+        String passwordConfirmation = passwordConfirmationInput.getText().toString();
+
+        if (username.length() == 0 || email.length() == 0 || password.length() == 0 || passwordConfirmation.length() == 0)
+            registerButton.setEnabled(false);
+        else
+            registerButton.setEnabled(true);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == backButton) {
+            finish();
+        }
+        else if (v == registerButton) {
+            try {
+                register();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
