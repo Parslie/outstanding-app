@@ -2,18 +2,13 @@ package com.vikho305.isaho220.outstanding.viewmodel;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.util.Base64;
 
-import androidx.annotation.RequiresApi;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -37,7 +32,9 @@ import java.util.List;
 import java.util.Map;
 
 public class UserViewModel extends ViewModel {
-    public static final String SAVING_RESPONSE = "save";
+    public static final String PROFILE_SAVE_RESPONSE = "profile";
+    public static final String ACCOUNT_SAVE_RESPONSE = "account";
+    public static final String COORDINATES_SAVE_RESPONSE = "coordinates";
 
     private MutableLiveData<User> user = new MutableLiveData<>();
     private MutableLiveData<Profile> profile = new MutableLiveData<>();
@@ -104,6 +101,22 @@ public class UserViewModel extends ViewModel {
         this.profile.setValue(profile);
     }
 
+    public void setAccount(String username, String email) {
+        User user = this.user.getValue();
+        assert user != null;
+        user.setUsername(username);
+        user.setEmail(email);
+        this.user.setValue(user);
+    }
+
+    public void setPosition(double latitude, double longitude) {
+        User user = this.user.getValue();
+        assert user != null;
+        user.setLatitude(latitude);
+        user.setLongitude(longitude);
+        this.user.setValue(user);
+    }
+
     // Server-calling methods
     public void fetchUser(final Context context, final String userID, final String authToken) {
         JsonObjectRequest request = new JsonObjectRequest(
@@ -157,13 +170,13 @@ public class UserViewModel extends ViewModel {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        responseListener.onRequestResponse(SAVING_RESPONSE, true);
+                        responseListener.onRequestResponse(PROFILE_SAVE_RESPONSE, true);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        responseListener.onRequestResponse(SAVING_RESPONSE, false);
+                        responseListener.onRequestResponse(PROFILE_SAVE_RESPONSE, false);
                     }
                 }
         ) {
@@ -178,7 +191,80 @@ public class UserViewModel extends ViewModel {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public void saveAccount() {
+    public void saveAccount(final Context context, final String authToken, final ResponseListener responseListener, String password) throws JSONException {
+        User user = this.user.getValue();
+        assert user != null;
+
+        JSONObject parameters = new JSONObject();
+        parameters.put("username", user.getUsername());
+        parameters.put("email", user.getEmail());
+        parameters.put("password", password); // TODO: add security with confirmation password
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                context.getResources().getString(R.string.set_account_url),
+                parameters,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        responseListener.onRequestResponse(ACCOUNT_SAVE_RESPONSE, true);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        responseListener.onRequestResponse(ACCOUNT_SAVE_RESPONSE, false);
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public void saveCoordinates(final Context context, final String authToken, final ResponseListener responseListener) throws JSONException {
+        User user = this.user.getValue();
+        assert user != null;
+
+        JSONObject parameters = new JSONObject();
+        parameters.put("latitude", user.getLatitude());
+        parameters.put("longitude", user.getLongitude());
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST,
+                context.getResources().getString(R.string.set_coordinates_url),
+                parameters,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        responseListener.onRequestResponse(COORDINATES_SAVE_RESPONSE, true);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        responseListener.onRequestResponse(COORDINATES_SAVE_RESPONSE, false);
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public void getPosts(int page) {
 
     }
 }

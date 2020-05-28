@@ -11,6 +11,7 @@
     <string name="set_coordinates_url">https://outstanding-server.herokuapp.com/user/coordinates</string>
     <string name="set_online_url">https://outstanding-server.herokuapp.com/user/online</string>
 
+    <string name="get_online_followings_url">https://outstanding-server.herokuapp.com/user/followings/online</string>
     <string name="get_followers_url">https://outstanding-server.herokuapp.com/user/%s/followers/%d</string>
     <string name="get_followings_url">https://outstanding-server.herokuapp.com/user/%s/followings/%d</string>
     <string name="get_pending_followers_url">https://outstanding-server.herokuapp.com/user/followers/pending/%d</string>

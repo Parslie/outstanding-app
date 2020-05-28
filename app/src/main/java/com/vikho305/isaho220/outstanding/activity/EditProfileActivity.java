@@ -3,7 +3,6 @@ package com.vikho305.isaho220.outstanding.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -29,8 +28,6 @@ import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
 import org.json.JSONException;
-
-import java.util.Arrays;
 
 public class EditProfileActivity extends AuthorizedActivity
         implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, TextWatcher, ResponseListener {
@@ -175,7 +172,7 @@ public class EditProfileActivity extends AuthorizedActivity
 
     @Override
     public void onRequestResponse(String responseType, boolean successful) {
-        if (responseType.equals(UserViewModel.SAVING_RESPONSE) && successful) {
+        if (responseType.equals(UserViewModel.PROFILE_SAVE_RESPONSE) && successful) {
             Intent data = new Intent();
             data.putExtra("user", viewModel.getUser().getValue());
             setResult(RESULT_OK, data);
