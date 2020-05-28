@@ -41,6 +41,7 @@
         android:id="@+id/postFrag_authorPicture"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
@@ -50,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/postFrag_authorPicture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

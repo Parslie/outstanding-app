@@ -49,6 +49,10 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         authorPicture = view.findViewById(R.id.postFrag_authorPicture);
         authorUsername = view.findViewById(R.id.postFrag_author);
 
+        // Init listeners
+        authorPicture.setOnClickListener(this);
+        authorUsername.setOnClickListener(this);
+
         return view;
     }
 
