@@ -2,6 +2,7 @@ package com.vikho305.isaho220.outstanding.viewmodel;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -13,6 +14,7 @@ import com.vikho305.isaho220.outstanding.JsonParameterRequest;
 import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Post;
+import com.vikho305.isaho220.outstanding.database.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,14 +26,19 @@ public class PostViewModel extends ViewModel {
 
     public static final String POSTING_RESPONSE = "post";
 
-    private MutableLiveData<Post> post;
+    private MutableLiveData<Post> post = new MutableLiveData<>();
+    private MutableLiveData<User> author = new MutableLiveData<>();
 
-    public PostViewModel() {
-        post = new MutableLiveData<>();
+    public LiveData<Post> getPost() {
+        return post;
+    }
+    public LiveData<User> getAuthor() {
+        return author;
     }
 
     public void setPost(Post post) {
         this.post.setValue(post);
+        author.setValue(post.getAuthor());
     }
 
     public void setPostTitle(String title) {
@@ -62,7 +69,7 @@ public class PostViewModel extends ViewModel {
         post.setMediaType(mediaType);
     }
 
-    // Server actions
+    // Server-calling methods
     public void postPost(final Context context, final String authToken, final ResponseListener responseListener) throws JSONException {
         Post post = this.post.getValue();
         assert post != null;

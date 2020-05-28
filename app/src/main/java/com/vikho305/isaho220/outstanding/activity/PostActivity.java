@@ -1,53 +1,59 @@
 package com.vikho305.isaho220.outstanding.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.vikho305.isaho220.outstanding.OnClickCallback;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.fragment.PostFragment;
+import com.vikho305.isaho220.outstanding.viewmodel.PostViewModel;
 
-import java.util.Objects;
-
-public class PostActivity extends AuthorizedActivity {
+public class PostActivity extends AuthorizedActivity implements OnClickCallback {
 
     private PostFragment postFragment;
-    private Post post;
-
-    private void goToLockedProfile(User user) {
-        Intent intent = new Intent(this, LockedProfileActivity.class);
-        intent.putExtra("user", user);
-        goToActivity(intent);
-    }
+    private PostViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        Bundle extras = getIntent().getExtras();
-        post = (Post) Objects.requireNonNull(extras).get("post");
-
+        // Get views
         postFragment = (PostFragment) getSupportFragmentManager().findFragmentById(R.id.post_postFrag);
 
-        ((TextView) Objects.requireNonNull(Objects.requireNonNull(postFragment).getView()).findViewById(R.id.postFrag_title)).setText(Objects.requireNonNull(post).getTitle());
-
-        ((TextView) Objects.requireNonNull(Objects.requireNonNull(postFragment).getView()).findViewById(R.id.postFrag_text)).setText(Objects.requireNonNull(post).getText());
-
-        TextView authorTextView = (TextView) Objects.requireNonNull(Objects.requireNonNull(postFragment).getView()).findViewById(R.id.postFrag_author);
-        authorTextView.setText(Objects.requireNonNull(post).getAuthor().getUsername());
-        authorTextView.setOnClickListener(new View.OnClickListener() {
+        // Init view model
+        viewModel = new ViewModelProvider(this).get(PostViewModel.class);
+        viewModel.getPost().observe(this, new Observer<Post>() {
             @Override
-            public void onClick(View viewIn) {
-                goToLockedProfile(Objects.requireNonNull(post).getAuthor());
+            public void onChanged(Post post) {
+                postFragment.updateDetails(post);
             }
         });
 
+        // Init activity
+        Intent intent = getIntent();
+        Post post = intent.getParcelableExtra("post");
+        viewModel.setPost(post);
+
+        postFragment.setOnClickCallback(this);
+    }
+
+    private void goToAuthor() {
+        User user = viewModel.getAuthor().getValue();
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("user", user);
+        goToActivity(intent);
+    }
+
+    @Override
+    public void onClickCallback(String clickKey) {
+        if (clickKey.equals(PostFragment.AUTHOR_CLICK_KEY)) {
+            goToAuthor();
+        }
     }
 }
