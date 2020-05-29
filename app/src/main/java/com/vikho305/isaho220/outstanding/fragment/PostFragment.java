@@ -17,33 +17,23 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.vikho305.isaho220.outstanding.CustomJsonObjectRequest;
 import com.vikho305.isaho220.outstanding.OnClickCallback;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.activity.PostActivity;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class PostFragment extends Fragment implements View.OnClickListener {
 
-    public static final String AUTHOR_CLICK_KEY = "author";
+    public static final String AUTHOR_CLICK_KEY = "author", LIKE_CLICK_KEY = "like";
+    public static final String DISLIKE_CLICK_KEY = "dislike";
 
     private TextView titleView, textView;
     private TextView likeCountView, dislikeCountView;
 
     private ImageView imageView;
-    private VideoView videoView;
     private ImageView authorPicture;
     private TextView authorUsername;
 
@@ -51,8 +41,6 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     private Button dislikeButton;
 
     private OnClickCallback onClickCallback;
-
-    private Post activePost;
 
     public void setOnClickCallback(OnClickCallback onClickCallback) {
         this.onClickCallback = onClickCallback;
@@ -74,7 +62,6 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         dislikeCountView = view.findViewById(R.id.postFrag_dislikeCount);
 
         imageView = view.findViewById(R.id.postFrag_image);
-        videoView = view.findViewById(R.id.postFrag_video);
         authorPicture = view.findViewById(R.id.postFrag_authorPicture);
         authorUsername = view.findViewById(R.id.postFrag_author);
 
@@ -93,32 +80,19 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 
     public void updateDetails(Post post) {
         titleView.setText(post.getTitle());
-        activePost = post;
+        textView.setText(post.getText());
+
+        // TODO: disable/enable title and text based on null value
+
         // Media
         switch (post.getMediaType()) {
             case Post.TEXT_TYPE:
                 imageView.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                textView.setText(post.getText());
                 break;
             case Post.IMAGE_TYPE:
-                // TODO: set videoView to GONE
-                System.out.println(post.getMedia());
-
-                textView.setVisibility(View.GONE);
-                videoView.setVisibility(View.GONE);
-                Uri imageUri = Uri.parse(post.getMedia());
-                imageView.setImageURI(imageUri);
-
-                break;
-            case Post.VIDEO_TYPE:
-                imageView.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
-                Uri videoUri = Uri.parse(post.getMedia());
-                videoView.setVideoURI(videoUri);
-                videoView.start();
-
-                // TODO: add decoding off video
+                byte[] decodedPicture = Base64.decode(post.getMedia(), Base64.DEFAULT);
+                Bitmap pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
+                imageView.setImageBitmap(pictureBitmap);
                 break;
             default:
                 // TODO: add error case
@@ -129,11 +103,22 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         User author = post.getAuthor();
         authorUsername.setText(author.getUsername());
 
-        byte[] authorBytes = Base64.decode(author.getProfile().getPicture(), Base64.DEFAULT);
-        Bitmap authorBitmap = BitmapFactory.decodeByteArray(authorBytes, 0, authorBytes.length);
-        RoundedBitmapDrawable authorDrawable = RoundedBitmapDrawableFactory.create(getResources(), authorBitmap);
+        Bitmap pictureBitmap;
+        if (author.getProfile().getPicture() == null) {
+            pictureBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
+        }
+        else {
+            byte[] decodedPicture = Base64.decode(author.getProfile().getPicture(), Base64.DEFAULT);
+            pictureBitmap = BitmapFactory.decodeByteArray(decodedPicture, 0, decodedPicture.length);
+        }
+
+        RoundedBitmapDrawable authorDrawable = RoundedBitmapDrawableFactory.create(getResources(), pictureBitmap);
         authorDrawable.setCircular(true);
         authorPicture.setImageDrawable(authorDrawable);
+
+        // Ratings
+        likeCountView.setText(String.valueOf(post.getLikeCount()));
+        dislikeCountView.setText(String.valueOf(post.getDislikeCount()));
     }
 
     @Override
@@ -142,24 +127,24 @@ public class PostFragment extends Fragment implements View.OnClickListener {
             onClickCallback.onClickCallback(AUTHOR_CLICK_KEY);
         }
         else if (v == likeButton) {
-            ((PostActivity) Objects.requireNonNull(getActivity())).likePost(activePost.getId());
+            onClickCallback.onClickCallback(LIKE_CLICK_KEY);
+
+            /*((PostActivity) Objects.requireNonNull(getActivity())).likePost(activePost.getId());
             likeButton.setEnabled(false);
             if(!dislikeButton.isEnabled()){
-                ((PostActivity) Objects.requireNonNull(getActivity())).unDislikePost(activePost.getId());
+                ((PostActivity) Objects.requireNonNull(getActivity())).undislikePost(activePost.getId());
                 dislikeButton.setEnabled(true);
-            }
-            //likeCountView.setText(activePost.getLikeCount());
-            //dislikeCountView.setText(activePost.getDislikeCount());
+            }*/
         }
         else if (v == dislikeButton) {
-            ((PostActivity) Objects.requireNonNull(getActivity())).dislikePost(activePost.getId());
+            onClickCallback.onClickCallback(DISLIKE_CLICK_KEY);
+
+            /*((PostActivity) Objects.requireNonNull(getActivity())).dislikePost(activePost.getId());
             dislikeButton.setEnabled(false);
             if(!likeButton.isEnabled()){
-                ((PostActivity) Objects.requireNonNull(getActivity())).unLikePost(activePost.getId());
+                ((PostActivity) Objects.requireNonNull(getActivity())).unlikePost(activePost.getId());
                 likeButton.setEnabled(true);
-            }
-            //likeCountView.setText(activePost.getLikeCount());
-            //dislikeCountView.setText(activePost.getDislikeCount());
+            }*/
         }
     }
 

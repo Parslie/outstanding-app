@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -14,13 +15,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Post;
@@ -28,20 +29,18 @@ import com.vikho305.isaho220.outstanding.viewmodel.PostViewModel;
 
 import org.json.JSONException;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 public class PostCreationActivity extends AuthorizedActivity
         implements View.OnClickListener, ResponseListener, TextWatcher {
 
-    private static final int PICK_IMAGE = 100;
-    private static final int PICK_VIDEO = 200;
-    private Uri imageUri;
-    private Uri videoUri;
+    private static final int PICK_IMAGE = 0;
 
-    private View rootView;
-    private EditText titleView, textView;
     private Button backButton, saveButton;
-    private Button textButton, imageButton, videoButton, audioButton;
+    private EditText titleView, textView;
+    private Button textButton, imageButton;
     private ImageView imageView;
-    private VideoView videoView;
 
     private PostViewModel viewModel;
 
@@ -51,7 +50,6 @@ public class PostCreationActivity extends AuthorizedActivity
         setContentView(R.layout.activity_post_creation);
 
         // Get layout views
-        rootView = findViewById(R.id.postCreation_root);
         titleView = findViewById(R.id.postCreation_title);
         textView = findViewById(R.id.postCreation_text);
 
@@ -59,11 +57,8 @@ public class PostCreationActivity extends AuthorizedActivity
         saveButton = findViewById(R.id.postCreation_save);
         textButton = findViewById(R.id.postCreation_textContent);
         imageButton = findViewById(R.id.postCreation_imageContent);
-        videoButton = findViewById(R.id.postCreation_videoContent);
-        audioButton = findViewById(R.id.postCreation_audioContent);
 
-        imageView = (ImageView)findViewById(R.id.imagePost_imageView);
-        videoView = (VideoView)findViewById(R.id.videoPost_videoView);
+        imageView = findViewById(R.id.postCreation_imageView);
 
         // Get latitude and longitude // TODO: make less sloppy permission-checking
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -105,39 +100,8 @@ public class PostCreationActivity extends AuthorizedActivity
         backButton.setOnClickListener(this);
         saveButton.setOnClickListener(this);
 
-        textButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageView.setVisibility(View.INVISIBLE);
-                videoView.setVisibility(View.INVISIBLE);
-                textView.setVisibility(View.VISIBLE);
-                viewModel.setPostMediaType(Post.TEXT_TYPE);
-            }
-        });
-
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openImageGallery();
-                imageView.setVisibility(View.VISIBLE);
-                videoView.setVisibility(View.INVISIBLE);
-                textView.setVisibility(View.INVISIBLE);
-                viewModel.setPostMediaType(Post.IMAGE_TYPE);
-            }
-        });
-
-        videoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openVideoGallery();
-                imageView.setVisibility(View.INVISIBLE);
-                videoView.setVisibility(View.VISIBLE);
-                textView.setVisibility(View.INVISIBLE);
-                viewModel.setPostMediaType(Post.VIDEO_TYPE);
-            }
-        });
-
-        audioButton.setOnClickListener(this);
+        textButton.setOnClickListener(this);
+        imageButton.setOnClickListener(this);
 
         titleView.addTextChangedListener(this);
         textView.addTextChangedListener(this);
@@ -149,8 +113,6 @@ public class PostCreationActivity extends AuthorizedActivity
     }
 
     private void saveCreation() {
-        // TODO: check for empty fields
-
         try {
             viewModel.postPost(getApplicationContext(), getAuthToken(), this);
         } catch (JSONException e) {
@@ -158,36 +120,41 @@ public class PostCreationActivity extends AuthorizedActivity
         }
     }
 
+    private void openImageGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+
     @Override
     public void onRequestResponse(String responseType, boolean successful) {
         if (responseType.equals(PostViewModel.POSTING_RESPONSE)) {
             if (successful)  {
-                Snackbar.make(rootView, "Something went totally right!", Snackbar.LENGTH_LONG);
                 setResult(RESULT_OK);
                 finish();
             }
             else  {
-                Snackbar.make(rootView, "Something went wrong...", Snackbar.LENGTH_LONG);
-                // TODO: add retry button to snack bar
+                // TODO: add error case
             }
         }
     }
 
     @Override
     public void onClick(View v) {
-        if (v == backButton)
+        if (v == backButton) {
             cancelCreation();
-        else if (v == saveButton)
+        }
+        else if (v == saveButton) {
             saveCreation();
-        else if (v == textButton)
+        }
+        else if (v == textButton) {
+            imageView.setVisibility(View.GONE);
             viewModel.setPostMediaType(Post.TEXT_TYPE);
-        else if (v == imageButton){
+        }
+        else if (v == imageButton) {
+            openImageGallery();
+            imageView.setVisibility(View.VISIBLE);
             viewModel.setPostMediaType(Post.IMAGE_TYPE);
         }
-        else if (v == videoButton)
-            viewModel.setPostMediaType(Post.VIDEO_TYPE);
-        else if (v == audioButton)
-            viewModel.setPostMediaType(Post.AUDIO_TYPE);
     }
 
     @Override
@@ -196,21 +163,10 @@ public class PostCreationActivity extends AuthorizedActivity
         viewModel.setPostText(textView.getText().toString());
     }
 
-    private void openImageGallery() {
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
-    }
-
-    private void openVideoGallery() {
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_VIDEO);
-    }
-
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
     }
-
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
 
@@ -219,16 +175,33 @@ public class PostCreationActivity extends AuthorizedActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
-            viewModel.setPostMedia(imageUri.toString());
-        }
-        else if (resultCode == RESULT_OK && requestCode == PICK_VIDEO){
-            videoUri = data.getData();
-            videoView.setVideoURI(videoUri);
-            viewModel.setPostMedia(videoUri.toString());
-        }
 
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PICK_IMAGE:
+                    Uri imageUri = data.getData();
+                    imageView.setImageURI(imageUri);
+                    viewModel.setPostMedia(encodeImage(imageUri));
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (requestCode == RESULT_CANCELED) {
+            viewModel.setPostMediaType(Post.TEXT_TYPE);
+            // TODO: add more extensive error-handling
+        }
+    }
+
+    private String encodeImage(Uri imageUri) {
+        try {
+            Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

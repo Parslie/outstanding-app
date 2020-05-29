@@ -66,29 +66,6 @@
         app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
 
     <Button
-        android:id="@+id/postCreation_audioContent"
-        style="@style/RoundButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/ic_audio_24dp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@+id/postCreation_videoContent"
-        app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
-
-    <Button
-        android:id="@+id/postCreation_videoContent"
-        style="@style/RoundButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/ic_video_24dp"
-        app:layout_constraintStart_toEndOf="@+id/postCreation_imageContent"
-        app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
-
-    <Button
         android:id="@+id/postCreation_textContent"
         style="@style/RoundButton"
         android:layout_width="wrap_content"
@@ -99,25 +76,14 @@
         app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
 
     <ImageView
-        android:id="@+id/imagePost_imageView"
+        android:id="@+id/postCreation_imageView"
         android:layout_width="256dp"
         android:layout_height="384dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postCreation_audioContent"
-        app:layout_constraintVertical_bias="0.549"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_imageContent"
         app:srcCompat="@color/buttonFocused" />
-
-    <VideoView
-        android:id="@+id/videoPost_videoView"
-        android:layout_width="256dp"
-        android:layout_height="384dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postCreation_audioContent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

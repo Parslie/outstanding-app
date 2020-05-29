@@ -48,7 +48,6 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private static final int POST_CREATION_REQUEST = 0;
     private static final String TEXT_ICON = "text";
     private static final String PICTURE_ICON = "picture";
-    private static final String VIDEO_ICON = "video";
     private static final int POST_RADIUS = 1000;
 
     private MapView mapView;
@@ -135,12 +134,6 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                         .withIconImage(TEXT_ICON)
                         .withIconSize(1.0f));
             }
-            else if(post.getMediaType().equals(Post.VIDEO_TYPE)){
-                postManager.create(new SymbolOptions()
-                        .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
-                        .withIconImage(VIDEO_ICON)
-                        .withIconSize(1.0f));
-            }
             else if(post.getMediaType().equals(Post.IMAGE_TYPE)){
                 postManager.create(new SymbolOptions()
                         .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
@@ -170,10 +163,6 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
             public void onStyleLoaded(@NonNull Style style) {
                 style.addImage(TEXT_ICON,
                         Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(MapActivity.this, R.drawable.ic_text_24dp))),
-                        true);
-
-                style.addImage(VIDEO_ICON,
-                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(MapActivity.this, R.drawable.ic_video_24dp))),
                         true);
 
                 style.addImage(PICTURE_ICON,

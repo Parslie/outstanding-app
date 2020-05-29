@@ -21,24 +21,19 @@
             android:text="Lorem Ipsum"
             android:textAppearance="@style/TitleText" />
 
-        <ImageView
-            android:id="@+id/postFrag_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/mid_spacing"
-            tools:src="@tools:sample/avatars" />
-
-        <VideoView
-            android:id="@+id/postFrag_video"
-            android:layout_width="match_parent"
-            android:layout_height="393dp" />
-
         <TextView
             android:id="@+id/postFrag_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/mid_spacing"
+            android:layout_marginTop="@dimen/small_spacing"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
+
+        <ImageView
+            android:id="@+id/postFrag_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing"
+            tools:src="@tools:sample/avatars" />
 
     </LinearLayout>
 

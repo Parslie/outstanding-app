@@ -63,10 +63,24 @@ public class PostActivity extends AuthorizedActivity implements OnClickCallback 
 
     @Override
     public void onClickCallback(String clickKey) {
-        if (clickKey.equals(PostFragment.AUTHOR_CLICK_KEY)) {
-            goToAuthor();
+        switch (clickKey) {
+            case PostFragment.AUTHOR_CLICK_KEY:
+                goToAuthor();
+                break;
+            case PostFragment.LIKE_CLICK_KEY:
+                break;
+            case PostFragment.DISLIKE_CLICK_KEY:
+                break;
         }
     }
+
+
+
+
+
+
+
+
 
     public void likePost(String postId){
         String url = getResources().getString(R.string.like_post_url, postId);
@@ -128,7 +142,7 @@ public class PostActivity extends AuthorizedActivity implements OnClickCallback 
         Volley.newRequestQueue(this).add(request);
     }
 
-    public void unLikePost(String postId){
+    public void unlikePost(String postId){
         String url = getResources().getString(R.string.like_post_url, postId);
         CustomJsonObjectRequest request = new CustomJsonObjectRequest(
                 Request.Method.DELETE,
@@ -158,7 +172,7 @@ public class PostActivity extends AuthorizedActivity implements OnClickCallback 
         Volley.newRequestQueue(this).add(request);
     }
 
-    public void unDislikePost(String postId){
+    public void undislikePost(String postId){
         String url = getResources().getString(R.string.dislike_post_url, postId);
         CustomJsonObjectRequest request = new CustomJsonObjectRequest(
                 Request.Method.DELETE,

@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 public class Post implements Parcelable {
 
     public static final String TEXT_TYPE = "text", IMAGE_TYPE = "image";
-    public static final String VIDEO_TYPE = "video", AUDIO_TYPE = "audio";
 
     private String id;
     private User author;
