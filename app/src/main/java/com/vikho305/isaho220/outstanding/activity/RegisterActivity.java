@@ -94,7 +94,9 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
 
-                        if (error.networkResponse.statusCode == 409)
+                        if (error.networkResponse == null)
+                            errorText.setText(R.string.timeout_error);
+                        else if (error.networkResponse.statusCode == 409)
                             errorText.setText(R.string.register_error);
                         else if (error.networkResponse.statusCode == 403)
                             errorText.setText(R.string.confirmation_password_error);

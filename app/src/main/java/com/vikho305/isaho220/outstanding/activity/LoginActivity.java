@@ -100,10 +100,12 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
 
-                        if (error.networkResponse.statusCode == 403)
+                        if (error.networkResponse == null)
+                            errorText.setText(R.string.timeout_error);
+                        else if (error.networkResponse.statusCode == 403)
                             errorText.setText(R.string.login_error);
                         else
-                            errorText.setText(R.string.timeout_error);
+                            errorText.setText(R.string.server_error);
                         errorText.setVisibility(View.VISIBLE);
 
                         loginButton.setEnabled(true);
