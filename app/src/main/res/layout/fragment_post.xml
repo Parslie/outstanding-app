@@ -7,55 +7,119 @@
     android:layout_height="match_parent"
     tools:context=".fragment.PostFragment">
 
-    <TextView
-        android:id="@+id/postFrag_title"
+    <LinearLayout
+        android:id="@+id/postFrag_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/postFrag_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum"
+            android:textAppearance="@style/TitleText" />
+
+        <ImageView
+            android:id="@+id/postFrag_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/mid_spacing"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/postFrag_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/mid_spacing"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/mid_spacing"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postFrag_content" />
+
+    <LinearLayout
+        android:id="@+id/postFrag_details"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textAppearance="@style/TitleText"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postFrag_authorPicture" />
+        app:layout_constraintTop_toBottomOf="@+id/divider">
 
-    <ImageView
-        android:id="@+id/postFrag_image"
+        <Button
+            android:id="@+id/postFrag_like"
+            style="@style/RoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_unliked_24dp" />
+
+        <TextView
+            android:id="@+id/postFrag_likeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/postFrag_dislike"
+            style="@style/RoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/mid_spacing"
+            android:drawableStart="@drawable/ic_undisliked_24dp" />
+
+        <TextView
+            android:id="@+id/postFrag_dislikeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_spacing"
+            android:text="0" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/postFrag_author"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="username" />
+
+        <ImageView
+            android:id="@+id/postFrag_authorPicture"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            app:srcCompat="@drawable/default_pfp"
+            tools:src="@tools:sample/avatars" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/mid_spacing"
+        android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postFrag_title"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/postFrag_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postFrag_image" />
-
-    <ImageView
-        android:id="@+id/postFrag_authorPicture"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:clickable="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/postFrag_author"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/postFrag_authorPicture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/postFrag_authorPicture"
-        app:layout_constraintTop_toTopOf="@+id/postFrag_authorPicture" />
+        app:layout_constraintTop_toBottomOf="@+id/postFrag_details" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

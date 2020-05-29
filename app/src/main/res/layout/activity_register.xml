@@ -125,7 +125,7 @@
         android:id="@+id/register_errorText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_spacing"
+        android:layout_marginTop="@dimen/mid_spacing"
         android:drawableStart="@drawable/ic_error_24dp"
         android:gravity="center_vertical"
         android:textAppearance="@style/BodyText"
