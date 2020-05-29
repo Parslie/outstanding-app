@@ -2,6 +2,7 @@ package com.vikho305.isaho220.outstanding.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -25,6 +27,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 
     private TextView titleView, textView;
     private ImageView imageView;
+    private VideoView videoView;
     private ImageView authorPicture;
     private TextView authorUsername;
 
@@ -46,6 +49,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         titleView = view.findViewById(R.id.postFrag_title);
         textView = view.findViewById(R.id.postFrag_text);
         imageView = view.findViewById(R.id.postFrag_image);
+        videoView = view.findViewById(R.id.postFrag_video);
         authorPicture = view.findViewById(R.id.postFrag_authorPicture);
         authorUsername = view.findViewById(R.id.postFrag_author);
 
@@ -58,22 +62,36 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 
     public void updateDetails(Post post) {
         titleView.setText(post.getTitle());
-        textView.setText(post.getText());
 
         // Media
         switch (post.getMediaType()) {
             case Post.TEXT_TYPE:
                 imageView.setVisibility(View.GONE);
+                videoView.setVisibility(View.GONE);
+                textView.setText(post.getText());
                 break;
             case Post.IMAGE_TYPE:
                 // TODO: set videoView to GONE
                 System.out.println(post.getMedia());
+
+                /*
                 byte[] imageBytes = Base64.decode(post.getMedia(), Base64.DEFAULT);
                 Bitmap imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 imageView.setImageBitmap(imageBitmap);
+                */
+                textView.setVisibility(View.GONE);
+                videoView.setVisibility(View.GONE);
+                Uri imageUri = Uri.parse(post.getMedia());
+                imageView.setImageURI(imageUri);
+
                 break;
             case Post.VIDEO_TYPE:
                 imageView.setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+                Uri videoUri = Uri.parse(post.getMedia());
+                videoView.setVideoURI(videoUri);
+                videoView.start();
+
                 // TODO: add decoding off video
                 break;
             default:

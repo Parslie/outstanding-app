@@ -28,6 +28,11 @@
             android:layout_marginTop="@dimen/mid_spacing"
             tools:src="@tools:sample/avatars" />
 
+        <VideoView
+            android:id="@+id/postFrag_video"
+            android:layout_width="match_parent"
+            android:layout_height="393dp" />
+
         <TextView
             android:id="@+id/postFrag_text"
             android:layout_width="match_parent"

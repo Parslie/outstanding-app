@@ -76,6 +76,22 @@ public class PostCreationActivity extends AuthorizedActivity
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    PICK_IMAGE);
+
+            return;
+        }
+
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
@@ -165,8 +181,9 @@ public class PostCreationActivity extends AuthorizedActivity
             saveCreation();
         else if (v == textButton)
             viewModel.setPostMediaType(Post.TEXT_TYPE);
-        else if (v == imageButton)
+        else if (v == imageButton){
             viewModel.setPostMediaType(Post.IMAGE_TYPE);
+        }
         else if (v == videoButton)
             viewModel.setPostMediaType(Post.VIDEO_TYPE);
         else if (v == audioButton)
@@ -205,10 +222,12 @@ public class PostCreationActivity extends AuthorizedActivity
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE){
             imageUri = data.getData();
             imageView.setImageURI(imageUri);
+            viewModel.setPostMedia(imageUri.toString());
         }
         else if (resultCode == RESULT_OK && requestCode == PICK_VIDEO){
             videoUri = data.getData();
             videoView.setVideoURI(videoUri);
+            viewModel.setPostMedia(videoUri.toString());
         }
 
     }
