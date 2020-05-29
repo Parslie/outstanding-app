@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -16,10 +17,23 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.vikho305.isaho220.outstanding.CustomJsonObjectRequest;
 import com.vikho305.isaho220.outstanding.OnClickCallback;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.activity.PostActivity;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class PostFragment extends Fragment implements View.OnClickListener {
 
@@ -31,7 +45,12 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     private ImageView authorPicture;
     private TextView authorUsername;
 
+    private Button likeButton;
+    private Button dislikeButton;
+
     private OnClickCallback onClickCallback;
+
+    private Post activePost;
 
     public void setOnClickCallback(OnClickCallback onClickCallback) {
         this.onClickCallback = onClickCallback;
@@ -53,16 +72,22 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         authorPicture = view.findViewById(R.id.postFrag_authorPicture);
         authorUsername = view.findViewById(R.id.postFrag_author);
 
+        likeButton = view.findViewById(R.id.postFrag_like);
+        dislikeButton = view.findViewById(R.id.postFrag_dislike);
+
         // Init listeners
         authorPicture.setOnClickListener(this);
         authorUsername.setOnClickListener(this);
+
+        likeButton.setOnClickListener(this);
+        dislikeButton.setOnClickListener(this);
 
         return view;
     }
 
     public void updateDetails(Post post) {
         titleView.setText(post.getTitle());
-
+        activePost = post;
         // Media
         switch (post.getMediaType()) {
             case Post.TEXT_TYPE:
@@ -115,5 +140,22 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         if (v == authorUsername || v == authorPicture) {
             onClickCallback.onClickCallback(AUTHOR_CLICK_KEY);
         }
+        else if (v == likeButton) {
+            ((PostActivity) Objects.requireNonNull(getActivity())).likePost(activePost.getId());
+            likeButton.setEnabled(false);
+            if(!dislikeButton.isEnabled()){
+                ((PostActivity) Objects.requireNonNull(getActivity())).unDislikePost(activePost.getId());
+                dislikeButton.setEnabled(true);
+            }
+        }
+        else if (v == dislikeButton) {
+            ((PostActivity) Objects.requireNonNull(getActivity())).dislikePost(activePost.getId());
+            dislikeButton.setEnabled(false);
+            if(!likeButton.isEnabled()){
+                ((PostActivity) Objects.requireNonNull(getActivity())).unLikePost(activePost.getId());
+                likeButton.setEnabled(true);
+            }
+        }
     }
+
 }
