@@ -21,6 +21,10 @@ public class Post implements Parcelable {
     private int likeCount;
     @SerializedName(value = "dislike_count")
     private int dislikeCount;
+    @SerializedName(value = "is_liked")
+    private boolean isLiked;
+    @SerializedName(value = "is_disliked")
+    private boolean isDisliked;
 
     public Post(String mediaType, double latitude, double longitude) {
         this.mediaType = mediaType;
@@ -40,6 +44,8 @@ public class Post implements Parcelable {
         dateCreated = in.readString();
         likeCount = in.readInt();
         dislikeCount = in.readInt();
+        isLiked = in.readInt() == 1;
+        isDisliked = in.readInt() == 1;
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {
@@ -131,6 +137,20 @@ public class Post implements Parcelable {
         this.dislikeCount = dislikeCount;
     }
 
+    public boolean isLiked() {
+        return isLiked;
+    }
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public boolean isDisliked() {
+        return isDisliked;
+    }
+    public void setDisliked(boolean disliked) {
+        isDisliked = disliked;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -149,5 +169,7 @@ public class Post implements Parcelable {
         dest.writeString(dateCreated);
         dest.writeInt(likeCount);
         dest.writeInt(dislikeCount);
+        dest.writeInt(isLiked ? 1 : 0);
+        dest.writeInt(isDisliked ? 1 : 0);
     }
 }

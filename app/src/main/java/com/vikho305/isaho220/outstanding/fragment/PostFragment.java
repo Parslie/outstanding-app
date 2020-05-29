@@ -119,6 +119,8 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         // Ratings
         likeCountView.setText(String.valueOf(post.getLikeCount()));
         dislikeCountView.setText(String.valueOf(post.getDislikeCount()));
+
+        // TODO: set rating buttons' icons
     }
 
     @Override
@@ -128,23 +130,9 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         }
         else if (v == likeButton) {
             onClickCallback.onClickCallback(LIKE_CLICK_KEY);
-
-            /*((PostActivity) Objects.requireNonNull(getActivity())).likePost(activePost.getId());
-            likeButton.setEnabled(false);
-            if(!dislikeButton.isEnabled()){
-                ((PostActivity) Objects.requireNonNull(getActivity())).undislikePost(activePost.getId());
-                dislikeButton.setEnabled(true);
-            }*/
         }
         else if (v == dislikeButton) {
             onClickCallback.onClickCallback(DISLIKE_CLICK_KEY);
-
-            /*((PostActivity) Objects.requireNonNull(getActivity())).dislikePost(activePost.getId());
-            dislikeButton.setEnabled(false);
-            if(!likeButton.isEnabled()){
-                ((PostActivity) Objects.requireNonNull(getActivity())).unlikePost(activePost.getId());
-                likeButton.setEnabled(true);
-            }*/
         }
     }
 

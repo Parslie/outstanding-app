@@ -24,6 +24,9 @@ public class JsonParameterRequest extends StringRequest {
 
     @Override
     public byte[] getBody() {
-        return parameters.toString().getBytes();
+        if (parameters != null)
+            return parameters.toString().getBytes();
+        else
+            return new JSONObject().toString().getBytes();
     }
 }

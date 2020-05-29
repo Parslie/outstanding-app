@@ -68,8 +68,10 @@ public class PostActivity extends AuthorizedActivity implements OnClickCallback 
                 goToAuthor();
                 break;
             case PostFragment.LIKE_CLICK_KEY:
+                viewModel.toggleLikePost(getApplicationContext(), getAuthToken());
                 break;
             case PostFragment.DISLIKE_CLICK_KEY:
+                viewModel.toggleDislikePost(getApplicationContext(), getAuthToken());
                 break;
         }
     }

@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModel;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.vikho305.isaho220.outstanding.JsonParameterRequest;
 import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.R;
@@ -44,29 +46,33 @@ public class PostViewModel extends ViewModel {
     public void setPostTitle(String title) {
         Post post = this.post.getValue();
         assert post != null;
-
         post.setTitle(title);
+        updatePost();
     }
 
     public void setPostText(String text) {
         Post post = this.post.getValue();
         assert post != null;
-
         post.setText(text);
+        updatePost();
     }
 
     public void setPostMedia(String media) {
         Post post = this.post.getValue();
         assert post != null;
-
         post.setMedia(media);
+        updatePost();
     }
 
     public void setPostMediaType(String mediaType) {
         Post post = this.post.getValue();
         assert post != null;
-
         post.setMediaType(mediaType);
+        updatePost();
+    }
+
+    private void updatePost() {
+        post.setValue(post.getValue());
     }
 
     // Server-calling methods
@@ -97,6 +103,76 @@ public class PostViewModel extends ViewModel {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                         responseListener.onRequestResponse(POSTING_RESPONSE, false);
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public void toggleLikePost(Context context, final String authToken) {
+        final Post post = this.post.getValue();
+        assert post != null;
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                (post.isLiked()) ? Request.Method.DELETE : Request.Method.POST,
+                context.getResources().getString(R.string.like_post_url, post.getId()),
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response.toString());
+                        Gson gson = new Gson();
+                        Post updatedPost = gson.fromJson(response.toString(), Post.class);
+                        PostViewModel.this.post.setValue(updatedPost);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public void toggleDislikePost(Context context, final String authToken) {
+        final Post post = this.post.getValue();
+        assert post != null;
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                (post.isDisliked()) ? Request.Method.DELETE : Request.Method.POST,
+                context.getResources().getString(R.string.dislike_post_url, post.getId()),
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response.toString());
+                        Gson gson = new Gson();
+                        Post updatedPost = gson.fromJson(response.toString(), Post.class);
+                        PostViewModel.this.post.setValue(updatedPost);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
                     }
                 }
         ) {
