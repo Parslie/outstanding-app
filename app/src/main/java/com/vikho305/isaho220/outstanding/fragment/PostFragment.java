@@ -40,6 +40,8 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     public static final String AUTHOR_CLICK_KEY = "author";
 
     private TextView titleView, textView;
+    private TextView likeCountView, dislikeCountView;
+
     private ImageView imageView;
     private VideoView videoView;
     private ImageView authorPicture;
@@ -67,6 +69,10 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         // Get views
         titleView = view.findViewById(R.id.postFrag_title);
         textView = view.findViewById(R.id.postFrag_text);
+
+        likeCountView = view.findViewById(R.id.postFrag_likeCount);
+        dislikeCountView = view.findViewById(R.id.postFrag_dislikeCount);
+
         imageView = view.findViewById(R.id.postFrag_image);
         videoView = view.findViewById(R.id.postFrag_video);
         authorPicture = view.findViewById(R.id.postFrag_authorPicture);
@@ -99,11 +105,6 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                 // TODO: set videoView to GONE
                 System.out.println(post.getMedia());
 
-                /*
-                byte[] imageBytes = Base64.decode(post.getMedia(), Base64.DEFAULT);
-                Bitmap imageBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                imageView.setImageBitmap(imageBitmap);
-                */
                 textView.setVisibility(View.GONE);
                 videoView.setVisibility(View.GONE);
                 Uri imageUri = Uri.parse(post.getMedia());
@@ -147,6 +148,8 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                 ((PostActivity) Objects.requireNonNull(getActivity())).unDislikePost(activePost.getId());
                 dislikeButton.setEnabled(true);
             }
+            //likeCountView.setText(activePost.getLikeCount());
+            //dislikeCountView.setText(activePost.getDislikeCount());
         }
         else if (v == dislikeButton) {
             ((PostActivity) Objects.requireNonNull(getActivity())).dislikePost(activePost.getId());
@@ -155,6 +158,8 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                 ((PostActivity) Objects.requireNonNull(getActivity())).unLikePost(activePost.getId());
                 likeButton.setEnabled(true);
             }
+            //likeCountView.setText(activePost.getLikeCount());
+            //dislikeCountView.setText(activePost.getDislikeCount());
         }
     }
 

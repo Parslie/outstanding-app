@@ -73,6 +73,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/ic_audio_24dp"
+        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/postCreation_videoContent"
         app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
 
