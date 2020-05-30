@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="description_limit">200</integer>
+    <integer name="username_limit">20</integer>
+
+    <integer name="post_text_limit">400</integer>
+    <integer name="comment_text_limit">400</integer>
+</resources>

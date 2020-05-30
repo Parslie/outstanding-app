@@ -117,7 +117,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
     }
 
     private void editUser() {
-        Intent intent = new Intent(this, EditProfileActivity.class); // TODO: create EditUserActivity
+        Intent intent = new Intent(this, EditAccountActivity.class);
         intent.putExtra("user", viewModel.getUser().getValue());
         goToActivityForResult(intent, EDIT_REQUEST);
     }

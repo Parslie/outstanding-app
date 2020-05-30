@@ -10,6 +10,10 @@
     <string name="server_error">server-side error</string>
     <string name="timeout_error">request timed out</string>
 
+    <!-- TITLES -->
+    <string name="edit_profile_title">Profile Details</string>
+    <string name="edit_account_title">Account Details</string>
+
     <!-- LABELS -->
     <string name="follow_label">Follow</string>
     <string name="followers_label">Followers</string>
@@ -20,9 +24,14 @@
     <string name="saturation_label">Saturation</string>
     <string name="lightness_label">Lightness</string>
 
+    <string name="username_label">Username</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+
     <!-- HINTS -->
     <string name="username_hint">Enter username…</string>
     <string name="password_hint">Enter password…</string>
+    <string name="new_password_hint">Enter new password…</string>
     <string name="password_again_hint">Enter password again…</string>
     <string name="email_hint">Enter email…</string>
     <string name="profile_description_hint">Enter description…</string>
@@ -40,7 +49,7 @@
     <string name="password_match_error">The passwords do not match…</string>
 
     <!-- MISC -->
-    <string name="description_length">%d / %d</string>
+    <string name="length_limit">%d / %d</string>
 
     <!-- LOGGING -->
     <string name="generic_error">Error</string>

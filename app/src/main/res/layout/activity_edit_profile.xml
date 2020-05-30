@@ -20,10 +20,14 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_close_24dp" />
 
-        <Space
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/editProfile_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/edit_profile_title"
+            android:textAlignment="center"
+            android:textAppearance="@style/EmphaticText" />
 
         <Button
             android:id="@+id/editProfile_save"
@@ -53,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="115dp" />
+                app:layout_constraintGuide_begin="96dp" />
 
             <ImageView
                 android:id="@+id/editProfile_picture"
@@ -81,7 +85,7 @@
                 android:id="@+id/editProfile_descriptionLength"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/description_length"
+                android:text="@string/length_limit"
                 android:textAlignment="textEnd"
                 app:layout_constraintEnd_toEndOf="@+id/editProfile_description"
                 app:layout_constraintTop_toBottomOf="@+id/editProfile_description" />

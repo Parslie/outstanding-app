@@ -67,7 +67,7 @@ public class EditProfileActivity extends AuthorizedActivity
             public void onChanged(Profile profile) {
                 root.setBackgroundColor(profile.getPrimaryColor());
                 descriptionLengthView.setText(
-                        getResources().getString(R.string.description_length, profile.getDescription().length(), MAX_DESCRIPTION_LENGTH)
+                        getResources().getString(R.string.length_limit, profile.getDescription().length(), MAX_DESCRIPTION_LENGTH)
                 );
 
                 Bitmap pictureBitmap;
@@ -92,7 +92,6 @@ public class EditProfileActivity extends AuthorizedActivity
         if (user != null) {
             viewModel.setUser(user);
             Profile profile = user.getProfile();
-            assert profile != null;
 
             descriptionView.setText(profile.getDescription());
             hueSlider.setProgress((int) (profile.getPrimaryHue() * hueSlider.getMax()));

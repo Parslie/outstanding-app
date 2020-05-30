@@ -22,6 +22,7 @@
         <activity android:name=".activity.LockedProfileActivity" />
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.EditProfileActivity" />
+        <activity android:name=".activity.EditAccountActivity" />
         <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.LoginActivity">
