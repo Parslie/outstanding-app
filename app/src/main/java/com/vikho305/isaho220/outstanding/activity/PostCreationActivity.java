@@ -36,6 +36,7 @@ public class PostCreationActivity extends AuthorizedActivity
         implements View.OnClickListener, ResponseListener, TextWatcher {
 
     private static final int PICK_IMAGE = 0;
+    private static final int IMAGE_QUALITY = 15;
 
     private Button backButton, saveButton;
     private EditText titleView, textView;
@@ -107,19 +108,6 @@ public class PostCreationActivity extends AuthorizedActivity
         textView.addTextChangedListener(this);
     }
 
-    private void cancelCreation() {
-        setResult(RESULT_CANCELED);
-        finish();
-    }
-
-    private void saveCreation() {
-        try {
-            viewModel.postPost(getApplicationContext(), getAuthToken(), this);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void openImageGallery() {
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery, PICK_IMAGE);
@@ -141,10 +129,15 @@ public class PostCreationActivity extends AuthorizedActivity
     @Override
     public void onClick(View v) {
         if (v == backButton) {
-            cancelCreation();
+            setResult(RESULT_CANCELED);
+            finish();
         }
         else if (v == saveButton) {
-            saveCreation();
+            try {
+                viewModel.postPost(getApplicationContext(), getAuthToken(), this);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         else if (v == textButton) {
             imageView.setVisibility(View.GONE);
@@ -197,7 +190,7 @@ public class PostCreationActivity extends AuthorizedActivity
         try {
             Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream);
             return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();

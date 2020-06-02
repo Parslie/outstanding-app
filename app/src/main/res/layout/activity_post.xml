@@ -1,23 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/post_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="@dimen/activity_horizontal_padding"
-    android:paddingVertical="@dimen/activity_vertical_padding"
+    android:orientation="vertical"
     tools:context=".activity.PostActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/activity_horizontal_padding"
+        android:paddingVertical="@dimen/activity_vertical_padding">
+
+        <Button
+            android:id="@+id/post_back"
+            style="@style/RoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_close_24dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <fragment
-            android:id="@+id/post_postFrag"
-            android:name="com.vikho305.isaho220.outstanding.fragment.PostFragment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/activity_horizontal_padding"
+            android:paddingVertical="@dimen/activity_vertical_padding">
+
+            <fragment
+                android:id="@+id/post_postFrag"
+                android:name="com.vikho305.isaho220.outstanding.fragment.PostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
     </ScrollView>
 
-</FrameLayout>
+</LinearLayout>

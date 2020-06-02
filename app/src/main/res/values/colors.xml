@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF2929</color>
-    <color name="colorPrimaryDark">#B51414</color>
+    <color name="colorPrimary">#FF4141</color>
+    <color name="colorPrimaryDark">#A52323</color>
     <color name="colorAccent">#222222</color>
+
+    <color name="likeColor">#FF4141</color>
+    <color name="dislikeColor">#7918B7</color>
 
     <color name="buttonEnabled">#E8E8E8</color>
     <color name="buttonFocused">#D8D8D8</color>

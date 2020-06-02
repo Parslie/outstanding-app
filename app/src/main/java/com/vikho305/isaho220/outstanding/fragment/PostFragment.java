@@ -82,7 +82,10 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         titleView.setText(post.getTitle());
         textView.setText(post.getText());
 
-        // TODO: disable/enable title and text based on null value
+        if (post.getTitle() == null || post.getTitle().length() == 0)
+            titleView.setVisibility(View.GONE);
+        if (post.getText() == null || post.getText().length() == 0)
+            textView.setVisibility(View.GONE);
 
         // Media
         switch (post.getMediaType()) {
@@ -120,7 +123,15 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         likeCountView.setText(String.valueOf(post.getLikeCount()));
         dislikeCountView.setText(String.valueOf(post.getDislikeCount()));
 
-        // TODO: set rating buttons' icons
+        if (post.isLiked())
+            likeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_liked_24dp, null), null, null, null);
+        else
+            likeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_unliked_24dp, null), null, null, null);
+
+        if (post.isDisliked())
+            dislikeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_disliked_24dp, null), null, null, null);
+        else
+            dislikeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_undisliked_24dp, null), null, null, null);
     }
 
     @Override
