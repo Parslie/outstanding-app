@@ -3,7 +3,6 @@ package com.vikho305.isaho220.outstanding.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
@@ -30,8 +29,9 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
     private ImageView profilePictureView;
     private TextView usernameView, descriptionView;
     private TextView followerCountView, followingCountView;
+    private View followSpacing;
 
-    private Button editProfileButton, editUserButton;
+    private Button editProfileButton, editAccountButton;
     private Button followersButton, followButton, followingsButton;
     private Button backButton;
 
@@ -48,10 +48,11 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         usernameView = findViewById(R.id.profile_username);
         descriptionView = findViewById(R.id.profile_description);
         followerCountView = findViewById(R.id.profile_followerCount);
+        followSpacing = findViewById(R.id.profile_followSpace);
         followingCountView = findViewById(R.id.profile_followingCount);
 
         editProfileButton = findViewById(R.id.profile_editProfile);
-        editUserButton = findViewById(R.id.profile_editUser);
+        editAccountButton = findViewById(R.id.profile_editAccount);
         followersButton = findViewById(R.id.profile_followers);
         followButton = findViewById(R.id.profile_follow);
         followingsButton = findViewById(R.id.profile_followings);
@@ -65,6 +66,16 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
                 usernameView.setText(user.getUsername());
                 followerCountView.setText(String.valueOf(user.getFollowerCount()));
                 followingCountView.setText(String.valueOf(user.getFollowingCount()));
+
+                // If user is the one logged in
+                if (user.getId().equals(getAuthUserId())) {
+                    followButton.setVisibility(View.GONE);
+                    followSpacing.setVisibility(View.GONE);
+                }
+                else {
+                    editProfileButton.setVisibility(View.GONE);
+                    editAccountButton.setVisibility(View.GONE);
+                }
             }
         });
         viewModel.getProfile().observe(this, new Observer<Profile>() {
@@ -102,7 +113,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         followersButton.setOnClickListener(this);
         followingsButton.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
-        editUserButton.setOnClickListener(this);
+        editAccountButton.setOnClickListener(this);
     }
 
     private void goToFollowers() {
@@ -150,7 +161,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         else if (v == editProfileButton) {
             editProfile();
         }
-        else if (v == editUserButton) {
+        else if (v == editAccountButton) {
             editUser();
         }
         else if (v == followersButton) {
