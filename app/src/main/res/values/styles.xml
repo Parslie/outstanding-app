@@ -6,7 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="buttonStyle">@style/Button</item>
+        <item name="buttonStyle">@style/RoundButton</item>
         <item name="editTextStyle">@style/EditText</item>
         <item name="android:textAppearance">@style/BodyText</item>
     </style>
@@ -36,17 +36,7 @@
         <item name="android:textAppearance">@style/BodyText</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/circle_input</item>
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-    </style>
-
-    <style name="Button" parent="@android:style/Widget.Button">
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:textAppearance">@style/BodyText</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/rect_input</item>
+        <item name="android:background">@drawable/input</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
     </style>
@@ -58,9 +48,10 @@
         <item name="android:textAppearance">@style/BodyText</item>
         <item name="android:textColor">@color/colorAccent</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/rect_input</item>
+        <item name="android:background">@drawable/input</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+        <item name="android:paddingHorizontal">@dimen/big_spacing</item>
     </style>
 
 </resources>

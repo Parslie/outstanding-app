@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -29,10 +30,11 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
     private ImageView profilePictureView;
     private TextView usernameView, descriptionView;
     private TextView followerCountView, followingCountView;
-    private View followSpacing;
+
+    private LinearLayout postLayout;
 
     private Button editProfileButton, editAccountButton;
-    private Button followersButton, followButton, followingsButton;
+    private Button followButton;
     private Button backButton;
 
     private UserViewModel viewModel;
@@ -47,15 +49,14 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         profilePictureView = findViewById(R.id.profile_picture);
         usernameView = findViewById(R.id.profile_username);
         descriptionView = findViewById(R.id.profile_description);
-        followerCountView = findViewById(R.id.profile_followerCount);
-        followSpacing = findViewById(R.id.profile_followSpace);
-        followingCountView = findViewById(R.id.profile_followingCount);
+        followerCountView = findViewById(R.id.profile_followers);
+        followingCountView = findViewById(R.id.profile_followings);
+
+        postLayout = findViewById(R.id.profile_posts);
 
         editProfileButton = findViewById(R.id.profile_editProfile);
         editAccountButton = findViewById(R.id.profile_editAccount);
-        followersButton = findViewById(R.id.profile_followers);
         followButton = findViewById(R.id.profile_follow);
-        followingsButton = findViewById(R.id.profile_followings);
         backButton = findViewById(R.id.profile_back);
 
         // Init view model
@@ -64,13 +65,12 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
             @Override
             public void onChanged(User user) {
                 usernameView.setText(user.getUsername());
-                followerCountView.setText(String.valueOf(user.getFollowerCount()));
-                followingCountView.setText(String.valueOf(user.getFollowingCount()));
+                followerCountView.setText(getResources().getString(R.string.follower_count, user.getFollowerCount()));
+                followingCountView.setText(getResources().getString(R.string.following_count, user.getFollowingCount()));
 
                 // If user is the one logged in
                 if (user.getId().equals(getAuthUserId())) {
                     followButton.setVisibility(View.GONE);
-                    followSpacing.setVisibility(View.GONE);
                 }
                 else {
                     editProfileButton.setVisibility(View.GONE);
@@ -110,8 +110,8 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
 
         // Init listeners
         backButton.setOnClickListener(this);
-        followersButton.setOnClickListener(this);
-        followingsButton.setOnClickListener(this);
+        followerCountView.setOnClickListener(this);
+        followingCountView.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
         editAccountButton.setOnClickListener(this);
     }
@@ -164,10 +164,10 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         else if (v == editAccountButton) {
             editUser();
         }
-        else if (v == followersButton) {
+        else if (v == followerCountView) {
             goToFollowers();
         }
-        else if (v == followingsButton) {
+        else if (v == followingCountView) {
             goToFollowings();
         }
     }

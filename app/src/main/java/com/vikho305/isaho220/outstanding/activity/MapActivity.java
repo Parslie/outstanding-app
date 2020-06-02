@@ -51,8 +51,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private static final int POST_RADIUS = 1000;
 
     private MapView mapView;
-    private Button makePostButton;
-    private FloatingActionButton trackingModeButton;
+    private FloatingActionButton makePostButton, trackingModeButton;
 
     private UserViewModel userViewModel;
     private MapViewModel mapViewModel;

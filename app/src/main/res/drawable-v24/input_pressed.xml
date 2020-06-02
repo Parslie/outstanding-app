@@ -3,10 +3,10 @@
     <solid
         android:color="@color/buttonPressed" />
     <padding
-        android:top="12dp"
-        android:right="12dp"
-        android:bottom="12dp"
-        android:left="12dp" />
+        android:top="@dimen/mid_spacing"
+        android:right="@dimen/mid_spacing"
+        android:bottom="@dimen/mid_spacing"
+        android:left="@dimen/mid_spacing" />
     <corners
         android:radius="2000dp" />
 </shape>

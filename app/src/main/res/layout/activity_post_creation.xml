@@ -35,11 +35,6 @@
             android:drawableStart="@drawable/ic_check_24dp" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -66,7 +61,7 @@
                 android:id="@+id/postCreation_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big_spacing"
+                android:layout_marginTop="@dimen/mid_spacing"
                 android:ems="10"
                 android:gravity="top|left"
                 android:hint="@string/text_hint"
@@ -81,7 +76,7 @@
                 style="@style/RoundButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big_spacing"
+                android:layout_marginTop="@dimen/mid_spacing"
                 android:drawableStart="@drawable/ic_text_24dp"
                 app:layout_constraintStart_toStartOf="@+id/postCreation_text"
                 app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />
@@ -92,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/mid_spacing"
-                android:layout_marginTop="@dimen/big_spacing"
+                android:layout_marginTop="@dimen/mid_spacing"
                 android:drawableStart="@drawable/ic_image_24dp"
                 app:layout_constraintStart_toEndOf="@+id/postCreation_textContent"
                 app:layout_constraintTop_toBottomOf="@+id/postCreation_text" />

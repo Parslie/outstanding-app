@@ -43,11 +43,6 @@
             android:drawableStart="@drawable/ic_settings_24dp" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -60,19 +55,21 @@
 
             <ImageView
                 android:id="@+id/profile_picture"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/profile_username"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/mid_spacing"
+                android:text="12345678901234567890"
                 android:textAlignment="center"
-                android:textAppearance="@style/EmphaticText"
+                android:textAppearance="@style/TitleText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_picture" />
@@ -81,80 +78,59 @@
                 android:id="@+id/profile_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_spacing"
+                android:text="12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_username" />
 
             <LinearLayout
-                android:id="@+id/profile_followLayout"
+                android:id="@+id/profile_followViews"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/big_spacing"
+                android:layout_marginTop="@dimen/mid_spacing"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profile_description">
 
-                <Button
+                <TextView
                     android:id="@+id/profile_followers"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/small_spacing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/small_spacing"
                     android:layout_weight="1"
-                    android:text="@string/followers_label" />
+                    android:clickable="true"
+                    android:text="@string/follower_count"
+                    android:textAlignment="center" />
 
                 <Button
                     android:id="@+id/profile_follow"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/small_spacing"
                     android:layout_weight="1"
                     android:text="@string/follow_label" />
 
-                <Button
+                <TextView
                     android:id="@+id/profile_followings"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/small_spacing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/small_spacing"
                     android:layout_weight="1"
-                    android:text="@string/followings_label" />
+                    android:clickable="true"
+                    android:text="@string/following_count"
+                    android:textAlignment="center" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/profile_followCountLayout"
+                android:id="@+id/profile_posts"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_followLayout">
-
-                <TextView
-                    android:id="@+id/profile_followerCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/small_spacing"
-                    android:layout_weight="1"
-                    android:textAlignment="center" />
-
-                <Space
-                    android:id="@+id/profile_followSpace"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/small_spacing"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/profile_followingCount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/small_spacing"
-                    android:layout_weight="1"
-                    android:textAlignment="center" />
-            </LinearLayout>
-
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/big_spacing"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/profile_followViews"
+                tools:layout_editor_absoluteX="16dp"></LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

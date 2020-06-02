@@ -23,6 +23,7 @@ import com.vikho305.isaho220.outstanding.activity.PostActivity;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
 
+import java.util.Locale;
 import java.util.Objects;
 
 public class PostFragment extends Fragment implements View.OnClickListener {
@@ -31,12 +32,9 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     public static final String DISLIKE_CLICK_KEY = "dislike";
 
     private TextView titleView, textView;
-    private TextView likeCountView, dislikeCountView;
-
     private ImageView imageView;
-    private ImageView authorPicture;
-    private TextView authorUsername;
 
+    private ImageView authorPicture;
     private Button likeButton;
     private Button dislikeButton;
 
@@ -58,20 +56,14 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         titleView = view.findViewById(R.id.postFrag_title);
         textView = view.findViewById(R.id.postFrag_text);
 
-        likeCountView = view.findViewById(R.id.postFrag_likeCount);
-        dislikeCountView = view.findViewById(R.id.postFrag_dislikeCount);
-
         imageView = view.findViewById(R.id.postFrag_image);
         authorPicture = view.findViewById(R.id.postFrag_authorPicture);
-        authorUsername = view.findViewById(R.id.postFrag_author);
 
         likeButton = view.findViewById(R.id.postFrag_like);
         dislikeButton = view.findViewById(R.id.postFrag_dislike);
 
         // Init listeners
         authorPicture.setOnClickListener(this);
-        authorUsername.setOnClickListener(this);
-
         likeButton.setOnClickListener(this);
         dislikeButton.setOnClickListener(this);
 
@@ -104,7 +96,6 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 
         // Author
         User author = post.getAuthor();
-        authorUsername.setText(author.getUsername());
 
         Bitmap pictureBitmap;
         if (author.getProfile().getPicture() == null) {
@@ -120,8 +111,8 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         authorPicture.setImageDrawable(authorDrawable);
 
         // Ratings
-        likeCountView.setText(String.valueOf(post.getLikeCount()));
-        dislikeCountView.setText(String.valueOf(post.getDislikeCount()));
+        likeButton.setText(String.format(Locale.ENGLISH, " %d", post.getLikeCount()));
+        dislikeButton.setText(String.format(Locale.ENGLISH, " %d", post.getDislikeCount()));
 
         if (post.isLiked())
             likeButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_liked_24dp, null), null, null, null);
@@ -136,7 +127,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v == authorUsername || v == authorPicture) {
+        if (v == authorPicture) {
             onClickCallback.onClickCallback(AUTHOR_CLICK_KEY);
         }
         else if (v == likeButton) {

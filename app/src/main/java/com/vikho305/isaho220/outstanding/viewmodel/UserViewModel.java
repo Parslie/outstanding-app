@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +116,17 @@ public class UserViewModel extends ViewModel {
         user.setLatitude(latitude);
         user.setLongitude(longitude);
         this.user.setValue(user);
+    }
+
+    public void resetPosts() {
+        posts.setValue(new ArrayList<Post>());
+    }
+
+    public void addPosts(Post... posts) {
+        List<Post> postList = this.posts.getValue();
+        assert postList != null;
+        postList.addAll(Arrays.asList(posts));
+        this.posts.setValue(postList);
     }
 
     // Server-calling methods
@@ -264,7 +276,7 @@ public class UserViewModel extends ViewModel {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public void getPosts(int page) {
+    public void getPosts(final Context context, final String authToken, int page) {
 
     }
 }

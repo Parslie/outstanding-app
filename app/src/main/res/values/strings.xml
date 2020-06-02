@@ -52,6 +52,8 @@
 
     <!-- MISC -->
     <string name="length_limit">%d / %d</string>
+    <string name="follower_count">%d Followers</string>
+    <string name="following_count">%d Followings</string>
 
     <!-- LOGGING -->
     <string name="generic_error">Error</string>
