@@ -29,9 +29,10 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
     private View root;
     private ImageView profilePictureView;
     private TextView usernameView, descriptionView;
+    private TextView followerCountView, followingCountView;
 
     private Button editProfileButton, editUserButton;
-    private Button followersButton, followingsButton;
+    private Button followersButton, followButton, followingsButton;
     private Button backButton;
 
     private UserViewModel viewModel;
@@ -46,9 +47,13 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         profilePictureView = findViewById(R.id.profile_picture);
         usernameView = findViewById(R.id.profile_username);
         descriptionView = findViewById(R.id.profile_description);
+        followerCountView = findViewById(R.id.profile_followerCount);
+        followingCountView = findViewById(R.id.profile_followingCount);
+
         editProfileButton = findViewById(R.id.profile_editProfile);
         editUserButton = findViewById(R.id.profile_editUser);
         followersButton = findViewById(R.id.profile_followers);
+        followButton = findViewById(R.id.profile_follow);
         followingsButton = findViewById(R.id.profile_followings);
         backButton = findViewById(R.id.profile_back);
 
@@ -58,6 +63,8 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
             @Override
             public void onChanged(User user) {
                 usernameView.setText(user.getUsername());
+                followerCountView.setText(String.valueOf(user.getFollowerCount()));
+                followingCountView.setText(String.valueOf(user.getFollowingCount()));
             }
         });
         viewModel.getProfile().observe(this, new Observer<Profile>() {
