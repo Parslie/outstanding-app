@@ -5,26 +5,31 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.fragment.FollowerListFragment;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FollowerActivity extends AuthorizedActivity implements FollowerListFragment.InteractionListener {
 
     private FollowerListFragment followerListFragment;
     private Button followRequestsButton;
+    private List<User> followers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +65,19 @@ public class FollowerActivity extends AuthorizedActivity implements FollowerList
 
     @Override
     public void getListItems(final FollowerListFragment listener) {
-        Response.Listener<JSONObject> response = new Response.Listener<JSONObject>() {
+        Response.Listener<JSONArray> response = new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    Gson gson = new Gson();
-                    List<String> items = gson.fromJson(response.getString("grupper"), new TypeToken<ArrayList<String>>(){}.getType());
-                    listener.onCallback(items);
+            public void onResponse(JSONArray response) {
+                Gson gson = new Gson();
+
+                followers = gson.fromJson(response.toString(), new TypeToken<ArrayList<User>>(){}.getType());
+                List<String> items = new ArrayList<String>();
+                for (User user : followers) {
+                    String username = user.getUsername() + "@" + user.getId();
+                    items.add(username);
                 }
-                catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
+                listener.onCallback(items);
             }
         };
 
@@ -87,7 +94,18 @@ public class FollowerActivity extends AuthorizedActivity implements FollowerList
             }
         };
 
-        JsonObjectRequest request = new JsonObjectRequest(JsonObjectRequest.Method.GET, "https://tddd80server.herokuapp.com/grupper", new JSONObject(), response, errorResponse);
+        Intent intent = getIntent();
+        User user = intent.getParcelableExtra("user");
+
+        String url = getResources().getString(R.string.get_followers_url, user.getId(), 0);
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, response, errorResponse){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getAuthToken());
+                return headers;
+            }
+        };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(request);
     }
