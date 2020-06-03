@@ -1,5 +1,6 @@
 package com.vikho305.isaho220.outstanding.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.volley.AuthFailureError;
@@ -51,8 +52,14 @@ public class FollowRequestActivity extends AuthorizedActivity implements FollowR
             @Override
             public void onResponse(JSONArray response) {
                 Gson gson = new Gson();
+
                 pendingUsers = gson.fromJson(response.toString(), new TypeToken<ArrayList<User>>(){}.getType());
-                List<String> items = gson.fromJson(response.toString(), new TypeToken<ArrayList<String>>(){}.getType());
+                List<String> items = new ArrayList<String>();
+                for (User user : pendingUsers) {
+                    String username = user.getUsername() + "@" + user.getId();
+                    items.add(username);
+                }
+
                 listener.onCallback(items);
             }
         };
@@ -70,7 +77,7 @@ public class FollowRequestActivity extends AuthorizedActivity implements FollowR
             }
         };
 
-        String url = getResources().getString(R.string.get_pending_followers_url, 1);
+        String url = getResources().getString(R.string.get_pending_followers_url, 0);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, response, errorResponse){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -83,5 +90,10 @@ public class FollowRequestActivity extends AuthorizedActivity implements FollowR
         requestQueue.add(request);
     }
 
+    public void goToRequestHandling(String username) {
+        Intent intent = new Intent(this, FollowRequestHandlingActivity.class);
+        intent.putExtra("username", username);
+        goToActivity(intent);
+    }
 
 }

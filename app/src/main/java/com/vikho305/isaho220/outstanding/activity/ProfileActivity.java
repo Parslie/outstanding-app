@@ -17,10 +17,22 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.vikho305.isaho220.outstanding.CustomJsonObjectRequest;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Profile;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ProfileActivity extends AuthorizedActivity implements View.OnClickListener {
 
@@ -114,7 +126,10 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         followingCountView.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
         editAccountButton.setOnClickListener(this);
+        followButton.setOnClickListener(this);
     }
+
+
 
     private void goToFollowers() {
         Intent intent = new Intent(this, FollowerActivity.class);
@@ -153,6 +168,35 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         }
     }
 
+    private void follow(String userId){
+        String url = getResources().getString(R.string.follow_url, userId);
+        CustomJsonObjectRequest request = new CustomJsonObjectRequest(
+                Request.Method.POST,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        followButton.setEnabled(false);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getAuthToken());
+                return headers;
+            }
+        };
+        Volley.newRequestQueue(this).add(request);
+    }
+
     @Override
     public void onClick(View v) {
         if (v == backButton) {
@@ -169,6 +213,9 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         }
         else if (v == followingCountView) {
             goToFollowings();
+        }
+        else if (v == followButton) {
+            follow(Objects.requireNonNull(viewModel.getUser().getValue()).getId());
         }
     }
 }

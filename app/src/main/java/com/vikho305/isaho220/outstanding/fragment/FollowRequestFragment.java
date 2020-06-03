@@ -12,8 +12,10 @@ import android.widget.ListView;
 import androidx.fragment.app.ListFragment;
 
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.activity.FollowRequestActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FollowRequestFragment extends ListFragment {
     private FollowRequestFragment.InteractionListener parentListener;
@@ -45,7 +47,11 @@ public class FollowRequestFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        String item = (String) getListAdapter().getItem(position);
+        String item = (String) Objects.requireNonNull(getListAdapter()).getItem(position);
+
+        FollowRequestActivity activity = (FollowRequestActivity)getActivity();
+        Objects.requireNonNull(activity).goToRequestHandling(item);
+
         parentListener.onListItemClick(item);
     }
 
