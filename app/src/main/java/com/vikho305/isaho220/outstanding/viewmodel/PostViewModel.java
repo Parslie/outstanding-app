@@ -9,19 +9,26 @@ import androidx.lifecycle.ViewModel;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.vikho305.isaho220.outstanding.JsonParameterRequest;
 import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.database.Comment;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PostViewModel extends ViewModel {
@@ -30,12 +37,16 @@ public class PostViewModel extends ViewModel {
 
     private MutableLiveData<Post> post = new MutableLiveData<>();
     private MutableLiveData<User> author = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<Comment>> comments = new MutableLiveData<>();
 
     public LiveData<Post> getPost() {
         return post;
     }
     public LiveData<User> getAuthor() {
         return author;
+    }
+    public LiveData<ArrayList<Comment>> getComments() {
+        return comments;
     }
 
     public void setPost(Post post) {
@@ -73,6 +84,19 @@ public class PostViewModel extends ViewModel {
 
     private void updatePost() {
         post.setValue(post.getValue());
+    }
+
+    private void clearComments() {
+        comments.setValue(new ArrayList<Comment>());
+    }
+
+    private void addComments(List<Comment> newComments) {
+        ArrayList<Comment> comments = this.comments.getValue();
+        if (comments == null)
+            comments = new ArrayList<>();
+
+        comments.addAll(newComments);
+        this.comments.setValue(comments);
     }
 
     // Server-calling methods
@@ -128,7 +152,6 @@ public class PostViewModel extends ViewModel {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println(response.toString());
                         Gson gson = new Gson();
                         Post updatedPost = gson.fromJson(response.toString(), Post.class);
                         PostViewModel.this.post.setValue(updatedPost);
@@ -163,10 +186,80 @@ public class PostViewModel extends ViewModel {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println(response.toString());
                         Gson gson = new Gson();
                         Post updatedPost = gson.fromJson(response.toString(), Post.class);
                         PostViewModel.this.post.setValue(updatedPost);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public void fetchComments(Context context, final String authToken) {
+        Post post = this.post.getValue();
+        assert post != null;
+
+        JsonArrayRequest request = new JsonArrayRequest(
+                Request.Method.GET,
+                context.getResources().getString(R.string.get_comments_url, post.getId(), 0),
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<Comment>>() {}.getType();
+                        List<Comment> newComments = gson.fromJson(response.toString(), listType);
+                        addComments(newComments);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public void postComment(final Context context, final String authToken, final String content) throws JSONException {
+        Post post = this.post.getValue();
+        assert post != null;
+
+        JSONObject parameters = new JSONObject();
+        parameters.put("text", content);
+
+        JsonParameterRequest request = new JsonParameterRequest(
+                Request.Method.POST,
+                context.getResources().getString(R.string.post_comment_url, post.getId()),
+                parameters,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        clearComments();
+                        fetchComments(context, authToken);
                     }
                 },
                 new Response.ErrorListener() {

@@ -90,8 +90,8 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
                     editAccountButton.setVisibility(View.GONE);
 
                     if(user.isFollowing()){
-                        String s = "unfollow";
-                        followButton.setText("unfollow");
+                        String s = "Unfollow";
+                        followButton.setText(s);
                     }
                 }
             }

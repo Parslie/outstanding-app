@@ -28,7 +28,7 @@ import java.util.Objects;
 
 public class PostFragment extends Fragment implements View.OnClickListener {
 
-    public static final String AUTHOR_CLICK_KEY = "author", LIKE_CLICK_KEY = "like";
+    public static final String AUTHOR_CLICK_KEY = "postAuthor", LIKE_CLICK_KEY = "like";
     public static final String DISLIKE_CLICK_KEY = "dislike";
 
     private TextView titleView, textView;

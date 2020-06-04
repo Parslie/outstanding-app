@@ -42,8 +42,6 @@
     <string name="text_hint">Enter text…</string>
 
 
-
-
     <!-- INPUT ERRORS -->
     <string name="username_length_error">The username is too short…</string>
     <string name="email_format_error">The email is formatted incorrectly…</string>
@@ -64,4 +62,7 @@
     <string name="current_location">Got current location</string>
     <string name="tracking_already_enabled">Tracking is already enabled</string>
     <string name="tracking_enabled">Tracking now enabled</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
