@@ -71,6 +71,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         followButton = findViewById(R.id.profile_follow);
         backButton = findViewById(R.id.profile_back);
 
+
         // Init view model
         viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         viewModel.getUser().observe(this, new Observer<User>() {
@@ -87,6 +88,12 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
                 else {
                     editProfileButton.setVisibility(View.GONE);
                     editAccountButton.setVisibility(View.GONE);
+
+                    if(viewModel.getUser().getValue().isFollowing()){
+                        String s = "unfollow";
+                        followButton.setText(s);
+                    }
+
                 }
             }
         });
@@ -117,7 +124,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
 
         if (user != null) // Prevents unnecessary server calls
             viewModel.setUser(user);
-        else if (viewModel.getUser().getValue() == null) // Prevents unnecessary server calls
+        else if (viewModel.getUser().getValue() == null)
             viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
 
         // Init listeners
@@ -128,8 +135,6 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         editAccountButton.setOnClickListener(this);
         followButton.setOnClickListener(this);
     }
-
-
 
     private void goToFollowers() {
         Intent intent = new Intent(this, FollowerActivity.class);
@@ -177,6 +182,8 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        String s = "sent request";
+                        followButton.setText(s);
                         followButton.setEnabled(false);
                     }
                 },
@@ -197,6 +204,37 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         Volley.newRequestQueue(this).add(request);
     }
 
+    private void unfollow(String userId){
+        String url = getResources().getString(R.string.follow_url, userId);
+        CustomJsonObjectRequest request = new CustomJsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        String s = "follow";
+                        followButton.setText(s);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + getAuthToken());
+                return headers;
+            }
+        };
+        Volley.newRequestQueue(this).add(request);
+    }
+
+
     @Override
     public void onClick(View v) {
         if (v == backButton) {
@@ -215,7 +253,12 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
             goToFollowings();
         }
         else if (v == followButton) {
-            follow(Objects.requireNonNull(viewModel.getUser().getValue()).getId());
+            if(Objects.requireNonNull(viewModel.getUser().getValue()).isFollowing()){
+                unfollow(Objects.requireNonNull(viewModel.getUser().getValue()).getId());
+            }
+            else{
+                follow(Objects.requireNonNull(viewModel.getUser().getValue()).getId());
+            }
         }
     }
 }
