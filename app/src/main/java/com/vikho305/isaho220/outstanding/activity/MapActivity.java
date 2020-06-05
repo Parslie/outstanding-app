@@ -131,13 +131,13 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                 postManager.create(new SymbolOptions()
                         .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
                         .withIconImage(TEXT_ICON)
-                        .withIconSize(1.0f));
+                        .withIconSize(1.25f));
             }
             else if(post.getMediaType().equals(Post.IMAGE_TYPE)){
                 postManager.create(new SymbolOptions()
                         .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()))
                         .withIconImage(PICTURE_ICON)
-                        .withIconSize(1.0f));
+                        .withIconSize(1.25f));
             }
         }
     }
@@ -149,7 +149,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
             followingManager.create(new SymbolOptions()
                     .withLatLng(new LatLng(user.getLatitude(), user.getLongitude()))
                     .withIconImage(TEXT_ICON)
-                    .withIconSize(1.0f));
+                    .withIconSize(1.25f));
         }
     }
 
@@ -176,7 +176,6 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                 followingManager.setTextAllowOverlap(true);
 
                 mapViewModel.fetchPosts(getApplicationContext(), getAuthToken(), POST_RADIUS);
-                mapViewModel.fetchFollowings(getApplicationContext(), getAuthToken());
 
                 postManager.addClickListener(new OnSymbolClickListener() {
                     @Override
@@ -215,7 +214,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
             // Create and customize the LocationComponent's options
             LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(this)
                     .elevation(5)
-                    .accuracyAlpha(.6f)
+                    .accuracyAlpha(.5f)
                     .accuracyColor(Color.RED)
                     .foregroundDrawable(R.drawable.icon)
                     .build();
@@ -312,6 +311,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     protected void onResume() {
         super.onResume();
         mapView.onResume();
+        mapViewModel.fetchPosts(getApplicationContext(), getAuthToken(), POST_RADIUS);
     }
 
     @Override
