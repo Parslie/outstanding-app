@@ -36,6 +36,8 @@ public class UserViewModel extends ViewModel {
     public static final String PROFILE_SAVE_RESPONSE = "profile";
     public static final String ACCOUNT_SAVE_RESPONSE = "account";
     public static final String COORDINATES_SAVE_RESPONSE = "coordinates";
+    public static final String FOLLOW_RESPONSE = "follow";
+    public static final String UNFOLLOW_RESPONSE = "unfollow";
 
     private MutableLiveData<User> user = new MutableLiveData<>();
     private MutableLiveData<Profile> profile = new MutableLiveData<>();
@@ -276,7 +278,69 @@ public class UserViewModel extends ViewModel {
         Volley.newRequestQueue(context).add(request);
     }
 
-    public void getPosts(final Context context, final String authToken, int page) {
+    public void follow(Context context, final String authToken, final ResponseListener responseListener){
+        User user = this.user.getValue();
+        assert user != null;
 
+        JsonParameterRequest request = new JsonParameterRequest(
+                Request.Method.POST,
+                context.getResources().getString(R.string.follow_url, user.getId()),
+                null,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        responseListener.onRequestResponse(FOLLOW_RESPONSE, true);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        responseListener.onRequestResponse(FOLLOW_RESPONSE, false);
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
+    }
+
+    public void unfollow(Context context, final String authToken, final ResponseListener responseListener){
+        User user = this.user.getValue();
+        assert user != null;
+
+        JsonParameterRequest request = new JsonParameterRequest(
+                Request.Method.DELETE,
+                context.getResources().getString(R.string.follow_url, user.getId()),
+                null,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        responseListener.onRequestResponse(UNFOLLOW_RESPONSE, true);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        responseListener.onRequestResponse(UNFOLLOW_RESPONSE, false);
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
     }
 }

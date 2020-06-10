@@ -8,5 +8,5 @@
         android:bottom="@dimen/mid_spacing"
         android:left="@dimen/mid_spacing" />
     <corners
-        android:radius="2000dp" />
+        android:radius="@dimen/big_spacing" />
 </shape>

@@ -37,9 +37,6 @@ public class FollowingActivity extends AuthorizedActivity implements FolloweeLis
             followeeListFragment = new FolloweeListFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, followeeListFragment).commit();
         }
-        else {
-
-        }
     }
 
     @Override
@@ -84,7 +81,7 @@ public class FollowingActivity extends AuthorizedActivity implements FolloweeLis
         String url = getResources().getString(R.string.get_followings_url, user.getId(), 0);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, response, errorResponse){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + getAuthToken());
                 return headers;

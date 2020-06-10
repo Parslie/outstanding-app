@@ -33,6 +33,7 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Get layout views
         usernameInput = findViewById(R.id.login_username);
         passwordInput = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_login);
@@ -40,13 +41,15 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
         errorText = findViewById(R.id.login_errorText);
         loginProgressBar = findViewById(R.id.login_progressBar);
 
+        // Init activity
+        errorText.setVisibility(View.GONE);
+        loginProgressBar.setVisibility(View.GONE);
+
+        // Init listeners
         usernameInput.addTextChangedListener(this);
         passwordInput.addTextChangedListener(this);
         loginButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
-
-        errorText.setVisibility(View.GONE);
-        loginProgressBar.setVisibility(View.GONE);
     }
 
     private void goToMap() {
@@ -61,12 +64,12 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
         goToActivity(intent);
     }
 
-    private void logIn() throws JSONException {
+    private void logIn(String username, String password) throws JSONException {
         JSONObject parameters = new JSONObject();
-        parameters.put("username", usernameInput.getText().toString());
-        parameters.put("password", passwordInput.getText().toString());
+        parameters.put("username", username);
+        parameters.put("password", password);
 
-        errorText.setVisibility(View.GONE);
+        // Disable possibility of logging in twice at once
         loginButton.setEnabled(false);
         loginProgressBar.setVisibility(View.VISIBLE);
 
@@ -91,6 +94,7 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
                             e.printStackTrace();
                         }
 
+                        // Re-enable possibility to log in
                         loginButton.setEnabled(true);
                         loginProgressBar.setVisibility(View.GONE);
                     }
@@ -100,6 +104,7 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
 
+                        // Show specific error
                         if (error.networkResponse == null)
                             errorText.setText(R.string.timeout_error);
                         else if (error.networkResponse.statusCode == 403)
@@ -108,6 +113,7 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
                             errorText.setText(R.string.server_error);
                         errorText.setVisibility(View.VISIBLE);
 
+                        // Re-enable possibility to log in
                         loginButton.setEnabled(true);
                         loginProgressBar.setVisibility(View.GONE);
                     }
@@ -126,7 +132,9 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
         }
         else if (v == loginButton) {
             try {
-                logIn();
+                String username = usernameInput.getText().toString();
+                String password = passwordInput.getText().toString();
+                logIn(username, password);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -138,6 +146,7 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
 
+        // Disable logging in when a field is empty
         if (username.length() == 0 || password.length() == 0)
             loginButton.setEnabled(false);
         else

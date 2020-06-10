@@ -17,24 +17,16 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.vikho305.isaho220.outstanding.CustomJsonObjectRequest;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.ResponseListener;
 import com.vikho305.isaho220.outstanding.database.Profile;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-public class ProfileActivity extends AuthorizedActivity implements View.OnClickListener {
+public class ProfileActivity extends AuthorizedActivity implements View.OnClickListener,
+        ResponseListener {
 
     private static final int EDIT_REQUEST = 0;
 
@@ -58,13 +50,12 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
 
         // Get layout views
         root = findViewById(R.id.profile_root);
+        postLayout = findViewById(R.id.profile_posts);
         profilePictureView = findViewById(R.id.profile_picture);
         usernameView = findViewById(R.id.profile_username);
         descriptionView = findViewById(R.id.profile_description);
         followerCountView = findViewById(R.id.profile_followers);
         followingCountView = findViewById(R.id.profile_followings);
-
-        postLayout = findViewById(R.id.profile_posts);
 
         editProfileButton = findViewById(R.id.profile_editProfile);
         editAccountButton = findViewById(R.id.profile_editAccount);
@@ -89,10 +80,10 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
                     editProfileButton.setVisibility(View.GONE);
                     editAccountButton.setVisibility(View.GONE);
 
-                    if(user.isFollowing()){
-                        String s = "Unfollow";
-                        followButton.setText(s);
-                    }
+                    if (user.isFollowing())
+                        followButton.setText(R.string.unfollow_label);
+                    else
+                        followButton.setText(R.string.follow_label);
                 }
             }
         });
@@ -102,6 +93,7 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
                 descriptionView.setText(profile.getDescription());
                 root.setBackgroundColor(profile.getPrimaryColor());
 
+                // Decode and set profile picture
                 Bitmap pictureBitmap;
                 if (profile.getPicture() == null) {
                     pictureBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
@@ -118,13 +110,16 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         });
 
         // Init activity
-        Intent intent = getIntent(); // TODO: send a user ID so you can view more profiles than your own
+        Intent intent = getIntent();
         User user = intent.getParcelableExtra("user");
+        String userId = intent.getStringExtra("userId");
 
         if (user != null) // Prevents unnecessary server calls
             viewModel.setUser(user);
-        else if (viewModel.getUser().getValue() == null)
-            viewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
+        else if (userId != null)
+            viewModel.fetchUser(getApplicationContext(), userId, getAuthToken());
+        else
+            finish(); // TODO: add more extensive error-handling
 
         // Init listeners
         backButton.setOnClickListener(this);
@@ -172,68 +167,6 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
         }
     }
 
-    private void follow(String userId){
-        String url = getResources().getString(R.string.follow_url, userId);
-        CustomJsonObjectRequest request = new CustomJsonObjectRequest(
-                Request.Method.POST,
-                url,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        String s = "sent request";
-                        followButton.setText(s);
-                        followButton.setEnabled(false);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + getAuthToken());
-                return headers;
-            }
-        };
-        Volley.newRequestQueue(this).add(request);
-    }
-
-    private void unfollow(String userId){
-        String url = getResources().getString(R.string.follow_url, userId);
-        CustomJsonObjectRequest request = new CustomJsonObjectRequest(
-                Request.Method.DELETE,
-                url,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        String s = "follow";
-                        followButton.setText(s);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + getAuthToken());
-                return headers;
-            }
-        };
-        Volley.newRequestQueue(this).add(request);
-    }
-
-
     @Override
     public void onClick(View v) {
         if (v == backButton) {
@@ -252,11 +185,27 @@ public class ProfileActivity extends AuthorizedActivity implements View.OnClickL
             goToFollowings();
         }
         else if (v == followButton) {
-            if(Objects.requireNonNull(viewModel.getUser().getValue()).isFollowing()){
-                unfollow(Objects.requireNonNull(viewModel.getUser().getValue()).getId());
+            boolean isFollowing = Objects.requireNonNull(viewModel.getUser().getValue()).isFollowing();
+
+            if(isFollowing) {
+                viewModel.unfollow(getApplicationContext(), getAuthToken(), this);
             }
-            else{
-                follow(Objects.requireNonNull(viewModel.getUser().getValue()).getId());
+            else {
+                viewModel.follow(getApplicationContext(), getAuthToken(), this);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestResponse(String responseType, boolean successful) {
+        if (successful) {
+            switch (responseType) {
+                case UserViewModel.FOLLOW_RESPONSE:
+                    followButton.setText(R.string.cancel_follow_label);
+                    break;
+                case UserViewModel.UNFOLLOW_RESPONSE:
+                    followButton.setText(R.string.follow_label);
+                    break;
             }
         }
     }

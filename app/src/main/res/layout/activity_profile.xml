@@ -68,7 +68,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/mid_spacing"
-                android:text="12345678901234567890"
                 android:textAlignment="center"
                 android:textAppearance="@style/TitleText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +78,6 @@
                 android:id="@+id/profile_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +100,6 @@
                     android:layout_marginHorizontal="@dimen/small_spacing"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:text="@string/follower_count"
                     android:textAlignment="center" />
 
                 <Button
@@ -120,7 +117,6 @@
                     android:layout_marginHorizontal="@dimen/small_spacing"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:text="@string/following_count"
                     android:textAlignment="center" />
             </LinearLayout>
 

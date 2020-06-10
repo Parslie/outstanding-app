@@ -20,7 +20,6 @@
         <activity android:name=".activity.FollowRequestHandlingActivity" />
         <activity android:name=".activity.FollowingActivity" />
         <activity android:name=".activity.FollowerActivity" />
-        <activity android:name=".activity.LockedProfileActivity" />
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.EditProfileActivity" />
         <activity android:name=".activity.EditAccountActivity" />

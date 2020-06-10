@@ -70,6 +70,7 @@ public class EditProfileActivity extends AuthorizedActivity
                         getResources().getString(R.string.length_limit, profile.getDescription().length(), MAX_DESCRIPTION_LENGTH)
                 );
 
+                // Decode and set profile picture
                 Bitmap pictureBitmap;
                 if (profile.getPicture() == null) {
                     pictureBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
@@ -171,8 +172,7 @@ public class EditProfileActivity extends AuthorizedActivity
 
     @Override
     public void onRequestResponse(String responseType, boolean successful) {
-        if (successful && (responseType.equals(UserViewModel.PROFILE_SAVE_RESPONSE) ||
-                responseType.equals(UserViewModel.ACCOUNT_SAVE_RESPONSE))) {
+        if (successful && responseType.equals(UserViewModel.PROFILE_SAVE_RESPONSE)) {
             Intent data = new Intent();
             data.putExtra("user", viewModel.getUser().getValue());
             setResult(RESULT_OK, data);

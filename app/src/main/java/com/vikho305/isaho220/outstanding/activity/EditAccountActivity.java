@@ -144,7 +144,7 @@ public class EditAccountActivity extends AuthorizedActivity
 
     @Override
     public void onRequestResponse(String responseType, boolean successful) {
-        if (responseType.equals(UserViewModel.PROFILE_SAVE_RESPONSE) && successful) {
+        if (responseType.equals(UserViewModel.ACCOUNT_SAVE_RESPONSE) && successful) {
             Intent data = new Intent();
             data.putExtra("user", viewModel.getUser().getValue());
             setResult(RESULT_OK, data);

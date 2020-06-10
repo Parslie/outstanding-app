@@ -1,11 +1,9 @@
 package com.vikho305.isaho220.outstanding.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,13 +35,12 @@ import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
 import com.vikho305.isaho220.outstanding.viewmodel.MapViewModel;
-import com.vikho305.isaho220.outstanding.viewmodel.UserViewModel;
 
 import java.util.List;
 import java.util.Objects;
 
 public class MapActivity extends AuthorizedActivity implements OnMapReadyCallback,
-        OnLocationClickListener, PermissionsListener, View.OnClickListener {
+        PermissionsListener, View.OnClickListener {
 
     private static final int POST_CREATION_REQUEST = 0;
     private static final String TEXT_ICON = "text";
@@ -53,7 +50,6 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private MapView mapView;
     private FloatingActionButton makePostButton, trackingModeButton;
 
-    private UserViewModel userViewModel;
     private MapViewModel mapViewModel;
 
     private SymbolManager postManager, followingManager;
@@ -72,8 +68,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         makePostButton = findViewById(R.id.map_postButton);
         trackingModeButton = findViewById(R.id.map_trackingModeButton);
 
-        // Init view models
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        // Init view model
         mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
         mapViewModel.getPosts().observe(this, new Observer<List<Post>>() {
             @Override
@@ -87,17 +82,8 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                 updateFollowingSymbols(users);
             }
         });
-        // TODO: when user is updated add as new symbol to map
 
         // Init activity
-        Intent intent = getIntent();
-        User user = intent.getParcelableExtra("user");
-
-        if (user != null) // Prevents unnecessary server calls
-            userViewModel.setUser(user);
-        else if (userViewModel.getUser().getValue() == null) // Prevents unnecessary server calls
-            userViewModel.fetchUser(getApplicationContext(), getAuthUserId(), getAuthToken());
-
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -109,6 +95,12 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private void goToProfile(User user) {
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.putExtra("user", user);
+        goToActivity(intent);
+    }
+
+    private void goToProfile(String userId) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("userId", userId);
         goToActivity(intent);
     }
 
@@ -126,6 +118,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private void updatePostSymbols(List<Post> posts) {
         postManager.deleteAll();
 
+        // Add all posts as symbols with their own
         for (Post post : posts) {
             if(post.getMediaType().equals(Post.TEXT_TYPE)){
                 postManager.create(new SymbolOptions()
@@ -145,10 +138,11 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     private void updateFollowingSymbols(List<User> users) {
         followingManager.deleteAll();
 
+        // Add all users as symbols
         for (User user : users) {
             followingManager.create(new SymbolOptions()
                     .withLatLng(new LatLng(user.getLatitude(), user.getLongitude()))
-                    .withIconImage(TEXT_ICON)
+                    .withIconImage(TEXT_ICON) // TODO: set image to profile picture
                     .withIconSize(1.25f));
         }
     }
@@ -160,14 +154,15 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
+                // Init symbol icons
                 style.addImage(TEXT_ICON,
                         Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(MapActivity.this, R.drawable.ic_text_24dp))),
                         true);
-
                 style.addImage(PICTURE_ICON,
                         Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(MapActivity.this, R.drawable.ic_image_24dp))),
                         true);
 
+                // Init symbol managers
                 postManager = new SymbolManager(mapView, mapboxMap, style);
                 postManager.setIconAllowOverlap(true);
                 postManager.setTextAllowOverlap(true);
@@ -175,8 +170,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                 followingManager.setIconAllowOverlap(true);
                 followingManager.setTextAllowOverlap(true);
 
-                mapViewModel.fetchPosts(getApplicationContext(), getAuthToken(), POST_RADIUS);
-
+                // Init symbol click listeners
                 postManager.addClickListener(new OnSymbolClickListener() {
                     @Override
                     public void onAnnotationClick(Symbol symbol) {
@@ -202,64 +196,45 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
                     }
                 });
 
+                // Fetch symbols
+                mapViewModel.fetchPosts(getApplicationContext(), getAuthToken(), POST_RADIUS);
+                mapViewModel.fetchFollowings(getApplicationContext(), getAuthToken());
+
                 enableLocationComponent(style);
             }
         });
     }
 
-    @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
-            // Create and customize the LocationComponent's options
             LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(this)
                     .elevation(5)
-                    .accuracyAlpha(.5f)
+                    .accuracyAlpha(.25f)
                     .accuracyColor(Color.RED)
-                    .foregroundDrawable(R.drawable.icon)
                     .build();
-
-            // Get an instance of the component
-            locationComponent = mapboxMap.getLocationComponent();
 
             LocationComponentActivationOptions locationComponentActivationOptions =
                     LocationComponentActivationOptions.builder(this, loadedMapStyle)
                             .locationComponentOptions(customLocationComponentOptions)
                             .build();
 
-            // Activate with options
+            // Set up location component
+            locationComponent = mapboxMap.getLocationComponent();
             locationComponent.activateLocationComponent(locationComponentActivationOptions);
-
-            // Enable to make component visible
             locationComponent.setLocationComponentEnabled(true);
-
-            // Set the component's camera mode
             locationComponent.setCameraMode(CameraMode.TRACKING);
-
-            // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.COMPASS);
-
-            // Add the location icon click listener
-            locationComponent.addOnLocationClickListener(this);
-        } else {
+            locationComponent.addOnLocationClickListener(new OnLocationClickListener() {
+                @Override
+                public void onLocationComponentClick() {
+                    goToProfile(getAuthUserId());
+                }
+            });
+        }
+        else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
-        }
-    }
-
-    @SuppressLint("StringFormatInvalid")
-    @SuppressWarnings( {"MissingPermission"})
-    @Override
-    public void onLocationComponentClick() {
-        if (locationComponent.getLastKnownLocation() != null) {
-
-            Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra("userId", getAuthUserId());
-            goToActivity(intent);
-
-            Toast.makeText(this, String.format(getString(R.string.current_location),
-                    locationComponent.getLastKnownLocation().getLatitude(),
-                    locationComponent.getLastKnownLocation().getLongitude()), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -275,7 +250,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     }
 
     ///////
-    // Misc // TODO: check then categorize and organize methods
+    // Misc
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -301,7 +276,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
         }
     }
 
-    @SuppressWarnings( {"MissingPermission"})
+    @Override
     protected void onStart() {
         super.onStart();
         mapView.onStart();
@@ -311,7 +286,12 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     protected void onResume() {
         super.onResume();
         mapView.onResume();
-        mapViewModel.fetchPosts(getApplicationContext(), getAuthToken(), POST_RADIUS);
+
+        // Update symbols on return to activity
+        if (postManager != null && followingManager != null) {
+            mapViewModel.fetchPosts(getApplicationContext(), getAuthToken(), POST_RADIUS);
+            mapViewModel.fetchFollowings(getApplicationContext(), getAuthToken());
+        }
     }
 
     @Override
@@ -327,7 +307,7 @@ public class MapActivity extends AuthorizedActivity implements OnMapReadyCallbac
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }

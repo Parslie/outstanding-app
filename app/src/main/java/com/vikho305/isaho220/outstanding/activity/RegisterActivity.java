@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -36,6 +35,7 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // Get layout views
         usernameInput = findViewById(R.id.register_username);
         emailInput = findViewById(R.id.register_email);
         passwordInput = findViewById(R.id.register_password);
@@ -45,25 +45,27 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
         registerProgressBar = findViewById(R.id.register_progressBar);
         errorText = findViewById(R.id.register_errorText);
 
+        // Init activity
+        errorText.setVisibility(View.GONE);
+        registerProgressBar.setVisibility(View.GONE);
+
+        // Init listeners
         usernameInput.addTextChangedListener(this);
         emailInput.addTextChangedListener(this);
         passwordInput.addTextChangedListener(this);
         passwordConfirmationInput.addTextChangedListener(this);
         backButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
-
-        errorText.setVisibility(View.GONE);
-        registerProgressBar.setVisibility(View.GONE);
     }
 
-    private void register() throws JSONException {
+    private void register(String username, String email, String password, String passwordConfirmation) throws JSONException {
         JSONObject parameters = new JSONObject();
-        parameters.put("username", usernameInput.getText().toString());
-        parameters.put("email", emailInput.getText().toString());
-        parameters.put("password", passwordInput.getText().toString());
-        parameters.put("password_confirmation", passwordConfirmationInput.getText().toString());
+        parameters.put("username", username);
+        parameters.put("email", email);
+        parameters.put("password", password);
+        parameters.put("password_confirmation", passwordConfirmation);
 
-        errorText.setVisibility(View.GONE);
+        // Disable possibility to register twice at once
         registerButton.setEnabled(false);
         registerProgressBar.setVisibility(View.VISIBLE);
 
@@ -85,6 +87,7 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
                             e.printStackTrace();
                         }
 
+                        // Re-enable possibility to register
                         registerButton.setEnabled(true);
                         registerProgressBar.setVisibility(View.GONE);
                     }
@@ -94,6 +97,7 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
 
+                        // Show specific error
                         if (error.networkResponse == null)
                             errorText.setText(R.string.timeout_error);
                         else if (error.networkResponse.statusCode == 409)
@@ -106,6 +110,7 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
                             errorText.setText(R.string.server_error);
                         errorText.setVisibility(View.VISIBLE);
 
+                        // Re-enable possibility to register
                         registerButton.setEnabled(true);
                         registerProgressBar.setVisibility(View.GONE);
                     }
@@ -148,7 +153,11 @@ public class RegisterActivity extends AuthorizedActivity implements TextWatcher,
             // TODO: warn about wrong field formats
 
             try {
-                register();
+                String username = usernameInput.getText().toString();
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+                String passwordConfirmation = passwordConfirmationInput.getText().toString();
+                register(username, email, password, passwordConfirmation);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

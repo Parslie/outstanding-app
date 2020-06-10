@@ -40,9 +40,6 @@ public class FollowerActivity extends AuthorizedActivity implements FollowerList
             followerListFragment = new FollowerListFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frag_container, followerListFragment).commit();
         }
-        else {
-
-        }
 
         followRequestsButton = findViewById(R.id.followRequests_button);
         followRequestsButton.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +97,7 @@ public class FollowerActivity extends AuthorizedActivity implements FollowerList
         String url = getResources().getString(R.string.get_followers_url, user.getId(), 0);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, response, errorResponse){
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + getAuthToken());
                 return headers;

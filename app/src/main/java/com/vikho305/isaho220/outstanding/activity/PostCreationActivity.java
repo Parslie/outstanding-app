@@ -100,7 +100,6 @@ public class PostCreationActivity extends AuthorizedActivity
         // Init listeners
         backButton.setOnClickListener(this);
         saveButton.setOnClickListener(this);
-
         textButton.setOnClickListener(this);
         imageButton.setOnClickListener(this);
 
@@ -188,10 +187,10 @@ public class PostCreationActivity extends AuthorizedActivity
 
     private String encodeImage(Uri imageUri) {
         try {
-            Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+            Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri); // Turn image into bitmap
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream);
-            return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, stream); // Turn bitmap into byte array
+            return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT); // Encode image byte array
         } catch (IOException e) {
             e.printStackTrace();
             return null;
