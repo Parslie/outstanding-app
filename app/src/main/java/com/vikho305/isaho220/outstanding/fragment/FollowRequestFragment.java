@@ -29,6 +29,7 @@ public class FollowRequestFragment extends ListFragment {
         return view;
     }
 
+    // Makes sure that the fragment has an interaction listener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -39,6 +40,7 @@ public class FollowRequestFragment extends ListFragment {
         }
     }
 
+    // Detaches the interaction listener
     @Override
     public void onDetach() {
         super.onDetach();
@@ -51,6 +53,7 @@ public class FollowRequestFragment extends ListFragment {
 
         FollowRequestActivity activity = (FollowRequestActivity)getActivity();
         Objects.requireNonNull(activity).goToRequestHandling(item);
+        // TODO: what's the point of an interaction listener if you're not using it
 
         parentListener.onListItemClick(item);
     }
@@ -66,5 +69,4 @@ public class FollowRequestFragment extends ListFragment {
         void onListItemClick(String item);
         void getListItems(final FollowRequestFragment listener);
     }
-
 }

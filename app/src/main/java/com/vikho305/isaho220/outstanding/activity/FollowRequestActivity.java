@@ -40,7 +40,7 @@ public class FollowRequestActivity extends AuthorizedActivity implements FollowR
 
     @Override
     public void onListItemClick(String item) {
-
+        // TODO: what's the point of an interaction listener if you're not using it
     }
 
     @Override

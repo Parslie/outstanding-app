@@ -23,13 +23,11 @@ public class CommentFragment extends Fragment {
     private static final String COMMENT_PARAM = "comment";
     private Comment comment;
 
-    private ImageView pictureView;
-    private TextView usernameView, textView;
-
     public CommentFragment() {
         // Required empty public constructor
     }
 
+    // Creates a new comment fragment and sets a comment to show
     public static CommentFragment newInstance(Comment comment) {
         CommentFragment fragment = new CommentFragment();
         Bundle args = new Bundle();
@@ -50,13 +48,16 @@ public class CommentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
 
-        pictureView = view.findViewById(R.id.commentFrag_picture);
-        usernameView = view.findViewById(R.id.commentFrag_username);
-        textView = view.findViewById(R.id.commentFrag_text);
+        // Get layout views
+        ImageView pictureView = view.findViewById(R.id.commentFrag_picture);
+        TextView usernameView = view.findViewById(R.id.commentFrag_username);
+        TextView textView = view.findViewById(R.id.commentFrag_text);
 
+        // Init fragment
         usernameView.setText(comment.getAuthor().getUsername());
         textView.setText(comment.getText());
 
+        // Decode and round author picture
         User author = comment.getAuthor();
 
         Bitmap pictureBitmap;

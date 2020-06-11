@@ -41,7 +41,7 @@ public class FollowingActivity extends AuthorizedActivity implements FolloweeLis
 
     @Override
     public void onListItemClick(String item) {
-
+        // TODO: what's the point of an interaction listener if you're not using it
     }
 
     @Override

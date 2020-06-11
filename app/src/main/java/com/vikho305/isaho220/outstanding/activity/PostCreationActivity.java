@@ -143,7 +143,7 @@ public class PostCreationActivity extends AuthorizedActivity
             viewModel.setPostMediaType(Post.TEXT_TYPE);
         }
         else if (v == imageButton) {
-            openImageGallery();
+            openImageGallery(); // Select image to post
             imageView.setVisibility(View.VISIBLE);
             viewModel.setPostMediaType(Post.IMAGE_TYPE);
         }
@@ -180,7 +180,7 @@ public class PostCreationActivity extends AuthorizedActivity
             }
         }
         else if (requestCode == RESULT_CANCELED) {
-            viewModel.setPostMediaType(Post.TEXT_TYPE);
+            viewModel.setPostMediaType(Post.TEXT_TYPE); // Change to text post if choosing media is failed
             // TODO: add more extensive error-handling
         }
     }

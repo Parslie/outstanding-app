@@ -17,11 +17,13 @@ public class JsonParameterRequest extends StringRequest {
         this.parameters = parameters;
     }
 
+    // Enables sending in json parameters
     @Override
     public String getBodyContentType() {
         return "application/json";
     }
 
+    // Returns parameters as bytes and handles null parameters
     @Override
     public byte[] getBody() {
         if (parameters != null)

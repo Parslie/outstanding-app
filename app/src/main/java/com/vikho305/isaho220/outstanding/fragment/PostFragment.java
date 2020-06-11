@@ -2,7 +2,6 @@ package com.vikho305.isaho220.outstanding.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -11,20 +10,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 
-import com.vikho305.isaho220.outstanding.OnClickCallback;
+import com.vikho305.isaho220.outstanding.ClickCallbackListener;
 import com.vikho305.isaho220.outstanding.R;
-import com.vikho305.isaho220.outstanding.activity.PostActivity;
 import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
 
 import java.util.Locale;
-import java.util.Objects;
 
 public class PostFragment extends Fragment implements View.OnClickListener {
 
@@ -38,10 +34,10 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     private Button likeButton;
     private Button dislikeButton;
 
-    private OnClickCallback onClickCallback;
+    private ClickCallbackListener clickCallbackListener;
 
-    public void setOnClickCallback(OnClickCallback onClickCallback) {
-        this.onClickCallback = onClickCallback;
+    public void setClickCallbackListener(ClickCallbackListener clickCallbackListener) {
+        this.clickCallbackListener = clickCallbackListener; // Sets what object to call on when clicking on a view
     }
 
     public PostFragment() {
@@ -79,7 +75,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         if (post.getText() == null || post.getText().length() == 0)
             textView.setVisibility(View.GONE);
 
-        // Media
+        // Decode media
         switch (post.getMediaType()) {
             case Post.TEXT_TYPE:
                 imageView.setVisibility(View.GONE);
@@ -94,7 +90,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
-        // Author
+        // Decode and round author picture
         User author = post.getAuthor();
 
         Bitmap pictureBitmap;
@@ -110,7 +106,7 @@ public class PostFragment extends Fragment implements View.OnClickListener {
         authorDrawable.setCircular(true);
         authorPicture.setImageDrawable(authorDrawable);
 
-        // Ratings
+        // Show like and dislike status
         likeButton.setText(String.format(Locale.ENGLISH, " %d", post.getLikeCount()));
         dislikeButton.setText(String.format(Locale.ENGLISH, " %d", post.getDislikeCount()));
 
@@ -128,13 +124,13 @@ public class PostFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == authorPicture) {
-            onClickCallback.onClickCallback(AUTHOR_CLICK_KEY);
+            clickCallbackListener.onClickCallback(AUTHOR_CLICK_KEY);
         }
         else if (v == likeButton) {
-            onClickCallback.onClickCallback(LIKE_CLICK_KEY);
+            clickCallbackListener.onClickCallback(LIKE_CLICK_KEY);
         }
         else if (v == dislikeButton) {
-            onClickCallback.onClickCallback(DISLIKE_CLICK_KEY);
+            clickCallbackListener.onClickCallback(DISLIKE_CLICK_KEY);
         }
     }
 

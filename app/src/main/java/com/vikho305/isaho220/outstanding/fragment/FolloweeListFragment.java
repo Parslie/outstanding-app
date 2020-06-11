@@ -27,6 +27,7 @@ public class FolloweeListFragment extends ListFragment {
         return view;
     }
 
+    // Makes sure that the fragment has an interaction listener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -37,6 +38,7 @@ public class FolloweeListFragment extends ListFragment {
         }
     }
 
+    // Detaches the interaction listener
     @Override
     public void onDetach() {
         super.onDetach();

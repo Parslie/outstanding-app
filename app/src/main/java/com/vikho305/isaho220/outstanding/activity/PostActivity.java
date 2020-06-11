@@ -6,13 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Space;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.vikho305.isaho220.outstanding.fragment.CommentFragment;
-import com.vikho305.isaho220.outstanding.OnClickCallback;
+import com.vikho305.isaho220.outstanding.ClickCallbackListener;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.database.Comment;
 import com.vikho305.isaho220.outstanding.database.Post;
@@ -24,7 +23,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class PostActivity extends AuthorizedActivity implements OnClickCallback, View.OnClickListener {
+public class PostActivity extends AuthorizedActivity implements ClickCallbackListener, View.OnClickListener {
 
     private LinearLayout contentLayout;
     private EditText commentTextView;
@@ -77,7 +76,7 @@ public class PostActivity extends AuthorizedActivity implements OnClickCallback,
         // Init listeners
         postCommentButton.setOnClickListener(this);
         backButton.setOnClickListener(this);
-        postFragment.setOnClickCallback(this);
+        postFragment.setClickCallbackListener(this);
     }
 
     private void goToAuthor() {
