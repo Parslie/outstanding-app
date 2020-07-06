@@ -5,4 +5,6 @@
 
     <integer name="post_text_limit">400</integer>
     <integer name="comment_text_limit">400</integer>
+
+    <integer name="fragment_anim_duration">300</integer>
 </resources>

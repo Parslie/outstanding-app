@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,18 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.PostCreationActivity" />
-        <activity android:name=".activity.PostActivity" />
-        <activity android:name=".activity.FollowRequestActivity" />
-        <activity android:name=".activity.FollowRequestHandlingActivity" />
-        <activity android:name=".activity.FollowingActivity" />
-        <activity android:name=".activity.FollowerActivity" />
-        <activity android:name=".activity.MapActivity" />
-        <activity android:name=".activity.EditProfileActivity" />
-        <activity android:name=".activity.EditAccountActivity" />
-        <activity android:name=".activity.ProfileActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
