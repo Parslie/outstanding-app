@@ -23,7 +23,9 @@
         android:id="@+id/login_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_spacing"
         android:layout_marginTop="@dimen/big_spacing"
+        android:layout_marginEnd="@dimen/big_spacing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_logo">
@@ -43,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/big_spacing"
         android:layout_marginTop="@dimen/big_spacing"
-        android:layout_marginEnd="@dimen/mid_spacing"
-        android:text="@string/register_label"
+        android:layout_marginEnd="@dimen/small_spacing"
+        android:text="@string/login_label"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_container" />
@@ -53,10 +55,10 @@
         android:id="@+id/login_registerBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mid_spacing"
+        android:layout_marginStart="@dimen/small_spacing"
         android:layout_marginTop="@dimen/big_spacing"
         android:layout_marginEnd="@dimen/big_spacing"
-        android:text="@string/login_label"
+        android:text="@string/register_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/login_container" />
