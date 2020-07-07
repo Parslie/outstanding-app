@@ -36,48 +36,9 @@ public abstract class AuthorizedActivity extends AppCompatActivity {
         this.authUserId = authUserId;
     }
 
-    //<editor-fold desc="Logging in methods TODO: fix back stack issue">
-    private void checkAuthorization() {
-        if (authUserId == null || authToken == null) {
-            goToLogin();
-        }
-        else {
-            StringRequest request = new StringRequest(
-                    Request.Method.POST,
-                    getResources().getString(R.string.url_register),
-                    null,
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                                goToLogin();
-                            }
-                        }
-                    }
-            ) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "Bearer " + authToken);
-                    return headers;
-                }
-            };
-
-            Volley.newRequestQueue(this).add(request);
-        }
-    }
-
-    private void goToLogin() {
-        Intent intent = new Intent(AuthorizedActivity.this, LoginActivity.class);
-        startActivityForResult(intent, AUTHORIZATION_REQUEST);
-    }
-    //</editor-fold>
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        checkAuthorization(); // TODO: call only once per start of app
 
         Intent intent = getIntent();
         authToken = intent.getStringExtra("authToken");
