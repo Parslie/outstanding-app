@@ -10,14 +10,31 @@ import com.google.gson.annotations.SerializedName;
 
 public class User implements Parcelable {
 
-    private String id;
-    private String username, email;
-    private Profile profile;
+    @SerializedName(value = "is_self")
+    private boolean isSelf;
+    @SerializedName(value = "is_following")
+    private boolean isFollowing;
+    @SerializedName(value = "is_pending_following")
+    private boolean isPendingFollowing;
+    @SerializedName(value = "is_blocking")
+    private boolean isBlocking;
+    private String id, username, email;
+    private String picture, description;
+    @SerializedName(value = "primary_hue")
+    private double primaryHue;
+    @SerializedName(value = "primary_saturation")
+    private double primarySaturation;
+    @SerializedName(value = "primary_lightness")
+    private double primaryLightness;
+    @SerializedName(value = "secondary_hue")
+    private double secondaryHue;
+    @SerializedName(value = "secondary_saturation")
+    private double secondarySaturation;
+    @SerializedName(value = "secondary_lightness")
+    private double secondaryLightness;
+    private double latitude, longitude;
     @SerializedName(value = "date_created")
     private String dateCreated;
-    private double latitude, longitude;
-    @SerializedName(value = "is_online")
-    private boolean isOnline;
     @SerializedName(value = "follower_count")
     private int followerCount;
     @SerializedName(value = "following_count")
@@ -26,23 +43,30 @@ public class User implements Parcelable {
     private int pendingFollowerCount;
     @SerializedName(value = "pending_following_count")
     private int pendingFollowingCount;
-    @SerializedName(value = "is_following")
-    private boolean isFollowing;
 
     protected User(Parcel in) {
+        isSelf = in.readByte() != 0;
+        isFollowing = in.readByte() != 0;
+        isPendingFollowing = in.readByte() != 0;
+        isBlocking = in.readByte() != 0;
         id = in.readString();
         username = in.readString();
         email = in.readString();
-        profile = in.readParcelable(Profile.class.getClassLoader());
-        dateCreated = in.readString();
+        picture = in.readString();
+        description = in.readString();
+        primaryHue = in.readDouble();
+        primarySaturation = in.readDouble();
+        primaryLightness = in.readDouble();
+        secondaryHue = in.readDouble();
+        secondarySaturation = in.readDouble();
+        secondaryLightness = in.readDouble();
         latitude = in.readDouble();
         longitude = in.readDouble();
-        isOnline = in.readByte() != 0;
+        dateCreated = in.readString();
         followerCount = in.readInt();
         followingCount = in.readInt();
         pendingFollowerCount = in.readInt();
         pendingFollowingCount = in.readInt();
-        isFollowing = in.readInt() == 1;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -56,6 +80,34 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public boolean isSelf() {
+        return isSelf;
+    }
+    public void setSelf(boolean self) {
+        isSelf = self;
+    }
+
+    public boolean isFollowing() {
+        return isFollowing;
+    }
+    public void setFollowing(boolean following) {
+        isFollowing = following;
+    }
+
+    public boolean isPendingFollowing() {
+        return isPendingFollowing;
+    }
+    public void setPendingFollowing(boolean pendingFollowing) {
+        isPendingFollowing = pendingFollowing;
+    }
+
+    public boolean isBlocking() {
+        return isBlocking;
+    }
+    public void setBlocking(boolean blocking) {
+        isBlocking = blocking;
+    }
 
     public String getId() {
         return id;
@@ -78,18 +130,60 @@ public class User implements Parcelable {
         this.email = email;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public String getPicture() {
+        return picture;
     }
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    public String getDateCreated() {
-        return dateCreated;
+    public String getDescription() {
+        return description;
     }
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrimaryHue() {
+        return primaryHue;
+    }
+    public void setPrimaryHue(double primaryHue) {
+        this.primaryHue = primaryHue;
+    }
+
+    public double getPrimarySaturation() {
+        return primarySaturation;
+    }
+    public void setPrimarySaturation(double primarySaturation) {
+        this.primarySaturation = primarySaturation;
+    }
+
+    public double getPrimaryLightness() {
+        return primaryLightness;
+    }
+    public void setPrimaryLightness(double primaryLightness) {
+        this.primaryLightness = primaryLightness;
+    }
+
+    public double getSecondaryHue() {
+        return secondaryHue;
+    }
+    public void setSecondaryHue(double secondaryHue) {
+        this.secondaryHue = secondaryHue;
+    }
+
+    public double getSecondarySaturation() {
+        return secondarySaturation;
+    }
+    public void setSecondarySaturation(double secondarySaturation) {
+        this.secondarySaturation = secondarySaturation;
+    }
+
+    public double getSecondaryLightness() {
+        return secondaryLightness;
+    }
+    public void setSecondaryLightness(double secondaryLightness) {
+        this.secondaryLightness = secondaryLightness;
     }
 
     public double getLatitude() {
@@ -106,11 +200,11 @@ public class User implements Parcelable {
         this.longitude = longitude;
     }
 
-    public boolean isOnline() {
-        return isOnline;
+    public String getDateCreated() {
+        return dateCreated;
     }
-    public void setOnline(boolean online) {
-        isOnline = online;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public int getFollowerCount() {
@@ -141,13 +235,6 @@ public class User implements Parcelable {
         this.pendingFollowingCount = pendingFollowingCount;
     }
 
-    public boolean isFollowing() {
-        return isFollowing;
-    }
-    public void setFollowing(boolean following) {
-        isFollowing = following;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -155,18 +242,27 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (isSelf ? 1 : 0));
+        dest.writeByte((byte) (isFollowing ? 1 : 0));
+        dest.writeByte((byte) (isPendingFollowing ? 1 : 0));
+        dest.writeByte((byte) (isBlocking ? 1 : 0));
         dest.writeString(id);
         dest.writeString(username);
         dest.writeString(email);
-        dest.writeParcelable(profile, flags);
-        dest.writeString(dateCreated);
+        dest.writeString(picture);
+        dest.writeString(description);
+        dest.writeDouble(primaryHue);
+        dest.writeDouble(primarySaturation);
+        dest.writeDouble(primaryLightness);
+        dest.writeDouble(secondaryHue);
+        dest.writeDouble(secondarySaturation);
+        dest.writeDouble(secondaryLightness);
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
-        dest.writeByte((byte) (isOnline ? 1 : 0));
+        dest.writeString(dateCreated);
         dest.writeInt(followerCount);
         dest.writeInt(followingCount);
         dest.writeInt(pendingFollowerCount);
         dest.writeInt(pendingFollowingCount);
-        dest.writeInt(isFollowing ? 1 : 0);
     }
 }

@@ -7,19 +7,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class Comment implements Parcelable {
 
-    private String id;
-    private User author;
-    private Post post;
-    private String text;
+    private String id, text;
     @SerializedName(value = "date_created")
     private String dateCreated;
+    private Post post;
+    private User author;
 
     protected Comment(Parcel in) {
         id = in.readString();
-        author = in.readParcelable(User.class.getClassLoader());
-        post = in.readParcelable(Post.class.getClassLoader());
         text = in.readString();
         dateCreated = in.readString();
+        post = in.readParcelable(Post.class.getClassLoader());
+        author = in.readParcelable(User.class.getClassLoader());
     }
 
     public static final Creator<Comment> CREATOR = new Creator<Comment>() {
@@ -41,20 +40,6 @@ public class Comment implements Parcelable {
         this.id = id;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
     public String getText() {
         return text;
     }
@@ -69,6 +54,20 @@ public class Comment implements Parcelable {
         this.dateCreated = dateCreated;
     }
 
+    public Post getPost() {
+        return post;
+    }
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -77,9 +76,9 @@ public class Comment implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeParcelable(author, flags);
-        dest.writeParcelable(post, flags);
         dest.writeString(text);
         dest.writeString(dateCreated);
+        dest.writeParcelable(post, flags);
+        dest.writeParcelable(author, flags);
     }
 }

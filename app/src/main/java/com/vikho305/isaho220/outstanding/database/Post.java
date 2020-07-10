@@ -7,34 +7,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class Post implements Parcelable {
 
-    public static final String TEXT_TYPE = "text", IMAGE_TYPE = "image";
+    public static final String TEXT_TYPE = "TEXT", IMAGE_TYPE = "IMAGE";
 
-    private String id;
-    private User author;
-    private String title, text, media;
+    @SerializedName(value = "is_liked")
+    private boolean isLiked;
+    @SerializedName(value = "is_disliked")
+    private boolean isDisliked;
+    private String id, title, text, media;
     @SerializedName(value = "media_type")
     private String mediaType;
     private double latitude, longitude;
     @SerializedName(value = "date_created")
     private String dateCreated;
+    private User author;
     @SerializedName(value = "like_count")
     private int likeCount;
     @SerializedName(value = "dislike_count")
     private int dislikeCount;
-    @SerializedName(value = "is_liked")
-    private boolean isLiked;
-    @SerializedName(value = "is_disliked")
-    private boolean isDisliked;
-
-    public Post(String mediaType, double latitude, double longitude) {
-        this.mediaType = mediaType;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
 
     protected Post(Parcel in) {
+        isLiked = in.readByte() != 0;
+        isDisliked = in.readByte() != 0;
         id = in.readString();
-        author = in.readParcelable(User.class.getClassLoader());
         title = in.readString();
         text = in.readString();
         media = in.readString();
@@ -42,10 +36,9 @@ public class Post implements Parcelable {
         latitude = in.readDouble();
         longitude = in.readDouble();
         dateCreated = in.readString();
+        author = in.readParcelable(User.class.getClassLoader());
         likeCount = in.readInt();
         dislikeCount = in.readInt();
-        isLiked = in.readInt() == 1;
-        isDisliked = in.readInt() == 1;
     }
 
     public static final Creator<Post> CREATOR = new Creator<Post>() {
@@ -60,18 +53,25 @@ public class Post implements Parcelable {
         }
     };
 
+    public boolean isLiked() {
+        return isLiked;
+    }
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public boolean isDisliked() {
+        return isDisliked;
+    }
+    public void setDisliked(boolean disliked) {
+        isDisliked = disliked;
+    }
+
     public String getId() {
         return id;
     }
     public void setId(String id) {
         this.id = id;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public String getTitle() {
@@ -123,6 +123,13 @@ public class Post implements Parcelable {
         this.dateCreated = dateCreated;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     public int getLikeCount() {
         return likeCount;
     }
@@ -137,20 +144,6 @@ public class Post implements Parcelable {
         this.dislikeCount = dislikeCount;
     }
 
-    public boolean isLiked() {
-        return isLiked;
-    }
-    public void setLiked(boolean liked) {
-        isLiked = liked;
-    }
-
-    public boolean isDisliked() {
-        return isDisliked;
-    }
-    public void setDisliked(boolean disliked) {
-        isDisliked = disliked;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -158,8 +151,9 @@ public class Post implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (isLiked ? 1 : 0));
+        dest.writeByte((byte) (isDisliked ? 1 : 0));
         dest.writeString(id);
-        dest.writeParcelable(author, flags);
         dest.writeString(title);
         dest.writeString(text);
         dest.writeString(media);
@@ -167,9 +161,8 @@ public class Post implements Parcelable {
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
         dest.writeString(dateCreated);
+        dest.writeParcelable(author, flags);
         dest.writeInt(likeCount);
         dest.writeInt(dislikeCount);
-        dest.writeInt(isLiked ? 1 : 0);
-        dest.writeInt(isDisliked ? 1 : 0);
     }
 }

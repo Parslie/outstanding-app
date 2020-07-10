@@ -27,6 +27,9 @@ public class UserViewModel extends ViewModel {
         return user;
     }
 
+    /////////////////////////
+    // Server-calling methods
+
     public void fetchUser(Context context, String authToken, final String userId) {
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
@@ -40,7 +43,12 @@ public class UserViewModel extends ViewModel {
                         user.setValue(newUser);
                     }
                 },
-                null
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
         ) {
             @Override
             public Map<String, String> getHeaders() {
