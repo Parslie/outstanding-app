@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.vikho305.isaho220.outstanding.database.User;
 
@@ -30,7 +31,7 @@ public class UserViewModel extends ViewModel {
     /////////////////////////
     // Server-calling methods
 
-    public void fetchUser(Context context, String authToken, final String userId) {
+    public void fetchUser(Context context, final String authToken, final String userId) {
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
                 context.getResources().getString(R.string.url_get_user, userId),
@@ -53,9 +54,11 @@ public class UserViewModel extends ViewModel {
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + userId);
+                headers.put("Authorization", "Bearer " + authToken);
                 return headers;
             }
         };
+
+        Volley.newRequestQueue(context).add(request);
     }
 }
