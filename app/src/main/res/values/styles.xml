@@ -51,7 +51,7 @@
         <item name="android:background">@drawable/input</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
-        <item name="android:paddingHorizontal">@dimen/big_spacing</item>
+        <item name="android:paddingHorizontal">@dimen/large_spacing</item>
     </style>
 
 </resources>

@@ -1,12 +1,15 @@
 package com.vikho305.isaho220.outstanding;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.autofill.UserData;
 import android.view.View;
+import android.view.autofill.AutofillManager;
 import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,6 +22,9 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AuthorizedActivity implements View.OnClickListener {
 
+    private static final int REGISTER_REQUEST = 10;
+
+    private EditText usernameView, passwordView;
     private Button loginButton, registerButton;
 
     private Fragment currentFragment;
@@ -29,35 +35,17 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
         setContentView(R.layout.activity_login);
 
         // Get layout views
+        usernameView = findViewById(R.id.login_username);
+        passwordView = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_loginBtn);
         registerButton = findViewById(R.id.login_registerBtn);
-
-        // Init activity
-        currentFragment = LoginFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.login_container, currentFragment);
-        transaction.commit();
 
         // Init listeners
         loginButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
     }
 
-    private void showLoginFragment() { // TODO: add username and password to parameters
-        currentFragment = LoginFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
-        transaction.replace(R.id.login_container, currentFragment).commit();
-    }
-
-    private void showRegisterFragment() {
-        currentFragment = RegisterFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-        transaction.replace(R.id.login_container, currentFragment).commit();
-    }
-
-    private void login(String username, String password) {
+    private void login(final String username, final String password) {
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("username", username);
@@ -65,6 +53,8 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // TODO: disable views
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
@@ -78,48 +68,20 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
                             String authUserId = response.getString("auth_user_id");
                             setAuthorization(authToken, authUserId);
                             goToActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish(); // Necessary for credentials to be saved for auto-fill
                         } catch (JSONException e) {
                             e.printStackTrace();
                             // TODO: add error message for internal app error
+                            // TODO: enable views
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
                         // TODO: add error messages
-                    }
-                }
-        );
-
-        Volley.newRequestQueue(this).add(request);
-    }
-
-    private void register(final String username, String email, final String password) {
-        JSONObject parameters = new JSONObject();
-        try {
-            parameters.put("username", username);
-            parameters.put("email", email);
-            parameters.put("password", password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        JsonParameterRequest request = new JsonParameterRequest(
-                Request.Method.POST,
-                getResources().getString(R.string.url_register),
-                parameters,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        showLoginFragment();
-                        login(username, password);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: add error messages
+                        // TODO: enable views
                     }
                 }
         );
@@ -129,38 +91,31 @@ public class LoginActivity extends AuthorizedActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v == loginButton && currentFragment instanceof LoginFragment) {
-            String username = ((LoginFragment) currentFragment).getUsername();
-            String password = ((LoginFragment) currentFragment).getPassword();
+        if (v == loginButton) {
+            String username = usernameView.getText().toString();
+            String password = passwordView.getText().toString();
 
-            if (username.length() == 0 || password.length() == 0) {
-                // TODO: add error message for empty fields
-            }
-            else {
+            if (username.length() > 0 && password.length() > 0) {
                 login(username, password);
             }
-        }
-        else if (v == loginButton && currentFragment instanceof RegisterFragment) {
-            showLoginFragment();
-        }
-        else if (v == registerButton && currentFragment instanceof LoginFragment) {
-            showRegisterFragment();
-        }
-        else if (v == registerButton && currentFragment instanceof RegisterFragment) {
-            String username = ((RegisterFragment) currentFragment).getUsername();
-            String email = ((RegisterFragment) currentFragment).getEmail();
-            String password = ((RegisterFragment) currentFragment).getPassword();
-            String passwordConfirmation = ((RegisterFragment) currentFragment).getPasswordConfirmation();
-
-            if (username.length() == 0 || email.length() == 0 || password.length() == 0 || passwordConfirmation.length() == 0) {
+            else {
                 // TODO: add error message for empty fields
             }
-            else if (password.equals(passwordConfirmation)) {
-                register(username, email, password);
-            }
-            else {
-                // TODO: add error message for wrong password confirmation
-            }
+        }
+        else if (v == registerButton) {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            goToActivityForResult(intent, REGISTER_REQUEST);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REGISTER_REQUEST && resultCode == RESULT_OK && data != null) {
+            String username = data.getStringExtra("username");
+            String password = data.getStringExtra("password");
+            login(username, password);
         }
     }
 }
