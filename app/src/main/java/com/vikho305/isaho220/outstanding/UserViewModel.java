@@ -28,6 +28,10 @@ public class UserViewModel extends ViewModel {
         return user;
     }
 
+    public void setUser(User newUser) {
+        user.setValue(newUser);
+    }
+
     /////////////////////////
     // Server-calling methods
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class UserFragment extends AuthorizedFragment implements View.OnClickList
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setRetainInstance(true);
 
         // Get layout views
         pictureView = view.findViewById(R.id.user_picture);
@@ -63,7 +65,7 @@ public class UserFragment extends AuthorizedFragment implements View.OnClickList
         // editProfileButton = view.findViewById(R.id.user_picture);
 
         // Init view model
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -90,7 +92,8 @@ public class UserFragment extends AuthorizedFragment implements View.OnClickList
 
         // Init fragment
         Bundle arguments = requireArguments();
-        userViewModel.fetchUser(requireContext(), requireAuthActivity().getAuthToken(), arguments.getString(USER_ID_ARG));
+        if (userViewModel.getUser().getValue() == null)
+            userViewModel.fetchUser(requireContext(), requireAuthActivity().getAuthToken(), arguments.getString(USER_ID_ARG));
 
         // Init listeners
         followButton.setOnClickListener(this);
