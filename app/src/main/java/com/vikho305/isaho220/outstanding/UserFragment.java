@@ -2,11 +2,7 @@ package com.vikho305.isaho220.outstanding;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -25,23 +21,42 @@ import android.widget.TextView;
 
 import com.vikho305.isaho220.outstanding.database.User;
 
-public class UserFragment extends AuthorizedFragment implements View.OnClickListener {
-
-    private static final String USER_ID_ARG = "userId";
+public class UserFragment extends Fragment implements View.OnClickListener {
 
     private ImageView pictureView;
     private TextView usernameView, descriptionView;
     private TextView followerCountView, followingCountView;
     private Button followButton, editAccountButton, editProfileButton;
 
-    private UserViewModel userViewModel;
+    private User user;
 
-    public static UserFragment newInstance(String userId) {
-        UserFragment userFragment = new UserFragment();
-        Bundle arguments = new Bundle();
-        arguments.putString(USER_ID_ARG, userId);
-        userFragment.setArguments(arguments);
-        return userFragment;
+    public static UserFragment newInstance() {
+        return new UserFragment();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private void updateViewDetails() {
+        usernameView.setText(user.getUsername());
+        descriptionView.setText(user.getDescription());
+
+        followerCountView.setText(getString(R.string.follower_count, user.getFollowerCount()));
+        followingCountView.setText(getString(R.string.following_count, user.getFollowingCount()));
+
+        // Decode and round profile picture
+        Bitmap bitmap;
+        if (user.getPicture() == null) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
+        }
+        else {
+            byte[] bitmapBytes = Base64.decode(user.getPicture(), Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+        }
+        RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        roundedPicture.setCircular(true);
+        pictureView.setImageDrawable(roundedPicture);
     }
 
     @Override
@@ -52,7 +67,6 @@ public class UserFragment extends AuthorizedFragment implements View.OnClickList
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setRetainInstance(true);
 
         // Get layout views
         pictureView = view.findViewById(R.id.user_picture);
@@ -64,36 +78,8 @@ public class UserFragment extends AuthorizedFragment implements View.OnClickList
         // editAccountButton = view.findViewById(R.id.user_picture);
         // editProfileButton = view.findViewById(R.id.user_picture);
 
-        // Init view model
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-        userViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                usernameView.setText(user.getUsername());
-                descriptionView.setText(user.getDescription());
-
-                followerCountView.setText(getString(R.string.follower_count, user.getFollowerCount()));
-                followingCountView.setText(getString(R.string.following_count, user.getFollowingCount()));
-
-                // Decode and round profile picture
-                Bitmap bitmap;
-                if (user.getPicture() == null) {
-                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_pfp);
-                }
-                else {
-                    byte[] bitmapBytes = Base64.decode(user.getPicture(), Base64.DEFAULT);
-                    bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-                }
-                RoundedBitmapDrawable roundedPicture = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-                roundedPicture.setCircular(true);
-                pictureView.setImageDrawable(roundedPicture);
-            }
-        });
-
         // Init fragment
-        Bundle arguments = requireArguments();
-        if (userViewModel.getUser().getValue() == null)
-            userViewModel.fetchUser(requireContext(), requireAuthActivity().getAuthToken(), arguments.getString(USER_ID_ARG));
+        updateViewDetails();
 
         // Init listeners
         followButton.setOnClickListener(this);
