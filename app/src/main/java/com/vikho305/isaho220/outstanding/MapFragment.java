@@ -1,13 +1,8 @@
 package com.vikho305.isaho220.outstanding;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -15,20 +10,17 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
-import com.mapbox.mapboxsdk.location.OnLocationClickListener;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -38,24 +30,25 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener;
 import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.vikho305.isaho220.outstanding.database.Post;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TEXT_ICON = "text";
-    private static final String PICTURE_ICON = "picture";
+    private static final String IMAGE_ICON = "image";
     private static final int POST_RADIUS = 1000;
 
     private MapView mapView;
 
-    private MapViewModel mapViewModel;
-
     private MapboxMap mapboxMap;
     private SymbolManager postManager;
+    private List<SymbolOptions> postSymbols;
     private LocationComponent locationComponent;
 
     public static MapFragment newInstance() {
@@ -70,21 +63,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Get layout views
         mapView = view.findViewById(R.id.map_mapView);
+        mapView.getMapAsync(this); // TODO: check if null-check is needed for symbol managers' sakes
+    }
 
-        // Init view model
-        mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
-        mapViewModel.getPosts().observe(getViewLifecycleOwner(), new Observer<List<Post>>() {
-            @Override
-            public void onChanged(List<Post> posts) {
-                // TODO: add posts to symbol manager
+    public void setPostSymbols(List<Post> posts) {
+        postSymbols = new ArrayList<>();
+
+        for (Post post : posts) {
+            SymbolOptions postOptions = new SymbolOptions()
+                    .withLatLng(new LatLng(post.getLatitude(), post.getLongitude()));
+
+            switch (post.getMediaType()) {
+                case Post.TEXT_TYPE:
+                    postOptions.withIconImage(TEXT_ICON);
+                    break;
+                case Post.IMAGE_TYPE:
+                    postOptions.withIconImage(IMAGE_ICON);
+                    break;
+                default:
+                    continue; // Skips invalid post
             }
-        });
 
-        // Init fragment
-        mapView.getMapAsync(this);
+            postSymbols.add(postOptions);
+        }
+
+        createPostSymbols();
+    }
+
+    private void createPostSymbols() {
+        if (postManager != null && postSymbols != null) {
+            postManager.create(postSymbols);
+        }
     }
 
     //////////////
@@ -98,17 +108,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 // Init symbol icons
-                /*
                 style.addImage(TEXT_ICON,
-                        BitmapFactory.decodeResource(getResources(), R.drawable.ic_text_24dp), true);
-                style.addImage(PICTURE_ICON,
-                        BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_24dp), true);
-                 */
+                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_text_24dp))),
+                        true);
+                style.addImage(IMAGE_ICON,
+                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_image_24dp))),
+                        true);
 
                 // Init symbol managers
                 postManager = new SymbolManager(mapView, mapboxMap, style);
                 postManager.setIconAllowOverlap(true);
                 postManager.setTextAllowOverlap(true);
+                createPostSymbols();
 
                 // Init symbol click listeners
                 postManager.addClickListener(new OnSymbolClickListener() {
@@ -118,13 +129,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         double lat = latLng.getLatitude();
                         double lng = latLng.getLongitude();
 
-                        Post post = mapViewModel.getPostAt(lat, lng);
-                        // TODO: if post isn't null, go to post fragment
+                        // TODO: request going to activity of post at coordinates
                     }
                 });
-
-                // Fetch symbols
-                mapViewModel.fetchPosts(requireContext(), POST_RADIUS);
 
                 enableLocationComponent(style);
             }

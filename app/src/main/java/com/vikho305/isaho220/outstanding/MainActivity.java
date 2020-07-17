@@ -1,6 +1,7 @@
 package com.vikho305.isaho220.outstanding;
 
 import android.os.Bundle;
+import android.os.Parcel;
 import android.view.View;
 import android.widget.Button;
 
@@ -10,9 +11,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mapbox.mapboxsdk.Mapbox;
+import com.vikho305.isaho220.outstanding.database.Post;
 import com.vikho305.isaho220.outstanding.database.User;
 
+import java.util.List;
+
 public class MainActivity extends AuthorizedActivity implements View.OnClickListener {
+
+    private static final int POST_RADIUS = 1000;
 
     private Button profileButton, postButton, feedButton;
 
@@ -22,7 +28,7 @@ public class MainActivity extends AuthorizedActivity implements View.OnClickList
     private FeedFragment feedFragment;
 
     private UserViewModel userViewModel;
-    private MapViewModel mapViewModel; // TODO: implement view models here, and update fragments accordingly
+    private MapViewModel mapViewModel;
     private FeedViewModel feedViewModel;
 
     @Override
@@ -49,10 +55,16 @@ public class MainActivity extends AuthorizedActivity implements View.OnClickList
                 userFragment.setUser(user);
             }
         });
-        userViewModel.fetchUser(this, getAuthToken(), getAuthUserId());
+        userViewModel.fetchUser(this, getAuthToken(), getAuthUserId()); // TODO: implement in onResume as well
 
         mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
-        // TODO: implement
+        mapViewModel.getPosts().observe(this, new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> posts) {
+                mapFragment.setPostSymbols(posts);
+            }
+        });
+        mapViewModel.fetchPosts(this, getAuthToken(), POST_RADIUS); // TODO: implement in location listener as well
 
         feedViewModel = new ViewModelProvider(this).get(FeedViewModel.class);
         // TODO: implement

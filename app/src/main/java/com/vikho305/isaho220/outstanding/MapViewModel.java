@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.vikho305.isaho220.outstanding.database.Post;
 
@@ -19,7 +20,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapViewModel extends ViewModel {
 
@@ -47,7 +50,7 @@ public class MapViewModel extends ViewModel {
     /////////////////////////
     // Server-calling methods
 
-    public void fetchPosts(Context context, int radius) {
+    public void fetchPosts(Context context, final String authToken, int radius) {
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
                 context.getResources().getString(R.string.url_get_posts, radius),
@@ -76,6 +79,15 @@ public class MapViewModel extends ViewModel {
                         error.printStackTrace();
                     }
                 }
-        );
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + authToken);
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(context).add(request);
     }
 }
