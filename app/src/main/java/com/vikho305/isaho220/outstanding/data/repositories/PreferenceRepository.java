@@ -6,20 +6,22 @@ import android.content.SharedPreferences;
 import com.vikho305.isaho220.outstanding.R;
 
 public class PreferenceRepository {
+    private static final String FILE_NAME = "preferences";
+    private static final String AUTH_TOKEN_KEY = "auth_token";
 
     private Context context;
     private SharedPreferences preferences;
 
     public PreferenceRepository(Context context) {
         this.context = context;
-        preferences = context.getSharedPreferences(context.getString(R.string.preference_file), Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
     }
 
     public String getAuthToken() {
-        return preferences.getString(context.getString(R.string.auth_token_key), "");
+        return preferences.getString(AUTH_TOKEN_KEY, "");
     }
 
     public void setAuthToken(String authToken) {
-        preferences.edit().putString(context.getString(R.string.auth_token_key), authToken).apply();
+        preferences.edit().putString(AUTH_TOKEN_KEY, authToken).apply();
     }
 }

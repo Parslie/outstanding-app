@@ -2,17 +2,13 @@ package com.vikho305.isaho220.outstanding.data.repositories;
 
 import android.content.Context;
 
-import com.rxandroidnetworking.RxAndroidNetworking;
 import com.vikho305.isaho220.outstanding.data.Post;
 import com.vikho305.isaho220.outstanding.data.User;
 import com.vikho305.isaho220.outstanding.data.api.UserApi;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
-import rx.Single;
+import io.reactivex.Single;
 
 public class UserRepository {
 

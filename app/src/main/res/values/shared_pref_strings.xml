@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="preference_file">preferences</string>
-
-    <string name="auth_token_key">auth_token</string>
-</resources>

@@ -1,10 +1,6 @@
 package com.vikho305.isaho220.outstanding.data.api;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.rxandroidnetworking.RxAndroidNetworking;
-import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.data.Post;
 import com.vikho305.isaho220.outstanding.data.User;
 import com.vikho305.isaho220.outstanding.data.repositories.PreferenceRepository;
@@ -14,7 +10,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import rx.Single;
+import com.rx2androidnetworking.Rx2AndroidNetworking;
+import io.reactivex.Single;
 
 public class UserApi {
     private static final String ROOT_URL = "https://outstanding-server.herokuapp.com/user";
@@ -35,7 +32,7 @@ public class UserApi {
             e.printStackTrace();
         }
 
-        return RxAndroidNetworking.post(ROOT_URL)
+        return Rx2AndroidNetworking.post(ROOT_URL)
                 .addJSONObjectBody(jsonParameters)
                 .build()
                 .getStringSingle();
@@ -50,14 +47,14 @@ public class UserApi {
             e.printStackTrace();
         }
 
-        return RxAndroidNetworking.post(ROOT_URL + "/login")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/login")
                 .addJSONObjectBody(jsonParameters)
                 .build()
                 .getStringSingle();
     }
 
     public Single<String> logout() {
-        return RxAndroidNetworking.post(ROOT_URL + "/logout")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/logout")
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getStringSingle();
@@ -66,49 +63,49 @@ public class UserApi {
     // Getter methods
 
     public Single<User> getUser(String userId) {
-        return RxAndroidNetworking.get(ROOT_URL + "/" + userId)
+        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getObjectSingle(User.class);
     }
 
     public Single<List<User>> getFollowers(String userId, int page) {
-        return RxAndroidNetworking.get(ROOT_URL + "/" + userId + "/followers/" + page)
+        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followers/" + page)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getObjectListSingle(User.class);
     }
 
     public Single<List<User>> getFollowings(String userId, int page) {
-        return RxAndroidNetworking.get(ROOT_URL + "/" + userId + "/followings/" + page)
+        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followings/" + page)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getObjectListSingle(User.class);
     }
 
     public Single<List<User>> getPendingFollowers(String userId, int page) {
-        return RxAndroidNetworking.get(ROOT_URL + "/" + userId + "/followers/pending/" + page)
+        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followers/pending/" + page)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getObjectListSingle(User.class);
     }
 
     public Single<List<User>> getPendingFollowings(String userId, int page) {
-        return RxAndroidNetworking.get(ROOT_URL + "/" + userId + "/followings/pending/" + page)
+        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followings/pending/" + page)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getObjectListSingle(User.class);
     }
 
     public Single<List<User>> getBlockings(String userId, int page) {
-        return RxAndroidNetworking.get(ROOT_URL + "/" + userId + "/blockings/" + page)
+        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/blockings/" + page)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getObjectListSingle(User.class);
     }
 
     public Single<List<Post>> getPosts(String userId, int page) {
-        return RxAndroidNetworking.get(ROOT_URL + "/" + userId + "/posts/" + page)
+        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/posts/" + page)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getObjectListSingle(Post.class);
@@ -125,7 +122,7 @@ public class UserApi {
             e.printStackTrace();
         }
 
-        return RxAndroidNetworking.post(ROOT_URL + "/account")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/account")
                 .addJSONObjectBody(jsonParameters)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
@@ -142,7 +139,7 @@ public class UserApi {
             e.printStackTrace();
         }
 
-        return RxAndroidNetworking.post(ROOT_URL + "/account")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/account")
                 .addJSONObjectBody(jsonParameters)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
@@ -166,7 +163,7 @@ public class UserApi {
             e.printStackTrace();
         }
 
-        return RxAndroidNetworking.post(ROOT_URL + "/profile")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/profile")
                 .addJSONObjectBody(jsonParameters)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
@@ -182,7 +179,7 @@ public class UserApi {
             e.printStackTrace();
         }
 
-        return RxAndroidNetworking.post(ROOT_URL + "/coordinates")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/coordinates")
                 .addJSONObjectBody(jsonParameters)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
@@ -192,42 +189,42 @@ public class UserApi {
     // User interaction methods
 
     public Single<String> followUser(String userId) {
-        return RxAndroidNetworking.post(ROOT_URL + "/" + userId + "/follow")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/" + userId + "/follow")
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getStringSingle();
     }
 
     public Single<String> unfollowUser(String userId) {
-        return RxAndroidNetworking.delete(ROOT_URL + "/" + userId + "/follow")
+        return Rx2AndroidNetworking.delete(ROOT_URL + "/" + userId + "/follow")
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getStringSingle();
     }
 
     public Single<String> blockUser(String userId) {
-        return RxAndroidNetworking.post(ROOT_URL + "/" + userId + "/block")
+        return Rx2AndroidNetworking.post(ROOT_URL + "/" + userId + "/block")
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getStringSingle();
     }
 
     public Single<String> unblockUser(String userId) {
-        return RxAndroidNetworking.delete(ROOT_URL + "/" + userId + "/block")
+        return Rx2AndroidNetworking.delete(ROOT_URL + "/" + userId + "/block")
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getStringSingle();
     }
 
     public Single<String> acceptFollower(String followerId) {
-        return RxAndroidNetworking.post(ROOT_URL + "/accept/" + followerId)
+        return Rx2AndroidNetworking.post(ROOT_URL + "/accept/" + followerId)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getStringSingle();
     }
 
     public Single<String> rejectFollower(String followerId) {
-        return RxAndroidNetworking.post(ROOT_URL + "/reject/" + followerId)
+        return Rx2AndroidNetworking.post(ROOT_URL + "/reject/" + followerId)
                 .addHeaders("Authorization", "Bearer " + preferences.getAuthToken())
                 .build()
                 .getStringSingle();
