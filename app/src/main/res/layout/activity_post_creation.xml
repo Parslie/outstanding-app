@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".old.PostCreationActivity">
+
+    <LinearLayout
+        android:id="@+id/postCreation_navBtns"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_spacing"
+        android:layout_marginTop="@dimen/large_spacing"
+        android:layout_marginEnd="@dimen/large_spacing"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/postCreation_cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_close_24dp"
+            android:tooltipText="Cancel" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/postCreation_postBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_check_24dp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/postCreation_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_spacing"
+        android:layout_marginTop="@dimen/large_spacing"
+        android:layout_marginEnd="@dimen/large_spacing"
+        android:ems="10"
+        android:hint="@string/title_hint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_navBtns" />
+
+    <EditText
+        android:id="@+id/postCreation_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_spacing"
+        android:layout_marginTop="@dimen/medium_spacing"
+        android:layout_marginEnd="@dimen/large_spacing"
+        android:ems="10"
+        android:hint="@string/text_hint"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_title" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_spacing"
+        android:layout_marginTop="@dimen/medium_spacing"
+        android:layout_marginEnd="@dimen/large_spacing"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postCreation_text">
+
+        <Button
+            android:id="@+id/postCreation_textBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/medium_spacing"
+            android:drawableStart="@drawable/ic_text_24dp"
+            android:tooltipText="Text Post" />
+
+        <Button
+            android:id="@+id/postCreation_imageBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/medium_spacing"
+            android:drawableStart="@drawable/ic_image_24dp"
+            android:tooltipText="Image Post" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/postCreation_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_spacing"
+        android:layout_marginTop="@dimen/large_spacing"
+        android:layout_marginEnd="@dimen/large_spacing"
+        android:adjustViewBounds="true"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.vikho305.isaho220.outstanding;
+package com.vikho305.isaho220.outstanding.old;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -19,7 +19,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vikho305.isaho220.outstanding.database.User;
+import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.old.database.User;
 
 public class UserFragment extends Fragment implements View.OnClickListener {
 

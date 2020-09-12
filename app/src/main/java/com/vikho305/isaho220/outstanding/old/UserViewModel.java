@@ -1,4 +1,4 @@
-package com.vikho305.isaho220.outstanding;
+package com.vikho305.isaho220.outstanding.old;
 
 import android.content.Context;
 
@@ -6,14 +6,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.vikho305.isaho220.outstanding.database.User;
+import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.old.database.User;
 
 import org.json.JSONObject;
 
@@ -60,5 +60,9 @@ public class UserViewModel extends ViewModel {
         };
 
         Volley.newRequestQueue(context).add(request);
+    }
+
+    public void postCoordinates(Context context, final String authToken, double latitude, double longitude) {
+
     }
 }
