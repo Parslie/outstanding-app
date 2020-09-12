@@ -5,7 +5,7 @@
     <string name="login_error">incorrect username or password</string>
     <string name="register_error">user already exists</string>
 
-    <string name="confirmation_password_error">wrong confirmation password</string>
+    <string name="password_confirmation_error">wrong confirmation password</string>
     <string name="empty_fields_error">empty fields</string>
     <string name="server_error">server-side error</string>
     <string name="timeout_error">request timed out</string>
@@ -37,8 +37,8 @@
     <!-- HINTS -->
     <string name="username_hint">Enter username…</string>
     <string name="password_hint">Enter password…</string>
+    <string name="password_confirmation_hint">Confirm password…</string>
     <string name="new_password_hint">Enter new password…</string>
-    <string name="password_again_hint">Enter password again…</string>
     <string name="email_hint">Enter email…</string>
     <string name="profile_description_hint">Enter description…</string>
 
