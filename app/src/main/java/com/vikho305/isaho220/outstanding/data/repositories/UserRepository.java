@@ -43,8 +43,6 @@ public class UserRepository {
         return userApi.getUser(preferences.getAuthUserId());
     }
 
-    // TODO: add more self methods
-
     public Single<List<User>> getFollowers(String userId, int page) {
         return userApi.getFollowers(userId, page);
     }

@@ -7,7 +7,7 @@
     android:padding="@dimen/activity_padding"
     tools:context=".ui.view.ProfileFragment">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profilePicture"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearance.Image"
         app:srcCompat="@drawable/ic_pfp" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -61,24 +62,22 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/follower_count"
-            android:textAlignment="center" />
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/follower_count" />
 
         <Button
             android:id="@+id/profileFollowBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="@string/follow_label" />
 
         <TextView
             android:id="@+id/profileFollowingCount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/following_count"
-            android:textAlignment="center" />
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/following_count" />
 
     </LinearLayout>
 
