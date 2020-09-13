@@ -22,4 +22,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Text Appearances -->
+
+    <style name="Title" parent="@android:style/TextAppearance.Material.Title" />
 </resources>

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Outstanding</string>
 
+    <!-- Labels -->
+
     <string name="back_label">Back</string>
 
     <string name="follow_label">Follow</string>
@@ -23,4 +25,9 @@
 
     <string name="profile_label">Profile</string>
     <string name="map_label">Map</string>
+
+    <!-- Miscellaneous -->
+
+    <string name="follower_count">%d followers</string>
+    <string name="following_count">%d followings</string>
 </resources>
