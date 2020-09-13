@@ -2,6 +2,7 @@ package com.vikho305.isaho220.outstanding.data.repositories;
 
 import android.content.Context;
 
+import com.vikho305.isaho220.outstanding.data.AuthInfo;
 import com.vikho305.isaho220.outstanding.data.Post;
 import com.vikho305.isaho220.outstanding.data.User;
 import com.vikho305.isaho220.outstanding.data.api.UserApi;
@@ -13,16 +14,18 @@ import io.reactivex.Single;
 public class UserRepository {
 
     private UserApi userApi;
+    private PreferenceRepository preferences;
 
     public UserRepository(Context context) {
         userApi = new UserApi(context);
+        preferences = new PreferenceRepository(context);
     }
 
     public Single<String> register(String username, String email, String password) {
         return userApi.register(username, email, password);
     }
 
-    public Single<String> login(String username, String password) {
+    public Single<AuthInfo> login(String username, String password) {
         return userApi.login(username, password);
     }
 
@@ -35,6 +38,12 @@ public class UserRepository {
     public Single<User> getUser(String userId) {
         return userApi.getUser(userId);
     }
+
+    public Single<User> getUserSelf() {
+        return userApi.getUser(preferences.getAuthUserId());
+    }
+
+    // TODO: add more self methods
 
     public Single<List<User>> getFollowers(String userId, int page) {
         return userApi.getFollowers(userId, page);

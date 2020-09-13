@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.data.AuthInfo;
+import com.vikho305.isaho220.outstanding.data.repositories.PreferenceRepository;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.ContextualViewModelFactory;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.LoginViewModel;
 import com.vikho305.isaho220.outstanding.util.Resource;
@@ -46,12 +48,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void initViewModel() {
         ContextualViewModelFactory contextualViewModelFactory = new ContextualViewModelFactory(this);
         viewModel = new ViewModelProvider(this, contextualViewModelFactory).get(LoginViewModel.class);
-        viewModel.getAuthToken().observe(this, new Observer<Resource<String>>() {
+        viewModel.getAuthInfo().observe(this, new Observer<Resource<AuthInfo>>() {
             @Override
-            public void onChanged(Resource<String> stringResource) {
-                switch (stringResource.getStatus()) {
+            public void onChanged(Resource<AuthInfo> authInfoResource) {
+                switch (authInfoResource.getStatus()) {
                     case SUCCESS:
-                        // TODO: start map activity and clear back stack
+                        PreferenceRepository preferences = new PreferenceRepository(LoginActivity.this);
+                        preferences.setAuthToken(authInfoResource.getData().getAuthToken());
+                        preferences.setAuthUserId(authInfoResource.getData().getAuthUserId());
+                        // TODO: start main activity and clear back stack
+                        finish();
                         break;
                     case LOADING:
                         progressBar.setVisibility(View.VISIBLE);

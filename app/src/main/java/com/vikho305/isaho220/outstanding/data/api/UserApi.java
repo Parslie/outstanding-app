@@ -1,6 +1,8 @@
 package com.vikho305.isaho220.outstanding.data.api;
 
 import android.content.Context;
+
+import com.vikho305.isaho220.outstanding.data.AuthInfo;
 import com.vikho305.isaho220.outstanding.data.Post;
 import com.vikho305.isaho220.outstanding.data.User;
 import com.vikho305.isaho220.outstanding.data.repositories.PreferenceRepository;
@@ -38,7 +40,7 @@ public class UserApi {
                 .getStringSingle();
     }
 
-    public Single<String> login(String username, String password) {
+    public Single<AuthInfo> login(String username, String password) {
         JSONObject jsonParameters = new JSONObject();
         try {
             jsonParameters.put("username", username);
@@ -50,7 +52,7 @@ public class UserApi {
         return Rx2AndroidNetworking.post(ROOT_URL + "/login")
                 .addJSONObjectBody(jsonParameters)
                 .build()
-                .getStringSingle();
+                .getObjectSingle(AuthInfo.class);
     }
 
     public Single<String> logout() {
