@@ -57,7 +57,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         PreferenceRepository preferences = new PreferenceRepository(LoginActivity.this);
                         preferences.setAuthToken(authInfoResource.getData().getAuthToken());
                         preferences.setAuthUserId(authInfoResource.getData().getAuthUserId());
-                        // TODO: start main activity and clear back stack
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
                         finish();
                         break;
                     case LOADING:
