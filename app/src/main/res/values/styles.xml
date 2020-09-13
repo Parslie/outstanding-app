@@ -1,57 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LoginAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <style name="RedTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="buttonStyle">@style/RoundButton</item>
-        <item name="editTextStyle">@style/EditText</item>
-        <item name="android:textAppearance">@style/BodyText</item>
-    </style>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
 
-    <!-- Text Appearances -->
-
-    <style name="BodyText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">@dimen/small_text</item>
-        <item name="android:typeface">sans</item>
-    </style>
-
-    <style name="EmphaticText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">@dimen/medium_text</item>
-        <item name="android:typeface">sans</item>
-    </style>
-
-    <style name="TitleText" parent="@android:style/TextAppearance.Small">
-        <item name="android:textSize">@dimen/large_text</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:typeface">sans</item>
-    </style>
-
-    <!-- Button Styles -->
-
-    <style name="RoundButton" parent="@android:style/Widget.Button">
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:textAppearance">@style/BodyText</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/input</item>
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-    </style>
-
-    <!-- Input Field Styles -->
-
-    <style name="EditText" parent="@android:style/Widget.EditText">
-        <item name="android:gravity">center_vertical|left</item>
-        <item name="android:textAppearance">@style/BodyText</item>
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/input</item>
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:paddingHorizontal">@dimen/large_spacing</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.UnelevatedButton</item>
     </style>
 
 </resources>

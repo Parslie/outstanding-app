@@ -1,15 +1,6 @@
 <resources>
     <string name="app_name">Outstanding</string>
 
-    <!-- ERRORS -->
-    <string name="login_error">incorrect username or password</string>
-    <string name="register_error">user already exists</string>
-
-    <string name="password_confirmation_error">wrong confirmation password</string>
-    <string name="empty_fields_error">empty fields</string>
-    <string name="server_error">server-side error</string>
-    <string name="timeout_error">request timed out</string>
-
     <!-- TITLES -->
     <string name="edit_profile_title">Profile Details</string>
     <string name="edit_account_title">Account Details</string>
@@ -31,39 +22,7 @@
     <string name="username_label">Username</string>
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
+    <string name="password_confirmation_label">Password Confirmation</string>
     <string name="login_label">Login</string>
     <string name="register_label">Register</string>
-
-    <!-- HINTS -->
-    <string name="username_hint">Enter username…</string>
-    <string name="password_hint">Enter password…</string>
-    <string name="password_confirmation_hint">Confirm password…</string>
-    <string name="new_password_hint">Enter new password…</string>
-    <string name="email_hint">Enter email…</string>
-    <string name="profile_description_hint">Enter description…</string>
-
-    <string name="title_hint">Enter title…</string>
-    <string name="text_hint">Enter text…</string>
-
-
-    <!-- INPUT ERRORS -->
-    <string name="username_length_error">The username is too short…</string>
-    <string name="email_format_error">The email is formatted incorrectly…</string>
-    <string name="password_length_error">The password is too short…</string>
-    <string name="password_match_error">The passwords do not match…</string>
-
-    <!-- MISC -->
-    <string name="length_limit">%d / %d</string>
-    <string name="follower_count">%d Followers</string>
-    <string name="following_count">%d Followings</string>
-
-    <!-- LOGGING -->
-    <string name="generic_error">Error</string>
-    <string name="generic_success">Success</string>
-
-    <string name="user_location_permission_explanation">Blarf</string>
-    <string name="user_location_permission_not_granted">Permission not granted</string>
-    <string name="current_location">Got current location</string>
-    <string name="tracking_already_enabled">Tracking is already enabled</string>
-    <string name="tracking_enabled">Tracking now enabled</string>
 </resources>
