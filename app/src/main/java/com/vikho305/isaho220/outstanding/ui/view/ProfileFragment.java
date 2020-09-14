@@ -1,7 +1,9 @@
 package com.vikho305.isaho220.outstanding.ui.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +25,7 @@ import com.vikho305.isaho220.outstanding.ui.viewmodel.ContextualViewModelFactory
 import com.vikho305.isaho220.outstanding.ui.viewmodel.LoginViewModel;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.ProfileViewModel;
 import com.vikho305.isaho220.outstanding.util.Resource;
+import com.vikho305.isaho220.outstanding.util.Status;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +68,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        setRetainInstance(true);
 
         profilePicture = view.findViewById(R.id.profilePicture);
         username = view.findViewById(R.id.profileName);
@@ -85,15 +89,16 @@ public class ProfileFragment extends Fragment {
         viewModel.getUser().observe(requireActivity(), new Observer<Resource<User>>() {
             @Override
             public void onChanged(Resource<User> userResource) {
-                switch (userResource.getStatus()) {
-                    case SUCCESS:
+                try {
+                    if (userResource.getStatus() == Status.SUCCESS) {
                         User user = userResource.getData();
                         username.setText(user.getUsername());
                         description.setText(user.getDescription());
                         followerCount.setText(getString(R.string.follower_count, user.getFollowerCount()));
                         followingCount.setText(getString(R.string.following_count, user.getFollowingCount()));
-                        break;
+                    }
                 }
+                catch (IllegalStateException ignored) { } // Caught when switching from the fragment too quickly
             }
         });
 
