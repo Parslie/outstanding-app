@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mapbox.mapboxsdk.Mapbox;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.data.repositories.PreferenceRepository;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Mapbox.getInstance(this, "pk.eyJ1IjoiaXNha2hvcnZhdGgiLCJhIjoiY2s4dnZ3NWoxMDN1azNncXBuNWl0YWttdSJ9.ksNJFJjaQsqnIFzKy3ZCkg");
         setContentView(R.layout.activity_main);
 
         PreferenceRepository preferences = new PreferenceRepository(this);

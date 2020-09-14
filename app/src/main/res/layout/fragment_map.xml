@@ -5,10 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapMap"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fds" />
-
+        android:layout_height="match_parent" />
 </FrameLayout>
