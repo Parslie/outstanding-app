@@ -32,6 +32,7 @@ import com.vikho305.isaho220.outstanding.ui.viewmodel.ProfileViewModel;
 import com.vikho305.isaho220.outstanding.util.Resource;
 import com.vikho305.isaho220.outstanding.util.Status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,7 @@ public class ProfileFragment extends Fragment {
 
     private RecyclerView postRecyclerView;
     private PostAdapter postAdapter;
+    private List<Post> postList;
 
     private String userId;
     private ProfileViewModel viewModel;
@@ -70,6 +72,8 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
+        postList = new ArrayList<>();
+
         if (getArguments() != null) {
             userId = getArguments().getString(USER_ID_ARG);
         }
@@ -78,7 +82,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        setRetainInstance(true);
+        setRetainInstance(true); // TODO: fix retaining data, and not fetching every time, resetting current page counter
 
         profilePicture = view.findViewById(R.id.profilePicture);
         username = view.findViewById(R.id.profileName);
@@ -91,6 +95,7 @@ public class ProfileFragment extends Fragment {
         postRecyclerView.addItemDecoration(new DividerItemDecoration(postRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postAdapter = new PostAdapter(getContext());
+        postAdapter.addPosts(postList);
         postRecyclerView.setAdapter(postAdapter);
 
         initViewModel();
@@ -100,7 +105,7 @@ public class ProfileFragment extends Fragment {
 
     private void initViewModel() {
         ContextualViewModelFactory contextualViewModelFactory = new ContextualViewModelFactory(requireContext());
-        viewModel = new ViewModelProvider(requireActivity(), contextualViewModelFactory).get(ProfileViewModel.class); // TODO: avoid calling at every point
+        viewModel = new ViewModelProvider(requireActivity(), contextualViewModelFactory).get(ProfileViewModel.class);
 
         viewModel.getUser().observe(requireActivity(), new Observer<Resource<User>>() {
             @Override

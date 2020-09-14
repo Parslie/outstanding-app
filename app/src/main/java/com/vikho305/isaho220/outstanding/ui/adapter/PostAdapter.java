@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.data.Post;
 
@@ -57,7 +58,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             TextView titleView = itemView.findViewById(R.id.postItemTitle);
             titleView.setText(post.getTitle());
             TextView contentView = itemView.findViewById(R.id.postItemContent);
-            contentView.setText(post.getTitle());
+            contentView.setText(post.getText());
+            TextView dateView = itemView.findViewById(R.id.postItemDate);
+            dateView.setText(post.getDateCreated());
+
+            if (post.getMediaType().equals(Post.IMAGE_TYPE)) {
+                ShapeableImageView imageView = itemView.findViewById(R.id.postItemImage);
+                // TODO: create a decoder
+            }
         }
     }
 }
