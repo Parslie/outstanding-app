@@ -26,6 +26,12 @@
     <string name="profile_label">Profile</string>
     <string name="map_label">Map</string>
 
+    <string name="title_label">Title</string>
+    <string name="content_label">Content</string>
+    <string name="text_label">Text</string>
+    <string name="image_label">Image</string>
+    <string name="post_label">Post</string>
+
     <!-- Miscellaneous -->
 
     <string name="follower_count">%d followers</string>

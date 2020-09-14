@@ -1,6 +1,7 @@
 package com.vikho305.isaho220.outstanding.ui.view;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -37,13 +39,9 @@ import com.vikho305.isaho220.outstanding.util.Resource;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
 
+    private FloatingActionButton fab;
     private MapView mapView;
     private MapboxMap mapboxMap;
     private SymbolManager postManager;
@@ -65,6 +63,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         setRetainInstance(true);
 
+        fab = view.findViewById(R.id.mapFab);
+        fab.setOnClickListener(this);
         mapView = view.findViewById(R.id.mapMap);
         mapView.getMapAsync(this);
 
@@ -83,6 +83,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v == fab) {
+            Intent intent = new Intent(requireContext(), PostCreationActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    // Map methods
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
@@ -214,5 +224,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onDestroyView();
         mapView.onDestroy();
     }
-
 }

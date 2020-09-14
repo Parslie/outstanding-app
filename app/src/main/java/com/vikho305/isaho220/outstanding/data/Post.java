@@ -3,6 +3,8 @@ package com.vikho305.isaho220.outstanding.data;
 import com.google.gson.annotations.SerializedName;
 
 public class Post {
+    public static final String TEXT_TYPE = "text", IMAGE_TYPE = "image";
+
     @SerializedName(value = "is_liked")
     private boolean isLiked;
     @SerializedName(value = "is_disliked")
