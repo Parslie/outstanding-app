@@ -73,6 +73,7 @@ public class ProfileViewModel extends BaseViewModel {
                             @Override
                             public void accept(List<Post> p) throws Exception {
                                 posts.postValue(Resource.success(p));
+                                currentPostPage++;
                             }
                         },
                         new Consumer<Throwable>() {
@@ -83,6 +84,5 @@ public class ProfileViewModel extends BaseViewModel {
                         }
                 )
         );
-        currentPostPage++;
     }
 }

@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +23,16 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.vikho305.isaho220.outstanding.R;
+import com.vikho305.isaho220.outstanding.data.Post;
 import com.vikho305.isaho220.outstanding.data.User;
+import com.vikho305.isaho220.outstanding.ui.adapter.PostAdapter;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.ContextualViewModelFactory;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.LoginViewModel;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.ProfileViewModel;
 import com.vikho305.isaho220.outstanding.util.Resource;
 import com.vikho305.isaho220.outstanding.util.Status;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +46,9 @@ public class ProfileFragment extends Fragment {
     private TextView username, description;
     private TextView followerCount, followingCount;
     private Button followButton;
+
+    private RecyclerView postRecyclerView;
+    private PostAdapter postAdapter;
 
     private String userId;
     private ProfileViewModel viewModel;
@@ -77,6 +87,12 @@ public class ProfileFragment extends Fragment {
         followingCount = view.findViewById(R.id.profileFollowingCount);
         followButton = view.findViewById(R.id.profileFollowBtn);
 
+        postRecyclerView = view.findViewById(R.id.profilePosts);
+        postRecyclerView.addItemDecoration(new DividerItemDecoration(postRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postAdapter = new PostAdapter(getContext());
+        postRecyclerView.setAdapter(postAdapter);
+
         initViewModel();
 
         return view;
@@ -84,7 +100,7 @@ public class ProfileFragment extends Fragment {
 
     private void initViewModel() {
         ContextualViewModelFactory contextualViewModelFactory = new ContextualViewModelFactory(requireContext());
-        viewModel = new ViewModelProvider(requireActivity(), contextualViewModelFactory).get(ProfileViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(), contextualViewModelFactory).get(ProfileViewModel.class); // TODO: avoid calling at every point
 
         viewModel.getUser().observe(requireActivity(), new Observer<Resource<User>>() {
             @Override
@@ -99,6 +115,20 @@ public class ProfileFragment extends Fragment {
                     }
                 }
                 catch (IllegalStateException ignored) { } // Caught when switching from the fragment too quickly
+            }
+        });
+        viewModel.getPosts().observe(requireActivity(), new Observer<Resource<List<Post>>>() {
+            @Override
+            public void onChanged(Resource<List<Post>> listResource) {
+                switch (listResource.getStatus()) {
+                    case SUCCESS:
+                        postAdapter.addPosts(listResource.getData());
+                        break;
+                    case ERROR:
+                        break;
+                    case LOADING:
+                        break;
+                }
             }
         });
 
