@@ -101,13 +101,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileFollowerLayout" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profilePosts"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/profileSwipeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toTopOf="@+id/divider">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profilePosts"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

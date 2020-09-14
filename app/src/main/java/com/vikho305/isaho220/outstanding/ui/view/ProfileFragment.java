@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ import java.util.List;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
     private static final String USER_ID_ARG = "user_id";
 
     private ShapeableImageView profilePicture;
@@ -48,9 +49,9 @@ public class ProfileFragment extends Fragment {
     private TextView followerCount, followingCount;
     private Button followButton;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView postRecyclerView;
     private PostAdapter postAdapter;
-    private List<Post> postList;
 
     private String userId;
     private ProfileViewModel viewModel;
@@ -72,8 +73,6 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        postList = new ArrayList<>();
-
         if (getArguments() != null) {
             userId = getArguments().getString(USER_ID_ARG);
         }
@@ -91,11 +90,12 @@ public class ProfileFragment extends Fragment {
         followingCount = view.findViewById(R.id.profileFollowingCount);
         followButton = view.findViewById(R.id.profileFollowBtn);
 
+        swipeRefreshLayout = view.findViewById(R.id.profileSwipeLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
         postRecyclerView = view.findViewById(R.id.profilePosts);
         postRecyclerView.addItemDecoration(new DividerItemDecoration(postRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postAdapter = new PostAdapter(getContext());
-        postAdapter.addPosts(postList);
         postRecyclerView.setAdapter(postAdapter);
 
         initViewModel();
@@ -128,8 +128,10 @@ public class ProfileFragment extends Fragment {
                 switch (listResource.getStatus()) {
                     case SUCCESS:
                         postAdapter.addPosts(listResource.getData());
+                        swipeRefreshLayout.setRefreshing(false);
                         break;
                     case ERROR:
+                        swipeRefreshLayout.setRefreshing(false);
                         break;
                     case LOADING:
                         break;
@@ -138,6 +140,13 @@ public class ProfileFragment extends Fragment {
         });
 
         viewModel.fetchUser(userId);
+        viewModel.fetchPosts(userId);
+    }
+
+    @Override
+    public void onRefresh() {
+        postAdapter.setPosts(new ArrayList<Post>());
+        viewModel.resetPosts();
         viewModel.fetchPosts(userId);
     }
 }

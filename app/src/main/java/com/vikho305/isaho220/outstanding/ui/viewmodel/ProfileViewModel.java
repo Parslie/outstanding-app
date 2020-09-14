@@ -85,4 +85,8 @@ public class ProfileViewModel extends BaseViewModel {
                 )
         );
     }
+
+    public void resetPosts() {
+        currentPostPage = 0;
+    }
 }
