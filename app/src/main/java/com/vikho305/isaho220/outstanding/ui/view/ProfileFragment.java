@@ -110,16 +110,13 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         viewModel.getUser().observe(requireActivity(), new Observer<Resource<User>>() {
             @Override
             public void onChanged(Resource<User> userResource) {
-                try {
-                    if (userResource.getStatus() == Status.SUCCESS) {
-                        User user = userResource.getData();
-                        username.setText(user.getUsername());
-                        description.setText(user.getDescription());
-                        followerCount.setText(getString(R.string.follower_count, user.getFollowerCount()));
-                        followingCount.setText(getString(R.string.following_count, user.getFollowingCount()));
-                    }
+                if (userResource.getStatus() == Status.SUCCESS) {
+                    User user = userResource.getData();
+                    username.setText(user.getUsername());
+                    description.setText(user.getDescription());
+                    followerCount.setText(getString(R.string.follower_count, user.getFollowerCount()));
+                    followingCount.setText(getString(R.string.following_count, user.getFollowingCount()));
                 }
-                catch (IllegalStateException ignored) { } // Caught when switching from the fragment too quickly
             }
         });
         viewModel.getPosts().observe(requireActivity(), new Observer<Resource<List<Post>>>() {

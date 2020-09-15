@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         PreferenceRepository preferences = new PreferenceRepository(this);
         profileFragment = ProfileFragment.newInstance(preferences.getAuthUserId());
         mapFragment = MapFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.mainContainer, profileFragment)
+                .add(R.id.mainContainer, mapFragment)
+                .commit();
 
         fragmentContainer = findViewById(R.id.mainContainer);
         navigationView = findViewById(R.id.mainNavBar);
@@ -115,15 +119,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     public void showProfileSelf() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
-        transaction.replace(R.id.mainContainer, profileFragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .hide(mapFragment)
+                .show(profileFragment)
+                .commit();
     }
 
     public void showMap() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        // transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
-        transaction.replace(R.id.mainContainer, mapFragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .show(mapFragment)
+                .hide(profileFragment)
+                .commit();
     }
 
     @Override
