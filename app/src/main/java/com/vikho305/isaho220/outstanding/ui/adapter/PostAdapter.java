@@ -1,6 +1,8 @@
 package com.vikho305.isaho220.outstanding.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.data.Post;
+import com.vikho305.isaho220.outstanding.data.media.ImageMedia;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,15 +64,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         public void bindData(Post post) {
             TextView titleView = itemView.findViewById(R.id.postItemTitle);
-            titleView.setText(post.getTitle());
             TextView contentView = itemView.findViewById(R.id.postItemContent);
-            contentView.setText(post.getText());
+            ShapeableImageView imageView = itemView.findViewById(R.id.postItemImage);
             TextView dateView = itemView.findViewById(R.id.postItemDate);
+            titleView.setText(post.getTitle());
+            contentView.setText(post.getText());
             dateView.setText(post.getDateCreated());
 
+            if (post.getText().length() == 0)
+                contentView.setVisibility(View.GONE);
+            else
+                contentView.setVisibility(View.VISIBLE);
+
             if (post.getMediaType().equals(Post.IMAGE_TYPE)) {
-                ShapeableImageView imageView = itemView.findViewById(R.id.postItemImage);
-                // TODO: create a decoder
+                imageView.setVisibility(View.VISIBLE);
+
+                ImageMedia imageMedia = new ImageMedia();
+                imageView.setImageBitmap(imageMedia.base64ToBitmap(post.getMedia()));
+            }
+            else {
+                imageView.setVisibility(View.GONE);
             }
         }
     }

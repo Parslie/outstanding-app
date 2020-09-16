@@ -1,32 +1,34 @@
 package com.vikho305.isaho220.outstanding.ui.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.data.Post;
 import com.vikho305.isaho220.outstanding.data.User;
+import com.vikho305.isaho220.outstanding.data.media.ImageMedia;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.ContextualViewModelFactory;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.PostCreationViewModel;
 import com.vikho305.isaho220.outstanding.util.Resource;
 
 public class PostCreationActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int CAMERA_REQUEST = 1, GALLERY_REQUEST = 2;
+
     private EditText titleInput, contentInput;
+    private ImageView imageView;
     private Button textButton, imageButton, postButton;
 
     private String media, mediaType;
@@ -41,6 +43,7 @@ public class PostCreationActivity extends AppCompatActivity implements View.OnCl
 
         titleInput = findViewById(R.id.postCreationTitle); // TODO: add title limit
         contentInput = findViewById(R.id.postCreationContent); // TODO: add content limit
+        imageView = findViewById(R.id.postCreationImage);
         textButton = findViewById(R.id.postCreationTextBtn);
         imageButton = findViewById(R.id.postCreationImageBtn);
         postButton = findViewById(R.id.postCreationPostBtn);
@@ -102,12 +105,45 @@ public class PostCreationActivity extends AppCompatActivity implements View.OnCl
             media = "";
         }
         else if (v == imageButton) {
-            mediaType = Post.IMAGE_TYPE;
+            final CharSequence[] items = new CharSequence[] {"Camera (W.I.P)", "Gallery"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Select Image Source");
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    CharSequence item = items[which];
+                    if (item.equals("Camera")) {
+                        // TODO: implement camera feature (IT WAS TOO HARD)
+                    }
+                    else if (item.equals("Gallery")) {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, GALLERY_REQUEST);
+                    }
+                }
+            });
+            builder.show();
         }
         else if (v == postButton) {
             String title = titleInput.getText().toString();
             String content = contentInput.getText().toString();
             viewModel.postPost(title, content, media, mediaType, latitude, longitude);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data != null) {
+            mediaType = Post.IMAGE_TYPE;
+        }
+        else if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
+            ImageMedia imageMedia = new ImageMedia();
+            media = imageMedia.uriToBase64(getContentResolver(), imageUri);
+            mediaType = Post.IMAGE_TYPE;
+            imageView.setImageBitmap(imageMedia.base64ToBitmap(media));
         }
     }
 }

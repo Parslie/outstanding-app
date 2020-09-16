@@ -93,7 +93,6 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         swipeRefreshLayout = view.findViewById(R.id.profileSwipeLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
         postRecyclerView = view.findViewById(R.id.profilePosts);
-        postRecyclerView.addItemDecoration(new DividerItemDecoration(postRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
         postRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postAdapter = new PostAdapter(getContext());
         postRecyclerView.setAdapter(postAdapter);
