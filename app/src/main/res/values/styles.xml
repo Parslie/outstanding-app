@@ -9,17 +9,17 @@
     </style>
 
     <style name="BaseTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
-
         <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.UnelevatedButton</item>
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
     </style>
 
     <style name="RedTheme" parent="BaseTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/redPrimary</item>
+        <item name="colorPrimaryDark">@color/redPrimaryDark</item>
+        <item name="colorAccent">@color/redAccent</item>
+
+        <item name="android:statusBarColor">@color/redPrimary</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Text Appearances -->
