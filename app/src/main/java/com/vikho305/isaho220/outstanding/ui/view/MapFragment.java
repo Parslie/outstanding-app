@@ -3,11 +3,13 @@ package com.vikho305.isaho220.outstanding.ui.view;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,21 +33,26 @@ import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener;
 import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.vikho305.isaho220.outstanding.R;
 import com.vikho305.isaho220.outstanding.data.Post;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.ContextualViewModelFactory;
 import com.vikho305.isaho220.outstanding.ui.viewmodel.MapViewModel;
 import com.vikho305.isaho220.outstanding.util.Resource;
+import com.vikho305.isaho220.outstanding.util.Status;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+
+    private static final String IMAGE_ICON = "image", TEXT_ICON = "text";
+    private static final float ICON_SIZE = 1.5f;
 
     private FloatingActionButton fab;
     private MapView mapView;
     private MapboxMap mapboxMap;
     private SymbolManager postManager;
-    private List<SymbolOptions> postSymbols;
     private LocationComponent locationComponent;
 
     private MapViewModel viewModel;
@@ -79,7 +86,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         viewModel.getPosts().observe(requireActivity(), new Observer<Resource<List<Post>>>() {
             @Override
             public void onChanged(Resource<List<Post>> listResource) {
-                // TODO: set post symbols
+                if (listResource.getStatus() == Status.SUCCESS) {
+                    postManager.deleteAll();
+                    if (postManager != null) {
+                        for (Post post : listResource.getData()) {
+                            LatLng postLatLng = new LatLng(post.getLatitude(), post.getLongitude());
+                            SymbolOptions postSymbol = new SymbolOptions()
+                                    .withLatLng(postLatLng)
+                                    .withIconSize(ICON_SIZE);
+
+                            switch (post.getMediaType()) {
+                                case Post.IMAGE_TYPE:
+                                    postSymbol.withIconImage(IMAGE_ICON);
+                                    break;
+                                case Post.TEXT_TYPE:
+                                    postSymbol.withIconImage(TEXT_ICON);
+                                    break;
+                            }
+
+                            postManager.create(postSymbol);
+                        }
+                    }
+                }
             }
         });
     }
@@ -102,18 +130,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             @Override
             public void onStyleLoaded(@NonNull Style style) {
                 // Init symbol icons
-                /*style.addImage(TEXT_ICON,
-                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_text_24dp))),
-                        true);
-                style.addImage(IMAGE_ICON,
-                        Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_image_24dp))),
-                        true);*/
+                Bitmap textIcon = Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_text_24dp)));
+                Bitmap imageIcon = Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_image_24dp)));
+                style.addImage(TEXT_ICON, textIcon, true);
+                style.addImage(IMAGE_ICON, imageIcon, true);
 
                 // Init symbol managers
                 postManager = new SymbolManager(mapView, mapboxMap, style);
                 postManager.setIconAllowOverlap(true);
                 postManager.setTextAllowOverlap(true);
-                //createPostSymbols();
 
                 // Init symbol click listeners
                 postManager.addClickListener(new OnSymbolClickListener() {
@@ -127,6 +152,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                     }
                 });
 
+                viewModel.fetchPosts(100);
                 enableLocationComponent(style);
             }
         });
