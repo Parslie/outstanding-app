@@ -3,7 +3,17 @@
     <color name="redPrimary">#FF6A4D</color>
     <color name="redPrimaryDark">#C54A32</color>
     <color name="redAccent">#4DE2FF</color>
-
     <color name="likeColor">#FF4141</color>
     <color name="dislikeColor">#7918B7</color>
+
+
+
+
+    <color name="orange_400">#FF7043</color>
+    <color name="orange_500">#FF5722</color>
+    <color name="orange_700">#E64A19</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF111111</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>
