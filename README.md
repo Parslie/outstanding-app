@@ -1,5 +1,5 @@
 ### NOTICES
-This repository was derived from our old repository: https://gitlab.liu.se/vikho305/tddd80-outstanding
+This repository was derived from our old repository: https://gitlab.liu.se/tddd80-outstanding/outstanding-android
 
 ### GRADE
 We are aiming for the grade 5
