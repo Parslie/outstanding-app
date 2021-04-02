@@ -16,7 +16,7 @@
 
     <style name="ShapeAppearance.Image" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">12dp</item>
+        <item name="cornerSize">4dp</item>
     </style>
 
 

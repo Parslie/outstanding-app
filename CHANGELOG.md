@@ -1,10 +1,13 @@
 A change encased in parentheses () has not been implemented yet.
 
+A change encased in square brackets \[\] needs better wording.
+
 ### 0.4.0
 * Updated theme colors & layout spacings
 * Added warning about response delays on splash activity
 * (Added a fragment to view images when clicking on them)
 * (Added ability to change account & profile information)
+* \[(Limited input in post-creation activity better)\]
 
 ### 0.3.0
 * Added ability to make image posts via gallery

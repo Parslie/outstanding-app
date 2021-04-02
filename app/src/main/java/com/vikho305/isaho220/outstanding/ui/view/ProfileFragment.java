@@ -1,6 +1,7 @@
 package com.vikho305.isaho220.outstanding.ui.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -41,13 +42,13 @@ import java.util.List;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener  {
+public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private static final String USER_ID_ARG = "user_id";
 
     private ShapeableImageView profilePicture;
     private TextView username, description;
-    private TextView followerCount, followingCount;
-    private Button followButton;
+    private TextView followerCount, followingCount; // TODO: change to buttons
+    private Button followButton, editButton;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView postRecyclerView;
@@ -89,6 +90,10 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         followerCount = view.findViewById(R.id.profileFollowerCount);
         followingCount = view.findViewById(R.id.profileFollowingCount);
         followButton = view.findViewById(R.id.profileFollowBtn);
+        editButton = view.findViewById(R.id.profileEditBtn);
+
+        followButton.setOnClickListener(this);
+        editButton.setOnClickListener(this);
 
         swipeRefreshLayout = view.findViewById(R.id.profileSwipeLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -115,6 +120,11 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     description.setText(user.getDescription());
                     followerCount.setText(getString(R.string.follower_count, user.getFollowerCount()));
                     followingCount.setText(getString(R.string.following_count, user.getFollowingCount()));
+
+                    if (user.isSelf()) {
+                        followButton.setVisibility(View.GONE);
+                        editButton.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -144,5 +154,16 @@ public class ProfileFragment extends Fragment implements SwipeRefreshLayout.OnRe
         postAdapter.setPosts(new ArrayList<Post>());
         viewModel.resetPosts();
         viewModel.fetchPosts(userId);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == followButton) {
+
+        }
+        else if (v == editButton) {
+            Intent intent = new Intent(requireContext(), AccountSettingsActivity.class);
+            startActivity(intent);
+        }
     }
 }

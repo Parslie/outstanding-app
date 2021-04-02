@@ -37,4 +37,14 @@
     <string name="follower_count">%d followers</string>
     <string name="following_count">%d followings</string>
     <string name="splash_info">INFO: This app operates on a free server model. Hence you may experience response delays, which can cause minor errors. (e.g. automatic login not working)</string>
+    <string name="edit_lbl">Edit</string>
+    <string name="description_hint">Description</string>
+    <string name="username_hint">Username</string>
+    <string name="current_password_hint">Current Password</string>
+    <string name="save_lbl">Save</string>
+    <string name="new_email_hint">New Email</string>
+    <string name="confirm_new_pass_hint">Confirm New Password</string>
+    <string name="new_pass_hint">New Password</string>
+    <string name="choose_lbl">Choose</string>
+    <string name="reset_lbl">Reset</string>
 </resources>

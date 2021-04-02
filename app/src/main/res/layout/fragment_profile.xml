@@ -43,7 +43,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/inner_margin"
-            android:layout_marginTop="@dimen/inner_margin"
             android:text="This is a sample description for a sample profile! It is just a miscellaneous number of words consisting of exactly 200 symbols. You heard that right, 200! I will really have to add fluff for that lol"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profilePicture"
@@ -75,7 +74,16 @@
             android:id="@+id/profileFollowBtn"
             android:layout_width="104dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="@string/follow_label" />
+
+        <Button
+            android:id="@+id/profileEditBtn"
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/edit_lbl"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/profileFollowerBtn"
@@ -111,7 +119,7 @@
         android:id="@+id/profileDivider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/inner_margin"
+        android:layout_marginTop="@dimen/outer_margin"
         android:layout_weight="1"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
