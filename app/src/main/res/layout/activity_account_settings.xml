@@ -159,7 +159,7 @@
             android:hint="@string/current_password_hint"
             app:endIconMode="password_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/accountSettingsSaveBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/accountSettingsNewPassConfirmationLayout"
             app:layout_constraintVertical_bias="1.0">
@@ -171,7 +171,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/accountSettingsSaveBtn"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/outer_margin"
