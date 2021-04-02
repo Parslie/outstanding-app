@@ -7,13 +7,34 @@
     android:background="?colorPrimary"
     tools:context=".ui.view.SplashActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/outer_margin"
+        android:layout_marginEnd="@dimen/outer_margin"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_outstanding_icon" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_outstanding_icon" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/inner_margin_double" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/splash_info"
+            android:textAlignment="center"
+            android:textColor="?colorOnPrimary" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,4 +36,5 @@
 
     <string name="follower_count">%d followers</string>
     <string name="following_count">%d followings</string>
+    <string name="splash_info">INFO: This app operates on a free server model. Hence you may experience response delays, which can cause minor errors. (e.g. automatic login not working)</string>
 </resources>

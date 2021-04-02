@@ -4,37 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/activity_padding"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/postItemTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textAppearance="@style/Title" />
-
-    <TextView
-        android:id="@+id/postItemContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_spacing"
-        android:text="TextView" />
+    android:padding="@dimen/outer_margin">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/postItemImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_spacing"
-        android:adjustViewBounds="true"
-        android:visibility="gone"
-        tools:srcCompat="@tools:sample/backgrounds/scenic"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_marginEnd="@dimen/inner_margin"
+        android:scaleType="centerCrop"
         app:shapeAppearance="@style/ShapeAppearance.Image" />
 
-    <TextView
-        android:id="@+id/postItemDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_spacing"
-        android:text="TextView" />
+    <LinearLayout
+        android:id="@+id/postItemTextLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/postItemTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAppearance="@style/Title" />
+
+        <TextView
+            android:id="@+id/postItemContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/postItemDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+    </LinearLayout>
+
 </LinearLayout>

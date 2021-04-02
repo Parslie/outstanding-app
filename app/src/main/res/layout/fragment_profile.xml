@@ -4,58 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_padding"
     tools:context=".ui.view.ProfileFragment">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profilePicture"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profileInfoLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/small_spacing"
-        android:adjustViewBounds="true"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        android:layout_marginStart="@dimen/outer_margin"
+        android:layout_marginTop="@dimen/outer_margin"
+        android:layout_marginEnd="@dimen/outer_margin"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/ShapeAppearance.Image"
-        app:srcCompat="@drawable/ic_pfp" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.34" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="104dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/ShapeAppearance.Image"
+            app:srcCompat="@drawable/ic_pfp" />
 
-    <TextView
-        android:id="@+id/profileName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/small_spacing"
-        android:text="xXusernamecutiepieXx"
-        android:textAppearance="@style/Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/profileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/inner_margin"
+            android:text="xXusernamecutiepieXx"
+            android:textAppearance="@style/Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/profilePicture"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/profileDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/small_spacing"
-        android:text="This is a sample description for a sample profile! It is just a miscellaneous number of words consisting of exactly 200 symbols. You heard that right, 200! I will really have to add fluff for that lol"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/profileName" />
+        <TextView
+            android:id="@+id/profileDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/inner_margin"
+            android:layout_marginTop="@dimen/inner_margin"
+            android:text="This is a sample description for a sample profile! It is just a miscellaneous number of words consisting of exactly 200 symbols. You heard that right, 200! I will really have to add fluff for that lol"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profilePicture"
+            app:layout_constraintTop_toBottomOf="@+id/profileName" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/profileFollowerLayout"
+        android:id="@+id/profileBtnLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium_spacing"
+        android:layout_marginStart="@dimen/outer_margin"
+        android:layout_marginTop="@dimen/inner_margin"
+        android:layout_marginEnd="@dimen/outer_margin"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture">
+        app:layout_constraintTop_toBottomOf="@+id/profileInfoLayout">
 
         <TextView
             android:id="@+id/profileFollowerCount"
@@ -63,13 +68,34 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/follower_count" />
+            android:text="@string/follower_count"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/profileFollowBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="104dp"
             android:layout_height="wrap_content"
             android:text="@string/follow_label" />
+
+        <Button
+            android:id="@+id/profileFollowerBtn"
+            style="@style/Button.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/follower_count"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/profileFollowingBtn"
+            style="@style/Button.Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/following_count"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/profileFollowingCount"
@@ -77,19 +103,29 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/following_count" />
-
+            android:text="@string/following_count"
+            android:visibility="gone" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/profileDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/inner_margin"
+        android:layout_weight="1"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profileBtnLayout" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/profileSwipeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/medium_spacing"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileFollowerLayout">
+        app:layout_constraintTop_toBottomOf="@+id/profileDivider">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/profilePosts"

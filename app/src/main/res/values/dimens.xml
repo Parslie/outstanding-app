@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_spacing">4dp</dimen>
-    <dimen name="medium_spacing">8dp</dimen>
-    <dimen name="large_spacing">16dp</dimen>
-
-    <dimen name="activity_padding">@dimen/large_spacing</dimen>
+    <dimen name="outer_margin">20dp</dimen>
+    <dimen name="inner_margin">6dp</dimen>
+    <dimen name="inner_margin_double">12dp</dimen>
 </resources>
