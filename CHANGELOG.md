@@ -5,6 +5,7 @@ A change encased in square brackets \[\] needs better wording.
 ### 0.4.0
 * Updated theme colors & layout spacings
 * Added warning about response delays on splash activity
+* Fixed posts not showing up on map
 * (Added a fragment to view images when clicking on them)
 * (Added ability to change account & profile information)
 * \[(Limited input in post-creation activity better)\]
