@@ -3,6 +3,7 @@ package com.vikho305.isaho220.outstanding.ui.viewmodel
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.vikho305.isaho220.outstanding.data.User
 import com.vikho305.isaho220.outstanding.data.repositories.UserRepository
 import com.vikho305.isaho220.outstanding.ui.base.BaseViewModel
 import com.vikho305.isaho220.outstanding.util.Resource
@@ -14,6 +15,7 @@ class AccountSettingsViewModel(context: Context) : BaseViewModel() {
     private val userRepository: UserRepository = UserRepository(context)
     private val hasSetAccount:  MutableLiveData<Resource<Boolean>> = MutableLiveData()
     private val hasSetProfile:  MutableLiveData<Resource<Boolean>> = MutableLiveData()
+    private val user: MutableLiveData<User> = MutableLiveData()
 
     fun hasSetAccount(): LiveData<Resource<Boolean>> {
         return hasSetAccount
@@ -21,6 +23,10 @@ class AccountSettingsViewModel(context: Context) : BaseViewModel() {
 
     fun hasSetProfile(): LiveData<Resource<Boolean>> {
         return hasSetProfile
+    }
+
+    fun getUser(): LiveData<User> {
+        return user
     }
 
     fun setAccount(username: String, email: String, password: String) {
@@ -46,7 +52,7 @@ class AccountSettingsViewModel(context: Context) : BaseViewModel() {
         }
     }
 
-    fun setProfile(pfp: String, description: String) {
+    fun setProfile(pfp: String?, description: String) {
         val onSuccess: Consumer<String> = Consumer {
             hasSetProfile.postValue(Resource.success(true))
         }
@@ -61,5 +67,14 @@ class AccountSettingsViewModel(context: Context) : BaseViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onSuccess, onError))
+    }
+
+    fun fetchUser() {
+        addDisposable(userRepository.userSelf
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(Consumer {
+                    user.postValue(it)
+                }))
     }
 }
