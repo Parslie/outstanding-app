@@ -10,15 +10,10 @@ import io.reactivex.Single
 import org.json.JSONException
 import org.json.JSONObject
 
-class UserApi(context: Context) {
-    companion object {
-        private const val ROOT_URL = "https://outstanding-server.herokuapp.com/user"
-    }
-
-    private val preferences: PreferenceRepository = PreferenceRepository(context)
-
+class UserApi(context: Context) : Api(context, "user") {
     fun register(username: String?, email: String?, password: String?): Single<String> {
         val jsonParameters = JSONObject()
+
         try {
             jsonParameters.put("username", username)
             jsonParameters.put("email", email)
@@ -26,83 +21,56 @@ class UserApi(context: Context) {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        return Rx2AndroidNetworking.post(ROOT_URL)
-                .addJSONObjectBody(jsonParameters)
-                .build()
-                .stringSingle
+
+        return post("", false, jsonParameters).stringSingle
     }
 
     fun login(username: String?, password: String?): Single<AuthInfo> {
         val jsonParameters = JSONObject()
+
         try {
             jsonParameters.put("username", username)
             jsonParameters.put("password", password)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        return Rx2AndroidNetworking.post(ROOT_URL + "/login")
-                .addJSONObjectBody(jsonParameters)
-                .build()
-                .getObjectSingle(AuthInfo::class.java)
+
+        return post("login", false, jsonParameters).getObjectSingle(AuthInfo::class.java)
     }
 
     fun logout(): Single<String> {
-        return Rx2AndroidNetworking.post(ROOT_URL + "/logout")
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+        return post("logout", true).stringSingle
     }
 
     /////////////////
     // Getter methods
 
     fun getUser(userId: String): Single<User> {
-        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .getObjectSingle(User::class.java)
+        return get(userId, true).getObjectSingle(User::class.java)
     }
 
     fun getFollowers(userId: String, page: Int): Single<List<User>> {
-        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followers/" + page)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .getObjectListSingle(User::class.java)
+        return get("$userId/followers/$page", true).getObjectListSingle(User::class.java)
     }
 
     fun getFollowings(userId: String, page: Int): Single<List<User>> {
-        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followings/" + page)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .getObjectListSingle(User::class.java)
+        return get("$userId/followings/$page", true).getObjectListSingle(User::class.java)
     }
 
     fun getPendingFollowers(userId: String, page: Int): Single<List<User>> {
-        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followers/pending/" + page)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .getObjectListSingle(User::class.java)
+        return get("$userId/followers/pending/$page", true).getObjectListSingle(User::class.java)
     }
 
     fun getPendingFollowings(userId: String, page: Int): Single<List<User>> {
-        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/followings/pending/" + page)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .getObjectListSingle(User::class.java)
+        return get("$userId/followings/pending/$page", true).getObjectListSingle(User::class.java)
     }
 
     fun getBlockings(userId: String, page: Int): Single<List<User>> {
-        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/blockings/" + page)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .getObjectListSingle(User::class.java)
+        return get("$userId/blockings/$page", true).getObjectListSingle(User::class.java)
     }
 
     fun getPosts(userId: String, page: Int): Single<List<Post>> {
-        return Rx2AndroidNetworking.get(ROOT_URL + "/" + userId + "/posts/" + page)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .getObjectListSingle(Post::class.java)
+        return get("$userId/posts/$page", true).getObjectListSingle(Post::class.java)
     }
 
     /////////////////
@@ -110,21 +78,20 @@ class UserApi(context: Context) {
 
     fun setAccountDetails(username: String?, email: String?): Single<String> {
         val jsonParameters = JSONObject()
+
         try {
             jsonParameters.put("username", username)
             jsonParameters.put("email", email)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        return Rx2AndroidNetworking.post(ROOT_URL + "/account")
-                .addJSONObjectBody(jsonParameters)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+
+        return post("account", true, jsonParameters).stringSingle
     }
 
     fun setAccountDetails(username: String?, email: String?, password: String?): Single<String> {
         val jsonParameters = JSONObject()
+
         try {
             jsonParameters.put("username", username)
             jsonParameters.put("email", email)
@@ -132,17 +99,15 @@ class UserApi(context: Context) {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        return Rx2AndroidNetworking.post(ROOT_URL + "/account")
-                .addJSONObjectBody(jsonParameters)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+
+        return post("account", true, jsonParameters).stringSingle
     }
 
     fun setProfileDetails(picture: String?, description: String?,
                           primaryH: Double, primaryS: Double, primaryL: Double,
                           secondaryH: Double, secondaryS: Double, secondaryL: Double): Single<String> {
         val jsonParameters = JSONObject()
+
         try {
             jsonParameters.put("picture", picture)
             jsonParameters.put("description", description)
@@ -155,72 +120,47 @@ class UserApi(context: Context) {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        return Rx2AndroidNetworking.post(ROOT_URL + "/profile")
-                .addJSONObjectBody(jsonParameters)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+
+        return post("profile", true, jsonParameters).stringSingle
     }
 
     fun setCoordinates(latitude: Double, longitude: Double): Single<String> {
         val jsonParameters = JSONObject()
+
         try {
             jsonParameters.put("latitude", latitude)
             jsonParameters.put("longitude", longitude)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        return Rx2AndroidNetworking.post(ROOT_URL + "/coordinates")
-                .addJSONObjectBody(jsonParameters)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+
+        return post("coordinates", true, jsonParameters).stringSingle
     }
 
     ///////////////////////////
     // User interaction methods
 
     fun followUser(userId: String): Single<String> {
-        return Rx2AndroidNetworking.post(ROOT_URL + "/" + userId + "/follow")
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+        return post("$userId/follow", true).stringSingle
     }
 
     fun unfollowUser(userId: String): Single<String> {
-        return Rx2AndroidNetworking.delete(ROOT_URL + "/" + userId + "/follow")
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+        return delete("$userId/follow", true).stringSingle
     }
 
     fun blockUser(userId: String): Single<String> {
-        return Rx2AndroidNetworking.post(ROOT_URL + "/" + userId + "/block")
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+        return post("$userId/block", true).stringSingle
     }
 
     fun unblockUser(userId: String): Single<String> {
-        return Rx2AndroidNetworking.delete(ROOT_URL + "/" + userId + "/block")
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+        return delete("$userId/block", true).stringSingle
     }
 
     fun acceptFollower(followerId: String): Single<String> {
-        return Rx2AndroidNetworking.post(ROOT_URL + "/accept/" + followerId)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+        return post("accept/$followerId", true).stringSingle
     }
 
     fun rejectFollower(followerId: String): Single<String> {
-        return Rx2AndroidNetworking.post(ROOT_URL + "/reject/" + followerId)
-                .addHeaders("Authorization", "Bearer " + preferences.authToken)
-                .build()
-                .stringSingle
+        return post("reject/$followerId", true).stringSingle
     }
-
-
 }
