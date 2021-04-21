@@ -70,7 +70,7 @@ class AccountSettingsViewModel(context: Context) : BaseViewModel() {
     }
 
     fun fetchUser() {
-        addDisposable(userRepository.userSelf
+        addDisposable(userRepository.getUserSelf()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer {
