@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="materialButtonStyle">@style/Button</item>
-        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
-    </style>
-</resources>
