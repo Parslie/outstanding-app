@@ -1,7 +1,8 @@
-package com.tavro.parslie.outstanding
+package com.tavro.parslie.outstanding.ui.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.tavro.parslie.outstanding.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
