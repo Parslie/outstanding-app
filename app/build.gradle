@@ -4,6 +4,10 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+
 android {
     compileSdk 32
 
@@ -11,8 +15,8 @@ android {
         applicationId "com.tavro.parslie.outstanding"
         minSdk 29
         targetSdk 32
-        versionCode 1
-        versionName "0.1"
+        versionCode versionPatch + versionMinor * 100 + versionMajor * 10000
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
