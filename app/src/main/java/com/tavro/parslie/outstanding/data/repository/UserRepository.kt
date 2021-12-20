@@ -14,7 +14,7 @@ class UserRepository(context: Context) {
         val json = JSONObject()
         json.put("email", email)
         json.put("password", password)
-        return API.post("login", json).getObjectSingle(AuthorizationData::class.java)
+        return API.post("accounts/login/", json).getObjectSingle(AuthorizationData::class.java)
     }
 
     fun register(email: String, username: String, password: String): Single<String> {
@@ -22,10 +22,10 @@ class UserRepository(context: Context) {
         json.put("email", email)
         json.put("username", username)
         json.put("password", password)
-        return API.post("register", json).stringSingle
+        return API.post("accounts/register/", json).stringSingle
     }
 
     fun logout(): Single<String> {
-        return API.post("logout", null, prefs.authToken).stringSingle
+        return API.post("accounts/logout/", null, prefs.authToken).stringSingle
     }
 }
