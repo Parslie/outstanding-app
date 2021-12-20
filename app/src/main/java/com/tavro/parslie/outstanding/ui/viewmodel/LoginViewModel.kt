@@ -15,13 +15,9 @@ import io.reactivex.schedulers.Schedulers
 class LoginViewModel(context: Context): BaseViewModel() {
 
     private val userRepository = UserRepository(context)
-    private val prefs = PreferenceRepository(context)
 
     private val loginResponse: MutableLiveData<Resource<AuthorizationData>> = MutableLiveData()
-    private val registerResponse: MutableLiveData<Resource<String>> = MutableLiveData()
-
     fun getLoginResponse(): LiveData<Resource<AuthorizationData>> = loginResponse
-    fun getRegisterResponse(): LiveData<Resource<String>> = registerResponse
 
     fun login(email: String, password: String) {
         loginResponse.value = Resource(Status.LOADING, null)
@@ -34,22 +30,6 @@ class LoginViewModel(context: Context): BaseViewModel() {
         }
 
         addDisposable(userRepository.login(email, password)
-            .subscribeOn(Schedulers.io())               // TODO: look what does
-            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
-            .subscribe(onSuccess, onError))
-    }
-
-    fun register(email: String, username: String, password: String) {
-        registerResponse.value = Resource(Status.LOADING, null)
-
-        val onSuccess: Consumer<String> = Consumer {
-            registerResponse.value = Resource(Status.SUCCESS, it)
-        }
-        val onError: Consumer<Throwable> = Consumer {
-            registerResponse.value = Resource(Status.ERROR, null)
-        }
-
-        addDisposable(userRepository.register(email, username, password)
             .subscribeOn(Schedulers.io())               // TODO: look what does
             .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
             .subscribe(onSuccess, onError))
