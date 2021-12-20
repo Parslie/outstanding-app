@@ -1,8 +1,12 @@
 package com.tavro.parslie.outstanding.ui.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -58,6 +62,21 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.loginEmail.text.toString()
             val password = binding.loginPassword.text.toString()
             viewModel.login(email, password)
+        }
+
+        binding.loginRegisterBtn.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            registerResults.launch(intent)
+        }
+    }
+
+    private val registerResults = registerForActivityResult(StartActivityForResult()) {
+        when(it.resultCode) {
+            Activity.RESULT_OK -> {
+                val email = it.data!!.getStringExtra("email")!!
+                val password = it.data!!.getStringExtra("password")!!
+                viewModel.login(email, password)
+            }
         }
     }
 }
