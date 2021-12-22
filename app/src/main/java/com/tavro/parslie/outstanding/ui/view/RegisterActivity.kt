@@ -46,9 +46,51 @@ class RegisterActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     binding.registerProgressBar.visibility = View.INVISIBLE
                     binding.registerLoginBtn.isEnabled = true
+                    // TODO: implement error model client-side and server-side (show STATUS_CODE + MESSAGE)
+                    Toast.makeText(this, "There was an error", Toast.LENGTH_LONG).show()
                 }
             }
         })
+    }
+
+    private fun validateEmail(email: String): Boolean {
+        return when (email) {
+            "" -> {
+                binding.registerEmail.error = "You need to enter an email"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun validateUsername(username: String): Boolean {
+        return when (username) {
+            "" -> {
+                binding.registerUsername.error = "You need to enter a username"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun validatePassword(password: String, confirmPassword: String): Boolean {
+        val passwordMinLength = resources.getInteger(R.integer.password_min_length)
+
+        return when {
+            password == "" -> {
+                binding.registerPassword.error = "You need to enter a password"
+                false
+            }
+            password.length < passwordMinLength -> {
+                binding.registerPassword.error = "The passwords needs to be at least $passwordMinLength characters long"
+                false
+            }
+            password != confirmPassword -> {
+                binding.registerConfirmPassword.error = "The passwords do not match"
+                false
+            }
+            else -> true
+        }
     }
 
     private fun initListeners() {
@@ -63,10 +105,12 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.registerPassword.text.toString()
             val confirmPassword = binding.registerConfirmPassword.text.toString()
 
-            if (password == confirmPassword)
+            val validEmail = validateEmail(email)
+            val validUsername = validateUsername(username)
+            val validPassword = validatePassword(password, confirmPassword)
+
+            if (validEmail && validUsername && validPassword)
                 viewModel.register(email, username, password)
-            else
-                Toast.makeText(this, "Passwords don't match", Toast.LENGTH_SHORT).show()
         }
     }
 }

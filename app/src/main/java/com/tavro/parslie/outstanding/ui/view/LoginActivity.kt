@@ -3,7 +3,6 @@ package com.tavro.parslie.outstanding.ui.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -52,17 +51,43 @@ class LoginActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     binding.loginProgressBar.visibility = View.INVISIBLE
                     binding.loginLoginBtn.isEnabled = true
-                    Toast.makeText(applicationContext, "error", Toast.LENGTH_SHORT).show()
+                    // TODO: implement error model client-side and server-side (display like "404 not found")
+                    Toast.makeText(this, "There was an error", Toast.LENGTH_LONG).show()
                 }
             }
         })
+    }
+
+    private fun validateEmail(email: String): Boolean {
+        return when (email) {
+            "" -> {
+                binding.loginEmail.error = "You need to enter an email"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun validatePassword(password: String): Boolean {
+        return when (password) {
+            "" -> {
+                binding.loginPassword.error = "You need to enter a password"
+                false
+            }
+            else -> true
+        }
     }
 
     private fun initListeners() {
         binding.loginLoginBtn.setOnClickListener {
             val email = binding.loginEmail.text.toString()
             val password = binding.loginPassword.text.toString()
-            viewModel.login(email, password)
+
+            val validEmail = validateEmail(email)
+            val validPassword = validatePassword(password)
+
+            if (validEmail && validPassword)
+                viewModel.login(email, password)
         }
 
         binding.loginRegisterBtn.setOnClickListener {

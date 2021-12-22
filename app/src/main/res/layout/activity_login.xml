@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/outer_margin"
+            android:paddingVertical="@dimen/outer_margin"
             android:adjustViewBounds="true"
             app:srcCompat="@drawable/outstanding_logo"
             app:tint="?colorPrimary" />
@@ -35,8 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/inner_margin"
-            android:hint="@string/password_label"
-            app:endIconMode="password_toggle">
+            android:hint="@string/password_label">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_password"
