@@ -45,7 +45,8 @@ class LoginActivity : AppCompatActivity() {
                     val prefs = PreferenceRepository(applicationContext)
                     prefs.authToken = it.data!!.token
 
-                    // TODO: go to main activity
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                     finish()
                 }
                 Status.ERROR -> {
