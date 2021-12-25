@@ -11,14 +11,17 @@ import com.tavro.parslie.outstanding.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mapFragment: MapFragment
+    private lateinit var profileFragment: ProfileFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        mapFragment = MapFragment()
+        mapFragment = MapFragment.newInstance()
+        profileFragment = ProfileFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .add(R.id.main_container, mapFragment)
+            .add(R.id.main_container, profileFragment)
             .commit()
 
         binding.mainNavigation.setOnItemSelectedListener(this)
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
 
     private fun showMap() {
         supportFragmentManager.beginTransaction()
+            .hide(profileFragment)
             .show(mapFragment)
             .commit()
     }
@@ -34,6 +38,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private fun showProfile() {
         supportFragmentManager.beginTransaction()
             .hide(mapFragment)
+            .show(profileFragment)
             .commit()
     }
 

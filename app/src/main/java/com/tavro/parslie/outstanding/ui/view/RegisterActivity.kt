@@ -47,6 +47,7 @@ class RegisterActivity : AppCompatActivity() {
                     binding.registerProgressBar.visibility = View.INVISIBLE
                     binding.registerLoginBtn.isEnabled = true
                     // TODO: implement error model client-side and server-side (show STATUS_CODE + MESSAGE)
+                    // TODO: look into implementing snackbar instead
                     Toast.makeText(this, "There was an error", Toast.LENGTH_LONG).show()
                 }
             }

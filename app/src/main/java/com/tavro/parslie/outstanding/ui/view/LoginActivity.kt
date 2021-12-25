@@ -52,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
                     binding.loginProgressBar.visibility = View.INVISIBLE
                     binding.loginLoginBtn.isEnabled = true
                     // TODO: implement error model client-side and server-side (display like "404 not found")
+                    // TODO: look into implementing snackbar instead
                     Toast.makeText(this, "There was an error", Toast.LENGTH_LONG).show()
                 }
             }
