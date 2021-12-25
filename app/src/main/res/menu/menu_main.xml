@@ -7,4 +7,7 @@
     <item android:id="@+id/mainMenu_map"
         android:title="@string/map_label"
         android:icon="@drawable/ic_map_24"/>
+    <item android:id="@+id/mainMenu_settings"
+        android:title="@string/settings_label"
+        android:icon="@drawable/ic_settings_24"/>
 </menu>

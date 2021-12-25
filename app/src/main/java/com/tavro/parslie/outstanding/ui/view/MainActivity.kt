@@ -45,10 +45,18 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
             .commit()
     }
 
+    private fun showSettings() {
+        supportFragmentManager.beginTransaction()
+            .hide(mapFragment)
+            .hide(profileFragment)
+            .commit()
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.mainMenu_map -> showMap()
             R.id.mainMenu_profile -> showProfile()
+            R.id.mainMenu_settings -> showSettings()
             else -> return false
         }
         return true
