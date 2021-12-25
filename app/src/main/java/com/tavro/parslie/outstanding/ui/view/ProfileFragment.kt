@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.tavro.parslie.outstanding.R
-import com.tavro.parslie.outstanding.data.repository.PreferenceRepository
 import com.tavro.parslie.outstanding.databinding.FragmentProfileBinding
 import com.tavro.parslie.outstanding.ui.viewmodel.ContextualViewModelFactory
 import com.tavro.parslie.outstanding.ui.viewmodel.ProfileViewModel
@@ -37,7 +36,7 @@ class ProfileFragment : Fragment() {
         val viewModelFactory = ContextualViewModelFactory(requireContext())
         viewModel = ViewModelProvider(this, viewModelFactory)[ProfileViewModel::class.java]
 
-        viewModel.getUserResponse().observe(requireActivity()) {
+        viewModel.getUserData().observe(requireActivity()) {
             when(it.status) {
                 Status.SUCCESS -> {
                     binding.profileProgressBar.visibility = View.GONE
