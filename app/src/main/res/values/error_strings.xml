@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_email_input">You need to input an e-mail</string>
+    <string name="no_password_input">You need to input a password</string>
+    <string name="no_username_input">You need to input a username</string>
+
+    <string name="insufficient_password">Your password needs to be at least %d characters long</string>
+    <string name="non_matching_passwords">Your passwords do not match</string>
+
+    <string name="profile_error_title">An error occurred…</string>
+</resources>

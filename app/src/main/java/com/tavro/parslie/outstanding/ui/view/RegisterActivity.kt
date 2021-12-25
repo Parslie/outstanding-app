@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.tavro.parslie.outstanding.R
 import com.tavro.parslie.outstanding.databinding.ActivityRegisterBinding
 import com.tavro.parslie.outstanding.ui.viewmodel.ContextualViewModelFactory
@@ -46,9 +47,9 @@ class RegisterActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     binding.registerProgressBar.visibility = View.INVISIBLE
                     binding.registerLoginBtn.isEnabled = true
+
                     // TODO: implement error model client-side and server-side (show STATUS_CODE + MESSAGE)
-                    // TODO: look into implementing snackbar instead
-                    Toast.makeText(this, "There was an error", Toast.LENGTH_LONG).show()
+                    Snackbar.make(this, binding.root, "There was an error...", Snackbar.LENGTH_LONG).show()
                 }
             }
         })
@@ -57,7 +58,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun validateEmail(email: String): Boolean {
         return when (email) {
             "" -> {
-                binding.registerEmail.error = "You need to enter an email"
+                binding.registerEmail.error = resources.getString(R.string.no_email_input)
                 false
             }
             else -> true
@@ -67,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun validateUsername(username: String): Boolean {
         return when (username) {
             "" -> {
-                binding.registerUsername.error = "You need to enter a username"
+                binding.registerUsername.error = resources.getString(R.string.no_username_input)
                 false
             }
             else -> true
@@ -79,15 +80,15 @@ class RegisterActivity : AppCompatActivity() {
 
         return when {
             password == "" -> {
-                binding.registerPassword.error = "You need to enter a password"
+                binding.registerPassword.error = resources.getString(R.string.no_password_input)
                 false
             }
             password.length < passwordMinLength -> {
-                binding.registerPassword.error = "The passwords needs to be at least $passwordMinLength characters long"
+                binding.registerPassword.error = resources.getString(R.string.insufficient_password, passwordMinLength)
                 false
             }
             password != confirmPassword -> {
-                binding.registerConfirmPassword.error = "The passwords do not match"
+                binding.registerConfirmPassword.error = resources.getString(R.string.non_matching_passwords)
                 false
             }
             else -> true

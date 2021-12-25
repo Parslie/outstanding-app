@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.tavro.parslie.outstanding.R
 import com.tavro.parslie.outstanding.data.repository.PreferenceRepository
 import com.tavro.parslie.outstanding.ui.viewmodel.ContextualViewModelFactory
-import com.tavro.parslie.outstanding.ui.viewmodel.SplashViewModel
+import com.tavro.parslie.outstanding.ui.viewmodel.UserViewModel
 import com.tavro.parslie.outstanding.util.Status
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
-    private lateinit var viewModel: SplashViewModel
+    private lateinit var viewModel: UserViewModel
     private lateinit var prefs: PreferenceRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,12 +22,12 @@ class SplashActivity : AppCompatActivity() {
         initViewModel()
 
         prefs = PreferenceRepository(this)
-        viewModel.fetchUser(prefs.authID)
+        viewModel.fetchUser(prefs.authID)  // TODO: switch to test token route
     }
 
     private fun initViewModel() {
         val viewModelFactory = ContextualViewModelFactory(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[SplashViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[UserViewModel::class.java]
 
         viewModel.getUserData().observe(this) {
             when (it.status) {
@@ -42,7 +42,7 @@ class SplashActivity : AppCompatActivity() {
                     finish()
                 }
                 else -> {
-
+                    // Needs to be here to prevent finishing activity when loading
                 }
             }
         }

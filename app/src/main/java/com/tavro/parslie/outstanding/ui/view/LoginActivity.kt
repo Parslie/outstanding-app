@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.tavro.parslie.outstanding.BuildConfig
 import com.tavro.parslie.outstanding.R
 import com.tavro.parslie.outstanding.data.repository.PreferenceRepository
@@ -52,9 +53,9 @@ class LoginActivity : AppCompatActivity() {
                 Status.ERROR -> {
                     binding.loginProgressBar.visibility = View.GONE
                     binding.loginLoginBtn.isEnabled = true
+
                     // TODO: implement error model client-side and server-side (display like "404 not found")
-                    // TODO: look into implementing snackbar instead
-                    Toast.makeText(this, "There was an error", Toast.LENGTH_LONG).show()
+                    Snackbar.make(this, binding.root, "There was an error...", Snackbar.LENGTH_LONG).show()
                 }
             }
         })
@@ -63,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
     private fun validateEmail(email: String): Boolean {
         return when (email) {
             "" -> {
-                binding.loginEmail.error = "You need to enter an email"
+                binding.loginEmail.error = resources.getString(R.string.no_email_input)
                 false
             }
             else -> true
@@ -73,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
     private fun validatePassword(password: String): Boolean {
         return when (password) {
             "" -> {
-                binding.loginPassword.error = "You need to enter a password"
+                binding.loginPassword.error = resources.getString(R.string.no_password_input)
                 false
             }
             else -> true

@@ -10,12 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.tavro.parslie.outstanding.R
 import com.tavro.parslie.outstanding.databinding.FragmentProfileBinding
 import com.tavro.parslie.outstanding.ui.viewmodel.ContextualViewModelFactory
-import com.tavro.parslie.outstanding.ui.viewmodel.ProfileViewModel
+import com.tavro.parslie.outstanding.ui.viewmodel.UserViewModel
 import com.tavro.parslie.outstanding.util.Status
 
 class ProfileFragment : Fragment() {
     lateinit var binding: FragmentProfileBinding
-    lateinit var viewModel: ProfileViewModel
+    lateinit var viewModel: UserViewModel
 
     private var userID: Int = -1
 
@@ -34,7 +34,7 @@ class ProfileFragment : Fragment() {
 
     private fun initViewModel() {
         val viewModelFactory = ContextualViewModelFactory(requireContext())
-        viewModel = ViewModelProvider(this, viewModelFactory)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[UserViewModel::class.java]
 
         viewModel.getUserData().observe(requireActivity()) {
             when(it.status) {
@@ -42,6 +42,8 @@ class ProfileFragment : Fragment() {
                     binding.profileProgressBar.visibility = View.GONE
                     binding.profileUsername.text = it.data?.username
                     binding.profileDescription.text = it.data?.description
+
+                    // TODO: if userID is authID hide follow button and show edit button
                 }
                 Status.LOADING -> {
                     binding.profileProgressBar.visibility = View.VISIBLE
@@ -50,8 +52,8 @@ class ProfileFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     binding.profileProgressBar.visibility = View.GONE
-                    binding.profileUsername.text = "N/A"
-                    binding.profileDescription.text = "N/A"
+                    binding.profileUsername.text = resources.getString(R.string.profile_error_title)
+                    binding.profileDescription.text = ""
                 }
             }
         }
