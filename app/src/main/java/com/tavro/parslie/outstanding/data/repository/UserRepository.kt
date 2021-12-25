@@ -3,6 +3,7 @@ package com.tavro.parslie.outstanding.data.repository
 import android.content.Context
 import com.tavro.parslie.outstanding.data.API
 import com.tavro.parslie.outstanding.data.model.AuthorizationData
+import com.tavro.parslie.outstanding.data.model.User
 import io.reactivex.Single
 import org.json.JSONObject
 
@@ -26,6 +27,10 @@ class UserRepository(context: Context) {
     }
 
     fun logout(): Single<String> {
-        return API.post("accounts/logout/", null, prefs.authToken).stringSingle
+        return API.post("accounts/logout/", token = prefs.authToken).stringSingle
+    }
+
+    fun getUser(id: Int): Single<User> {
+        return API.get("accounts/$id/").getObjectSingle(User::class.java)
     }
 }

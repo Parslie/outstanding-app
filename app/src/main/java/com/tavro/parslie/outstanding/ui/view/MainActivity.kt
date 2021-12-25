@@ -6,19 +6,22 @@ import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.navigation.NavigationBarView
 import com.tavro.parslie.outstanding.R
+import com.tavro.parslie.outstanding.data.repository.PreferenceRepository
 import com.tavro.parslie.outstanding.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var prefs: PreferenceRepository
     private lateinit var mapFragment: MapFragment
     private lateinit var profileFragment: ProfileFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        prefs = PreferenceRepository(this)
 
         mapFragment = MapFragment.newInstance()
-        profileFragment = ProfileFragment.newInstance()
+        profileFragment = ProfileFragment.newInstance(prefs.authID)
         supportFragmentManager.beginTransaction()
             .add(R.id.main_container, mapFragment)
             .add(R.id.main_container, profileFragment)

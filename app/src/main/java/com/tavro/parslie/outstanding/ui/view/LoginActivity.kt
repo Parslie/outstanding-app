@@ -43,13 +43,14 @@ class LoginActivity : AppCompatActivity() {
                 Status.SUCCESS -> {
                     val prefs = PreferenceRepository(applicationContext)
                     prefs.authToken = it.data!!.token
+                    prefs.authID = it.data.user.id
 
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
                 Status.ERROR -> {
-                    binding.loginProgressBar.visibility = View.INVISIBLE
+                    binding.loginProgressBar.visibility = View.GONE
                     binding.loginLoginBtn.isEnabled = true
                     // TODO: implement error model client-side and server-side (display like "404 not found")
                     // TODO: look into implementing snackbar instead
