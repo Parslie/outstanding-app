@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,13 +13,13 @@ import com.tavro.parslie.outstanding.BuildConfig
 import com.tavro.parslie.outstanding.R
 import com.tavro.parslie.outstanding.data.repository.PreferenceRepository
 import com.tavro.parslie.outstanding.databinding.ActivityLoginBinding
+import com.tavro.parslie.outstanding.ui.viewmodel.AuthViewModel
 import com.tavro.parslie.outstanding.ui.viewmodel.ContextualViewModelFactory
-import com.tavro.parslie.outstanding.ui.viewmodel.LoginViewModel
 import com.tavro.parslie.outstanding.util.Status
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    private lateinit var viewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +32,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         val viewModelFactory = ContextualViewModelFactory(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
 
-        viewModel.getLoginResponse().observe(this, {
+        viewModel.getLoginData().observe(this, {
             when(it.status) {
                 Status.LOADING -> {
                     binding.loginProgressBar.visibility = View.VISIBLE

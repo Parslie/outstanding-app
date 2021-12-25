@@ -5,19 +5,18 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.tavro.parslie.outstanding.R
 import com.tavro.parslie.outstanding.databinding.ActivityRegisterBinding
+import com.tavro.parslie.outstanding.ui.viewmodel.AuthViewModel
 import com.tavro.parslie.outstanding.ui.viewmodel.ContextualViewModelFactory
-import com.tavro.parslie.outstanding.ui.viewmodel.RegisterViewModel
 import com.tavro.parslie.outstanding.util.Status
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var viewModel: RegisterViewModel
+    private lateinit var viewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +28,9 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         val viewModelFactory = ContextualViewModelFactory(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[RegisterViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[AuthViewModel::class.java]
 
-        viewModel.getRegisterResponse().observe(this, {
+        viewModel.getRegisterData().observe(this, {
             when(it.status) {
                 Status.LOADING -> {
                     binding.registerProgressBar.visibility = View.VISIBLE

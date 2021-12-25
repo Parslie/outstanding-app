@@ -33,4 +33,8 @@ class UserRepository(context: Context) {
     fun getUser(id: Int): Single<User> {
         return API.get("accounts/$id/").getObjectSingle(User::class.java)
     }
+
+    fun ping(): Single<String> {
+        return API.get("accounts/ping/", token = prefs.authToken).stringSingle
+    }
 }
