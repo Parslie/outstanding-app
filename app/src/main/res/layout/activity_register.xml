@@ -22,8 +22,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/inner_margin"
-            android:hint="@string/email_label">
+            android:hint="@string/email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_email"
@@ -35,8 +34,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/inner_margin"
-            android:hint="@string/username_label">
+            android:layout_marginTop="@dimen/inner_margin"
+            android:hint="@string/username">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_username"
@@ -45,54 +44,63 @@
                 android:autofillHints="username"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/inner_margin"
-            android:hint="@string/password_label">
+            android:layout_marginTop="@dimen/inner_margin"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_password"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:autofillHints="password"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginEnd="@dimen/inner_margin"
+                android:layout_weight="1"
+                android:hint="@string/password">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/inner_margin"
-            android:hint="@string/confirm_password_label">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_confirmPassword"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:autofillHints="password"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="1"
+                android:hint="@string/confirm_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_confirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="password"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/inner_margin_big"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/register_backBtn"
                 style="@style/Button.Outlined"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/inner_margin"
                 android:layout_weight="1"
-                android:text="@string/back_label" />
+                android:text="@string/back" />
 
             <Button
                 android:id="@+id/register_loginBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/register_label"/>
+                android:text="@string/register" />
         </LinearLayout>
 
         <ProgressBar

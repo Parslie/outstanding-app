@@ -39,19 +39,14 @@ class ProfileFragment : Fragment() {
         viewModel.getUserData().observe(requireActivity()) {
             when(it.status) {
                 Status.SUCCESS -> {
-                    binding.profileProgressBar.visibility = View.GONE
                     binding.profileUsername.text = it.data?.username
                     binding.profileDescription.text = it.data?.description
-
-                    // TODO: if userID is authID hide follow button and show edit button
                 }
                 Status.LOADING -> {
-                    binding.profileProgressBar.visibility = View.VISIBLE
                     binding.profileUsername.text = ""
                     binding.profileDescription.text = ""
                 }
                 Status.ERROR -> {
-                    binding.profileProgressBar.visibility = View.GONE
                     binding.profileUsername.text = resources.getString(R.string.profile_error_title)
                     binding.profileDescription.text = ""
                 }

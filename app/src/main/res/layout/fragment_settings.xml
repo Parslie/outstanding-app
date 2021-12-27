@@ -23,7 +23,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/inner_margin_big"
-                    android:text="@string/account_label"
+                    android:text="@string/account"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -34,7 +34,7 @@
                         android:id="@+id/settings_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/email_label" />
+                        android:hint="@string/email" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -46,7 +46,7 @@
                         android:id="@+id/settings_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/username_label" />
+                        android:hint="@string/username" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +58,7 @@
                         android:id="@+id/settings_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/description_label" />
+                        android:hint="@string/description" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
@@ -69,19 +69,19 @@
 
                     <Button
                         android:id="@+id/settings_resetBtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="@dimen/inner_margin"
                         style="@style/Button.Outlined"
-                        android:text="@string/reset_label"/>
+                        android:text="@string/reset"/>
 
                     <Button
                         android:id="@+id/settings_saveBtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/save_label"/>
+                        android:text="@string/save"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -100,7 +100,7 @@
                     android:id="@+id/settings_logoutBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/logout_label"/>
+                    android:text="@string/logout"/>
             </FrameLayout>
 
             <View

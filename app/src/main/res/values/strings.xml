@@ -1,30 +1,27 @@
 <resources>
-    <string name="mapbox_access_token">
-        pk.eyJ1IjoicGVyc2lrb3RlIiwiYSI6ImNreGg1cDJneTVzMXcycGxhMGJiNGgyNWsifQ.oXg_hoqoYYiplnIJRdrLWg
-    </string>
-
     <string name="app_name">Outstanding</string>
     <string name="app_version">Version %s</string>
 
-    <string name="username_label">Username</string>
-    <string name="email_label">E-mail</string>
-    <string name="password_label">Password</string>
-    <string name="confirm_password_label">Confirm Password</string>
+    <string name="following_count">%d followings</string>
+    <string name="follower_count">%d followers</string>
 
-    <string name="login_label">Login</string>
-    <string name="register_label">Register</string>
-    <string name="back_label">Back</string>
-    <string name="follow_label">Follow</string>
-    <string name="followings_label">%d followings</string>
-    <string name="followers_label">%d followers</string>
+    <!-- Labels -->
+    <string name="username">Username</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="back">Back</string>
+    <string name="follow">Follow</string>
+    <string name="account">Account</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="reset">Reset</string>
+    <string name="logout">Logout</string>
 
-    <string name="profile_label">Profile</string>
-    <string name="map_label">Map</string>
-    <string name="settings_label">Settings</string>
-
-    <string name="account_label">Account</string>
-    <string name="description_label">Description</string>
-    <string name="save_label">Save</string>
-    <string name="reset_label">Reset</string>
-    <string name="logout_label">Logout</string>
+    <!-- Menu Strings -->
+    <string name="profile">Profile</string>
+    <string name="map">Map</string>
+    <string name="settings">Settings</string>
 </resources>
