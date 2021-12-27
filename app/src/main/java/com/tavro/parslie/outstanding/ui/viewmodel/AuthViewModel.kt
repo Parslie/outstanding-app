@@ -23,6 +23,9 @@ class AuthViewModel(context: Context): BaseViewModel() {
     private val loginData: MutableLiveData<Resource<AuthorizationData>> = MutableLiveData()
     fun getLoginData(): LiveData<Resource<AuthorizationData>> = loginData
 
+    private val logoutData: MutableLiveData<Resource<String>> = MutableLiveData()
+    fun getLogoutData(): LiveData<Resource<String>> = logoutData
+
     fun ping() {
         pingData.value = Resource(Status.LOADING, null)
 
@@ -66,6 +69,22 @@ class AuthViewModel(context: Context): BaseViewModel() {
         }
 
         addDisposable(userRepository.login(email, password)
+            .subscribeOn(Schedulers.io())               // TODO: look what does
+            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
+            .subscribe(onSuccess, onError))
+    }
+
+    fun logout() {
+        logoutData.value = Resource(Status.LOADING, null)
+
+        val onSuccess: Consumer<String> = Consumer {
+            logoutData.value = Resource(Status.SUCCESS, it)
+        }
+        val onError: Consumer<Throwable> = Consumer {
+            logoutData.value = Resource(Status.ERROR, null)
+        }
+
+        addDisposable(userRepository.logout()
             .subscribeOn(Schedulers.io())               // TODO: look what does
             .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
             .subscribe(onSuccess, onError))

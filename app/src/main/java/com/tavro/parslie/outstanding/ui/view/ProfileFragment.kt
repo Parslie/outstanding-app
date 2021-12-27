@@ -36,7 +36,7 @@ class ProfileFragment : Fragment() {
         val viewModelFactory = ContextualViewModelFactory(requireContext())
         viewModel = ViewModelProvider(this, viewModelFactory)[UserViewModel::class.java]
 
-        viewModel.getUserData().observe(requireActivity()) {
+        viewModel.getUserData().observe(viewLifecycleOwner) {
             when(it.status) {
                 Status.SUCCESS -> {
                     binding.profileUsername.text = it.data?.username
