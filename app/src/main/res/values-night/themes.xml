@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.Outstanding" parent="@style/Theme.Base">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/orange_500</item>
-        <item name="colorPrimaryVariant">@color/orange_700</item>
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryVariant">@color/red_700</item>
         <item name="colorOnPrimary">@color/black</item>
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/deep_purple_500</item>
+        <item name="colorSecondaryVariant">@color/deep_purple_700</item>
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Status bar color. -->

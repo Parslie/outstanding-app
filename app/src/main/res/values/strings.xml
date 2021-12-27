@@ -1,4 +1,8 @@
 <resources>
+    <string name="mapbox_access_token">
+        pk.eyJ1IjoicGVyc2lrb3RlIiwiYSI6ImNreGg1cDJneTVzMXcycGxhMGJiNGgyNWsifQ.oXg_hoqoYYiplnIJRdrLWg
+    </string>
+
     <string name="app_name">Outstanding</string>
     <string name="app_version">Version %s</string>
 
@@ -19,6 +23,7 @@
     <string name="save">Save</string>
     <string name="reset">Reset</string>
     <string name="logout">Logout</string>
+    <string name="post">Post</string>
 
     <!-- Menu Strings -->
     <string name="profile">Profile</string>
