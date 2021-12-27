@@ -21,4 +21,10 @@
     <string name="profile_label">Profile</string>
     <string name="map_label">Map</string>
     <string name="settings_label">Settings</string>
+
+    <string name="account_label">Account</string>
+    <string name="description_label">Description</string>
+    <string name="save_label">Save</string>
+    <string name="reset_label">Reset</string>
+    <string name="logout_label">Logout</string>
 </resources>

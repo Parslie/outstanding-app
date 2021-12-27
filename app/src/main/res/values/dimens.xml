@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="outer_margin">20dp</dimen>
-    <dimen name="inner_margin">6dp</dimen>
-    <dimen name="inner_margin_double">12dp</dimen>
+    <dimen name="inner_margin">5dp</dimen>
+    <dimen name="inner_margin_big">15dp</dimen>
 </resources>

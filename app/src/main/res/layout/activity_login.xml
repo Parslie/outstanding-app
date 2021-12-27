@@ -73,7 +73,7 @@
             style="@android:style/Widget.Material.ProgressBar.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/inner_margin_double"
+            android:layout_marginVertical="@dimen/inner_margin_big"
             android:visibility="invisible" />
 
         <Space

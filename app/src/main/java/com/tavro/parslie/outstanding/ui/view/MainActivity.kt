@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private lateinit var prefs: PreferenceRepository
     private lateinit var mapFragment: MapFragment
     private lateinit var profileFragment: ProfileFragment
+    private lateinit var settingsFragment: SettingsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +23,11 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
 
         mapFragment = MapFragment.newInstance()
         profileFragment = ProfileFragment.newInstance(prefs.authID)
+        settingsFragment = SettingsFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .add(R.id.main_container, mapFragment)
             .add(R.id.main_container, profileFragment)
+            .add(R.id.main_container, settingsFragment)
             .commit()
 
         binding.mainNavigation.setOnItemSelectedListener(this)
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private fun showMap() {
         supportFragmentManager.beginTransaction()
             .hide(profileFragment)
+            .hide(settingsFragment)
             .show(mapFragment)
             .commit()
     }
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private fun showProfile() {
         supportFragmentManager.beginTransaction()
             .hide(mapFragment)
+            .hide(settingsFragment)
             .show(profileFragment)
             .commit()
     }
@@ -49,6 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         supportFragmentManager.beginTransaction()
             .hide(mapFragment)
             .hide(profileFragment)
+            .show(settingsFragment)
             .commit()
     }
 
