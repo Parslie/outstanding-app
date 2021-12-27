@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.tavro.parslie.outstanding"
         minSdk 29
-        targetSdk 32
+        targetSdk 31
         versionCode versionPatch + versionMinor * 100 + versionMajor * 10000
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 

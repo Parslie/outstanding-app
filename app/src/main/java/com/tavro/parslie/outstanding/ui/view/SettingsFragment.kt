@@ -21,7 +21,7 @@ class SettingsFragment : Fragment() {
     private lateinit var userViewModel: UserViewModel
     private lateinit var authViewModel: AuthViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         initViewModels()
         initListeners()
