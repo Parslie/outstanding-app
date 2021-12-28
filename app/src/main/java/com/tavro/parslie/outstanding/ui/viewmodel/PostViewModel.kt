@@ -19,18 +19,6 @@ class PostViewModel(context: Context) : BaseViewModel() {
     fun getCreationData(): LiveData<Resource<Post>> = creationData
 
     fun createPost(title: String, content: String, latitude: Double, longitude: Double) {
-        creationData.value = Resource(Status.LOADING, null)
-
-        val onSuccess: Consumer<Post> = Consumer {
-            creationData.value = Resource(Status.SUCCESS, it)
-        }
-        val onError: Consumer<Throwable> = Consumer {
-            creationData.value = Resource(Status.ERROR, null)
-        }
-
-        addDisposable(postRepository.createPost(title, content, latitude, longitude)
-            .subscribeOn(Schedulers.io())               // TODO: look what does
-            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
-            .subscribe(onSuccess, onError))
+        handleApiCall(postRepository.createPost(title, content, latitude, longitude), creationData)
     }
 }

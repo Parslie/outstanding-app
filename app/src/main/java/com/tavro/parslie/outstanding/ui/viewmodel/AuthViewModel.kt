@@ -27,66 +27,18 @@ class AuthViewModel(context: Context): BaseViewModel() {
     fun getLogoutData(): LiveData<Resource<String>> = logoutData
 
     fun ping() {
-        pingData.value = Resource(Status.LOADING, null)
-
-        val onSuccess: Consumer<String> = Consumer {
-            pingData.value = Resource(Status.SUCCESS, it)
-        }
-        val onError: Consumer<Throwable> = Consumer {
-            pingData.value = Resource(Status.ERROR, null)
-        }
-
-        addDisposable(userRepository.ping()
-            .subscribeOn(Schedulers.io())               // TODO: look what does
-            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
-            .subscribe(onSuccess, onError))
+        handleApiCall(userRepository.ping(), pingData)
     }
 
     fun register(email: String, username: String, password: String) {
-        registerData.value = Resource(Status.LOADING, null)
-
-        val onSuccess: Consumer<String> = Consumer {
-            registerData.value = Resource(Status.SUCCESS, it)
-        }
-        val onError: Consumer<Throwable> = Consumer {
-            registerData.value = Resource(Status.ERROR, null)
-        }
-
-        addDisposable(userRepository.register(email, username, password)
-            .subscribeOn(Schedulers.io())               // TODO: look what does
-            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
-            .subscribe(onSuccess, onError))
+        handleApiCall(userRepository.register(email, username, password), registerData)
     }
 
     fun login(email: String, password: String) {
-        loginData.value = Resource(Status.LOADING, null)
-
-        val onSuccess: Consumer<AuthorizationData> = Consumer {
-            loginData.value = Resource(Status.SUCCESS, it)
-        }
-        val onError: Consumer<Throwable> = Consumer {
-            loginData.value = Resource(Status.ERROR, null)
-        }
-
-        addDisposable(userRepository.login(email, password)
-            .subscribeOn(Schedulers.io())               // TODO: look what does
-            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
-            .subscribe(onSuccess, onError))
+        handleApiCall(userRepository.login(email, password), loginData)
     }
 
     fun logout() {
-        logoutData.value = Resource(Status.LOADING, null)
-
-        val onSuccess: Consumer<String> = Consumer {
-            logoutData.value = Resource(Status.SUCCESS, it)
-        }
-        val onError: Consumer<Throwable> = Consumer {
-            logoutData.value = Resource(Status.ERROR, null)
-        }
-
-        addDisposable(userRepository.logout()
-            .subscribeOn(Schedulers.io())               // TODO: look what does
-            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
-            .subscribe(onSuccess, onError))
+        handleApiCall(userRepository.logout(), logoutData)
     }
 }

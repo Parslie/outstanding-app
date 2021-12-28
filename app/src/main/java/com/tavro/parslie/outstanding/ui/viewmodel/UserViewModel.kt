@@ -18,18 +18,6 @@ class UserViewModel(context: Context): BaseViewModel() {
     fun getUserData(): LiveData<Resource<User>> = userData
 
     fun fetchUser(id: Int) {
-        userData.value = Resource(Status.LOADING, null)
-
-        val onSuccess: Consumer<User> = Consumer {
-            userData.value = Resource(Status.SUCCESS, it)
-        }
-        val onError: Consumer<Throwable> = Consumer {
-            userData.value = Resource(Status.ERROR, null)
-        }
-
-        addDisposable(userRepository.getUser(id)
-            .subscribeOn(Schedulers.io())               // TODO: look what does
-            .observeOn(AndroidSchedulers.mainThread())  // TODO: look what does
-            .subscribe(onSuccess, onError))
+        handleApiCall(userRepository.getUser(id), userData)
     }
 }
