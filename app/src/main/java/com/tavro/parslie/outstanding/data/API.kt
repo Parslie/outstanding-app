@@ -5,7 +5,6 @@ import com.rx2androidnetworking.Rx2AndroidNetworking
 import org.json.JSONObject
 
 object API {
-
     private const val baseURL = "https://outstanding-server.herokuapp.com/"
 
     fun get(path: String, token: String? = null): Rx2ANRequest {

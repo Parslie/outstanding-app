@@ -52,7 +52,6 @@ class MapFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("MissingPermission")
     private fun showLocation() {
         val colorSecondary = TypedValue()
         requireContext().theme.resolveAttribute(R.attr.colorSecondary, colorSecondary, true)
