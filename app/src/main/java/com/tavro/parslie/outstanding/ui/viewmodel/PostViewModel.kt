@@ -18,7 +18,14 @@ class PostViewModel(context: Context) : BaseViewModel() {
     private val creationData: MutableLiveData<Resource<Post>> = MutableLiveData()
     fun getCreationData(): LiveData<Resource<Post>> = creationData
 
+    private val vicinityData: MutableLiveData<Resource<List<Post>>> = MutableLiveData()
+    fun getVicinityData(): LiveData<Resource<List<Post>>> = vicinityData
+
     fun createPost(title: String, content: String, latitude: Double, longitude: Double) {
         handleApiCall(postRepository.createPost(title, content, latitude, longitude), creationData)
+    }
+
+    fun fetchNearbyPosts(latitude: Double, longitude: Double) {
+        handleApiCall(postRepository.getNearbyPosts(latitude, longitude), vicinityData)
     }
 }

@@ -18,4 +18,8 @@ class PostRepository(context: Context) {
         data.put("longitude", longitude)
         return API.post("posts/", data, prefs.authToken).getObjectSingle(Post::class.java)
     }
+
+    fun getNearbyPosts(latitude: Double, longitude: Double): Single<List<Post>> {
+        return API.get("posts/$latitude/$longitude/").getObjectListSingle(Post::class.java)
+    }
 }
