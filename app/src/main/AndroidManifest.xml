@@ -14,9 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Outstanding">
         <activity
+            android:name=".ui.view.PostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.SplashActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

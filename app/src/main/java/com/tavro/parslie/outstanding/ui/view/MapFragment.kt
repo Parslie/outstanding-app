@@ -2,6 +2,7 @@ package com.tavro.parslie.outstanding.ui.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -108,7 +109,10 @@ class MapFragment : Fragment() {
             postManager.addClickListener {
                 val gson = GsonBuilder().create()
                 val post = gson.fromJson(it.getData(), Post::class.java)
-                // TODO: go to post activity
+
+                val intent = Intent(requireContext(), PostActivity::class.java)
+                // intent.putExtra("post", post) // TODO: make Post parcelable
+                startActivity(intent)
                 true
             }
 
