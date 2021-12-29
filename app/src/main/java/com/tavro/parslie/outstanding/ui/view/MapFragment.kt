@@ -111,7 +111,7 @@ class MapFragment : Fragment() {
                 val post = gson.fromJson(it.getData(), Post::class.java)
 
                 val intent = Intent(requireContext(), PostActivity::class.java)
-                // intent.putExtra("post", post) // TODO: make Post parcelable
+                intent.putExtra("post", post)
                 startActivity(intent)
                 true
             }
