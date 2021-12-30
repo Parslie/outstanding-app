@@ -8,7 +8,10 @@
 
     <string name="following_count">%d followings</string>
     <string name="follower_count">%d followers</string>
+
     <string name="comment_input">Enter comment here…</string>
+    <string name="title_input">Enter title here…</string>
+    <string name="content_input">Enter content here…</string>
 
     <!-- Labels -->
     <string name="username">Username</string>

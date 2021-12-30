@@ -2,6 +2,7 @@ package com.tavro.parslie.outstanding.ui.view
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
@@ -46,6 +48,7 @@ class MapFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false)
         mapboxMap = binding.mapMap.getMapboxMap()
         initViewModel()
+        initListeners()
 
         locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
@@ -59,23 +62,20 @@ class MapFragment : Fragment() {
         viewModel.getVicinityData().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
-                    val gson = GsonBuilder().create()
-                    val icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_post_24, requireActivity().theme)!!
-                        .toBitmap(80, 80)
-
                     it.data!!.forEach { post ->
-                        postManager.create(
-                            PointAnnotationOptions()
-                                .withPoint(Point.fromLngLat(post.longitude, post.latitude))
-                                .withIconImage(icon)
-                                .withIconAnchor(IconAnchor.BOTTOM)
-                                .withData(gson.toJsonTree(post))
-                        )
+                        placePost(post)
                     }
                 }
                 Status.ERROR -> Snackbar.make(binding.root, R.string.nearby_posts_error, Snackbar.LENGTH_LONG).show()
                 Status.LOADING -> {}
             }
+        }
+    }
+
+    private fun initListeners() {
+        binding.mapActionButton.setOnClickListener {
+            val intent = Intent(requireContext(), PostCreationActivity::class.java)
+            postCreationResults.launch(intent)
         }
     }
 
@@ -126,6 +126,29 @@ class MapFragment : Fragment() {
         } else {
             requireActivity().finish() // TODO: handle denied permissions better
         }
+    }
+
+    private val postCreationResults = registerForActivityResult(StartActivityForResult()) {
+        when (it.resultCode) {
+            Activity.RESULT_OK -> {
+                val post: Post = it.data!!.getParcelableExtra("post")!!
+                placePost(post)
+            }
+        }
+    }
+
+    private fun placePost(post: Post) {
+        val gson = GsonBuilder().create()
+        val icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_post_24, requireActivity().theme)!!
+            .toBitmap(96, 96)
+
+        postManager.create(
+            PointAnnotationOptions()
+                .withPoint(Point.fromLngLat(post.longitude, post.latitude))
+                .withIconImage(icon)
+                .withIconAnchor(IconAnchor.BOTTOM)
+                .withData(gson.toJsonTree(post))
+        )
     }
 
     companion object {
