@@ -14,16 +14,13 @@
             android:layout_height="match_parent"
             mapbox:mapbox_cameraZoom="16.0"/>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/map_actionButton"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/map_createBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/outer_margin"
-            android:elevation="0dp"
-            android:text="@string/post"
-            app:icon="@drawable/ic_create_24"
-            app:iconTint="?attr/colorOnPrimary"
-            app:tint="?attr/colorOnPrimary" />
+            android:src="@drawable/ic_create_24"
+            android:contentDescription="@string/post_creation_desc" />
     </FrameLayout>
 </layout>

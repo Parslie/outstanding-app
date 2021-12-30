@@ -1,5 +1,6 @@
 package com.tavro.parslie.outstanding.ui.view
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -18,5 +19,9 @@ class PostActivity : AppCompatActivity() {
         binding.postContent.text = post.content
         binding.postTitle.text = post.title
         binding.postDateCreated.text = post.formatDateCreated("yyyy-MM-dd hh:mm:ss")
+
+        binding.postToolbar.setNavigationOnClickListener {
+            finish()
+        }
     }
 }

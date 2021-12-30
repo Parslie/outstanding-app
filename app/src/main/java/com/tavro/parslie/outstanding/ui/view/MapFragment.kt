@@ -73,7 +73,7 @@ class MapFragment : Fragment() {
     }
 
     private fun initListeners() {
-        binding.mapActionButton.setOnClickListener {
+        binding.mapCreateBtn.setOnClickListener {
             val intent = Intent(requireContext(), PostCreationActivity::class.java)
             postCreationResults.launch(intent)
         }

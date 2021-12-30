@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_title">@string/app_name</string>
+    <string name="post_creation_title">Create a Post</string>
+    <string name="post_title">Post</string>
+</resources>

@@ -70,7 +70,7 @@ class PostCreationActivity : AppCompatActivity() {
             }
         }
 
-        binding.postCreationBackBtn.setOnClickListener {
+        binding.postCreationToolbar.setNavigationOnClickListener {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }

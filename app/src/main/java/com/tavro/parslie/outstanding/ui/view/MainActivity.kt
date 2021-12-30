@@ -2,19 +2,16 @@ package com.tavro.parslie.outstanding.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.navigation.NavigationBarView
 import com.tavro.parslie.outstanding.R
 import com.tavro.parslie.outstanding.data.repository.PreferenceRepository
 import com.tavro.parslie.outstanding.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: PreferenceRepository
     private lateinit var mapFragment: MapFragment
     private lateinit var profileFragment: ProfileFragment
-    private lateinit var settingsFragment: SettingsFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,21 +20,43 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
 
         mapFragment = MapFragment.newInstance()
         profileFragment = ProfileFragment.newInstance(prefs.authID)
-        settingsFragment = SettingsFragment.newInstance()
+
         supportFragmentManager.beginTransaction()
             .add(R.id.main_container, mapFragment)
             .add(R.id.main_container, profileFragment)
-            .add(R.id.main_container, settingsFragment)
+            .hide(profileFragment)
             .commit()
 
-        binding.mainNavigation.setOnItemSelectedListener(this)
-        binding.mainNavigation.selectedItemId = R.id.mainMenu_map
+        binding.mainToolbar.setNavigationOnClickListener {
+            binding.mainDrawerLayout.openDrawer(binding.mainDrawer)
+        }
+
+        binding.mainDrawer.setNavigationItemSelectedListener {
+            var success = false
+
+            when (it.itemId) {
+                R.id.mainMenu_map -> {
+                    showMap()
+                    success = true
+                } R.id.mainMenu_profile -> {
+                    showProfile()
+                    success = true
+                } R.id.mainMenu_settings -> {
+                    // TODO: implement settings fragment
+                } R.id.mainMenu_logout -> {
+                    // TODO: implement logging out
+                }
+            }
+
+            if (success)
+                binding.mainDrawerLayout.closeDrawer(binding.mainDrawer)
+            success
+        }
     }
 
     private fun showMap() {
         supportFragmentManager.beginTransaction()
             .hide(profileFragment)
-            .hide(settingsFragment)
             .show(mapFragment)
             .commit()
     }
@@ -45,26 +64,7 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private fun showProfile() {
         supportFragmentManager.beginTransaction()
             .hide(mapFragment)
-            .hide(settingsFragment)
             .show(profileFragment)
             .commit()
-    }
-
-    private fun showSettings() {
-        supportFragmentManager.beginTransaction()
-            .hide(mapFragment)
-            .hide(profileFragment)
-            .show(settingsFragment)
-            .commit()
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.mainMenu_map -> showMap()
-            R.id.mainMenu_profile -> showProfile()
-            R.id.mainMenu_settings -> showSettings()
-            else -> return false
-        }
-        return true
     }
 }

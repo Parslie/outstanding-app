@@ -3,24 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/main_drawerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        tools:openDrawer="start">
 
-        <FrameLayout
-            android:id="@+id/main_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/main_navigation"
-            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemHorizontalTranslationEnabled="false"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu_main" />
-    </LinearLayout>
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/main_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="@string/app_name"
+                    app:navigationIcon="@drawable/ic_menu_24"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout
+                android:id="@+id/main_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/main_drawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/menu_main"/>
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/mainMenu_profile"
-        android:title="@string/profile"
-        android:icon="@drawable/ic_profile_24"/>
-    <item android:id="@+id/mainMenu_map"
-        android:title="@string/map"
-        android:icon="@drawable/ic_map_24"/>
-    <item android:id="@+id/mainMenu_settings"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_settings_24"/>
+    <group>
+        <item android:id="@+id/mainMenu_map"
+            android:title="@string/map"
+            android:icon="@drawable/ic_map_24"/>
+        <item android:id="@+id/mainMenu_profile"
+            android:title="@string/profile"
+            android:icon="@drawable/ic_profile_24"/>
+    </group>
+
+    <group>
+        <item android:id="@+id/mainMenu_settings"
+            android:title="@string/settings"
+            android:icon="@drawable/ic_settings_24"/>
+        <item android:id="@+id/mainMenu_logout"
+            android:title="@string/logout"
+            android:icon="@drawable/ic_logout_24"/>
+    </group>
 </menu>

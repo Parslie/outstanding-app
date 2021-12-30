@@ -8,91 +8,109 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ScrollView
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/post_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/post_title"
+                app:navigationIcon="@drawable/ic_back_24"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/outer_margin"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/post_title"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="This is a title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-                    <TextView
-                        android:id="@+id/post_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="This is the content that comes with a post. These, along witht the titles, are different for each post." />
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/post_divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="@dimen/outer_margin"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/post_likeBtn"
-                        style="@style/Button.Text.Icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="0dp"
-                        android:text="420"
-                        app:icon="@drawable/ic_unliked_24"
-                        app:iconPadding="@dimen/inner_margin" />
-
-                    <Button
-                        android:id="@+id/post_dislikeBtn"
-                        style="@style/Button.Text.Icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/inner_margin_big"
-                        android:padding="0dp"
-                        android:text="69"
-                        app:icon="@drawable/ic_undisliked_24"
-                        app:iconPadding="@dimen/inner_margin" />
-
-                    <Space
-                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/inner_margin_big"
-                        android:layout_weight="1" />
+                        android:layout_margin="@dimen/outer_margin"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/post_dateCreated"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/inner_margin_big"
-                        android:text="2021-12-22" />
+                        <TextView
+                            android:id="@+id/post_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="This is a title"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+                        <TextView
+                            android:id="@+id/post_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="This is the content that comes with a post. These, along witht the titles, are different for each post." />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/post_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/outer_margin"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/post_likeBtn"
+                            style="@style/Button.Text.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="0dp"
+                            android:text="420"
+                            app:icon="@drawable/ic_unliked_24"
+                            app:iconPadding="@dimen/inner_margin" />
+
+                        <Button
+                            android:id="@+id/post_dislikeBtn"
+                            style="@style/Button.Text.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/inner_margin_big"
+                            android:padding="0dp"
+                            android:text="69"
+                            app:icon="@drawable/ic_undisliked_24"
+                            app:iconPadding="@dimen/inner_margin" />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/inner_margin_big"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/post_dateCreated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/inner_margin_big"
+                            android:text="2021-12-22" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/post_divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
                 </LinearLayout>
-
-                <View
-                    android:id="@+id/post_divider2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider" />
-            </LinearLayout>
-        </ScrollView>
-
+            </ScrollView>
+        </LinearLayout>
     </LinearLayout>
 </layout>
